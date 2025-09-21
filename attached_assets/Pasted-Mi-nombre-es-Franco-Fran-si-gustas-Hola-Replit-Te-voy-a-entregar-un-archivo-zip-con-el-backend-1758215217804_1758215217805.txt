@@ -1,0 +1,66 @@
+Mi nombre es Franco (Fran si gustas). Hola, Replit. Te voy a entregar un archivo .zip con el backend de un sistema de agentes de IA. Tu misión es diseñar y construir el frontend completo y la base de datos necesaria, integrándote con el backend y siguiendo rigurosamente las especificaciones de nivel profesional que se detallan a continuación. La calidad, escalabilidad y atención al detalle son la máxima prioridad.
+Te adjuntaré las transcripciones de las charlas con el cliente (Joni y Hernán) y el arquetipo del curso de Azure para que entiendas a fondo el contexto del negocio, la necesidad del usuario y la filosofía de nuestro desarrollo.
+________________________________________
+1. Misión y Contexto Estratégico
+•	Nuestra Empresa (MFN): Somos una startup de IA (Mauro, Franco, Nico). Nuestro modelo se basa en un arquetipo de agentes de IA robusto y escalable. No hacemos no-code, construimos soluciones a medida.
+•	Nuestro Socio Estratégico (Open Doors): Una empresa de ingeniería y servicios liderada por Hernán y Joni. Son nuestro primer cliente y su éxito es el nuestro.
+•	La Necesidad del Cliente (Joni): Joni necesita un centro de control financiero para salir del caos del Excel manual. La herramienta debe automatizar la carga de facturas, organizar la información, realizar cálculos impositivos y darle visibilidad total de la salud financiera de sus proyectos y de la empresa.
+•	La Misión: Construir un frontend que se sienta como una herramienta financiera premium: rápido, intuitivo, visualmente atractivo y, sobre todo, confiable.
+________________________________________
+2. Arquitectura General y Stack Tecnológico
+•	Frontend:
+o	Framework: Next.js con TypeScript.
+o	UI Components: Shadcn/ui para todos los elementos (botones, tablas, modales, etc.).
+o	Dashboards y Gráficas: Tremor para todas las visualizaciones de datos.
+o	Iconos: Utiliza lucide-react.
+•	Base de Datos:
+o	Motor: Configura una base de datos PostgreSQL.
+o	Esquema de Tablas Requerido:
+	invoices: (id, tipo, fecha, proveedor_cliente_id, subtotal, iva, total, cargado_por_id, fecha_carga, archivo_url, estado, etc.).
+	clients_providers: (id, nombre, cuit, es_cliente, es_proveedor). Para los recurrentes.
+	users: (id, nombre). Para registrar quién carga cada factura (Joni, Hernán, etc.).
+	deleted_invoices_log: (invoice_id, datos_originales, eliminado_por_id, fecha_eliminacion). Un historial de eliminaciones.
+•	Sincronización: El frontend interactúa con la base de datos PostgreSQL. El backend de Python, tras procesar una factura en Azure, debe escribir el resultado tanto en Azure AI Search como en esta base de datos PostgreSQL.
+________________________________________
+3. Desglose de Funcionalidades por Módulo (Requisitos Funcionales)
+3.1. Dashboard Principal (Centro de Mando)
+•	KPIs (Tremor Card): Total Ingresos, Total Egresos, Balance de IVA y Balance General del mes en curso. Estos deben ser interactivos: al hacer clic en "Ingresos", la tabla principal de la app debe filtrarse para mostrar solo los ingresos de ese mes.
+•	Gráfica Principal (Tremor AreaChart): Ingresos (verde) vs. Egresos (rojo) de los últimos 12 meses.
+•	Tabla de Actividad Reciente (Tremor Table): Las 10 últimas facturas procesadas.
+3.2. Módulo de Carga de Facturas (Punto de Ingesta)
+•	Un área de Drag-and-Drop prominente.
+•	Botones para seleccionar archivos (PDF, JPG, PNG) y para activar la cámara.
+•	Selector de Usuario (Obligatorio): Un dropdown (Select de Shadcn) con "Joni", "Hernán", y "Otro" (con campo de texto). Este dato debe guardarse en el campo cargado_por_id de la tabla invoices.
+•	Feedback de Carga: Barras de progreso y notificaciones "Toast" (de Shadcn) para "Procesando..." y "Factura cargada con éxito".
+•	Persistencia: La carga debe ser robusta. Si el usuario cierra la pestaña, el proceso debe intentar completarse en segundo plano.
+3.3. Historial de Facturas (Vista ABM / CRUD Profesional)
+•	Una tabla profesional (estilo "table sorter") con todas las facturas de la base de datos.
+•	Columnas:
+o	Tipo: Indicador visual (círculo verde para Ingreso, rojo para Egreso).
+o	Fecha, Proveedor/Cliente, Total, IVA, Cargado por.
+o	Acciones: Columna con iconos de lápiz (editar) y tacho de basura (eliminar).
+•	Funcionalidad de Edición: Al hacer clic en el lápiz, se abre un modal (Dialog de Shadcn) que muestra todos los campos de la factura y permite al usuario corregir los valores que el agente extrajo. Al guardar, se debe actualizar el registro en la base de datos.
+•	Funcionalidad de Eliminación: Al hacer clic en el tacho de basura, se abre un modal de doble verificación. Al confirmar, la factura se mueve a la tabla deleted_invoices_log y se elimina de la vista principal.
+•	Filtros Avanzados: Búsqueda por Proveedor/Cliente (con autocompletado de la tabla clients_providers), y filtros por Mes, Año, y Usuario.
+3.4. Gestión de Clientes/Proveedores
+•	Una nueva vista con una tabla que liste todos los clientes y proveedores recurrentes. Permite añadir, editar y eliminar registros.
+3.5. Backlog y Papelera de Reciclaje
+•	Una vista de "Historial de Eliminadas" que muestre los registros de la tabla deleted_invoices_log.
+3.6. Asistente de Chat (Agente Conversacional)
+•	Un ícono de chat flotante que abre un Drawer de Shadcn para interactuar con el agente de IA del backend.
+3.7. Módulo de Reportes y Exportación
+•	Vistas: Pestañas para ver historiales por Mes y por Año.
+•	Exportación: Botón para "Exportar a CSV/Excel".
+•	Google Sheets: Botón para "Sincronizar con Google Sheets", que actualiza la planilla del cliente con el estado actual de la base de datos.
+________________________________________
+4. Requisitos No Funcionales y de Experiencia de Usuario (UX)
+•	Lógica "Autoresolutiva": El frontend debe ser inteligente. Al editar, debe validar los datos. Debe poder interpretar y formatear correctamente números ($1,234.56 y 1234,56) y fechas (dd/mm/yyyy y yyyy-mm-dd).
+•	Diseño Visual: Paleta de colores: base blanca (#FFFFFF), bordes/tablas/elementos activos en azul claro profesional (#EBF5FF), y acentos en un azul más oscuro para botones. El estilo debe ser limpio, con buen espaciado, minimalista y profesional.
+•	Feedback al Usuario: Usa notificaciones "Toast" para todas las acciones (crear, actualizar, eliminar, error) y "Spinners" de carga donde sea necesario.
+________________________________________
+5. Instrucciones de Desarrollo y Reporte de Progreso (Mandato para la IA)
+•	Tu Misión: Tu objetivo es entregar una aplicación completamente funcional que cumpla con todos los puntos anteriores.
+•	Metodología: A medida que avances, quiero que me informes de tu progreso punto por punto. Antes de escribir el código para una funcionalidad, declara: "CONCRETANDO AHORA: [Nombre de la Funcionalidad]". Cuando la termines, confirma con: "CONCRETADO: [Nombre de la Funcionalidad]".
+•	No Omitas Detalles: Cada requisito mencionado en este prompt es crítico. No pases por alto ninguno. Si tienes una duda o una sugerencia para mejorar algo, plantéala.
+Por favor, comienza por configurar el entorno Next.js/TypeScript, la base de datos PostgreSQL, e integra Shadcn/ui y Tremor. Luego, diseña el layout principal y construye el Dashboard y el Módulo de Carga como piezas centrales. ¡Gracias!
+

@@ -1,0 +1,741 @@
+sí todos los meses sí em
+si vos tenés IVA a favor
+sí si vos tenés IVA a favor obviamente
+te queda como IVA
+IVA a crédito digamos
+no ajá o sea al final no te da la no te da la guita
+pero si vos tenés IVA
+y IVA en contra vos
+tenés IVA de débito
+se lo tenés que pagar al final ajá todos los meses
+ajá entonces nosotros que como metimos facturas eh
+precio más IVA
+nosotros
+eh intentamos rescatar ese IVA no entonces qué hacemos
+eh como nosotros estamos facturando muchos servicios
+los servicios no tienen costo
+eh lo que nosotros
+intentamos hacer es ir rescatando ese
+video para que nos quede el el el el
+el más 21% nos quede a favor ajá que ganancia lógico
+entonces
+entonces vos vos vas a comprar un caramelo al kiosco y
+y y pedís que te
+metan una factura entonces vos lo pasás como un costo
+claro claro
+o sea un gasto personal tuyo lo pasás como un costo eh
+un costo de producción de la empresa
+tendiendo para recaudarlo entonces bueno tenemos
+qué tenemos nosotros
+facturas que nosotros
+emitimos de los servicios que hacemos
+que genera movimiento de cuenta eh y y y tenemos
+algunas facturas
+hoy en día como son servicios
+hemos tenido algunos subcontratos pero no muchos
+facturas que que que emitimos
+para pagar esos
+contratos que generan también movimiento de cuenta ujum
+eh a medida que vayamos creciendo vayamos teniendo este
+no no solamente servicios sino también obras
+proyectos lo que va a pasar es que vamos a entrar
+vamos a emitir muchas compras de materiales ujum
+eh y después lo que tenemos son todas las facturas eh
+todas las facturas que nosotros pedimos para rescatar
+yo
+que no genera movimiento de cuenta entonces nosotros
+tenemos que ordenar todo eso nada más
+o sea yo yo debería tener un
+debería tener un dashboard donde pueda ver
+todo eso viste pueda ver este
+o sea yo yo debería poder tener indicadores
+indicadores de gestión que eh
+que me digan cuál es la rentabilidad
+real que tengo la empresa
+y otros indicadores que son los que yo le paso a la fit
+que involucran también
+la facturación esta
+de mentira que hacemos para rescatar Io
+qué papel yo tengo dos contabilidades
+tengo dos contabilidades
+paralelas una contabilidad real de la empresa
+y una contabilidad
+este que es la que yo le presento a la FIB
+que es la que están los libros
+donde yo voy emitiendo
+facturas para tratar de rescatar Io
+y qué es lo que
+qué es lo que pasa con eso lo que yo necesito es que
+una
+también que que nosotros el IVA que se va rescatando
+depende quién rescate
+el IVA es el que se lleva la guita
+entonces necesitamos ordenar
+también todo eso tenemos
+tenemos que ordenar cosas además no
+justamente
+yo pregunto qué hace el hijo del Johnny en ese sentido
+hoy en día no porque dijiste
+bueno le lo que le hemos dicho es que
+arme un Excel con todo eso que te acabo de decir
+o sea cuáles son las facturas que yo metí
+cuáles son las facturas que que
+generó movimientos de cuenta
+cuáles son los servicios que yo
+pagué y cuál es la facturación que he hecho para
+recaudar yo
+eso quiero
+hoy en día quiero tener eso porque no lo no tengo o sea
+si vos me das ese Excel cuando él lo termine
+yo te preparo a vos
+eh un
+mini open doorcito bueno eh eso
+eso es algo muy choto me seguís eso
+eso es algo muy choto porque yo
+ahí lo que necesito qué es muy choto
+es choto en el sentido de que eso eh el proceso ese
+yo tomo yo tomo el sentido de que en realidad
+lo que yo necesito ahí es tener información
+de cómo se me van moviendo las cuentas nada más
+es es todo pero después sí necesito
+empezar a a a a definir los procesos
+internos de la compañía que son otra cosa digamos no
+lo que yo ofrezco
+según lo que vos me estás diciendo
+cranear lo que yo ofrezco cranear y obviamente
+a través del sistema que se haga
+es generar
+estos propios agentes
+que son autopensadores
+que se basan no solo en la información
+que vos vas a definir
+ya sea en ese
+exe o en cualquier curso grama que vos ah eh generes
+o te generen inclusive nosotros
+eso yo hacía también
+y eh aprendan de sí mismos
+basados en el comportamiento que nosotros eh este le
+le indiquemos
+ahí es donde vas a ganar eh
+justamente una automatización
+una digitalización de proceso
+ahí es donde vas a ganar si se quiere en en analistas
+o en eh administrativos de los sectores
+la idea es que tengás a tu ayudante
+asistente virtual que sepa tanto o más que vos
+pero que sepa tanto o más que vos
+en paralelo
+a tu forma de cranearlo a tu forma de pensarlo repito
+es como como yo te decía es como
+Jarvis de de Tony Stark es algo así
+qué estamos eh eh
+proyectando cuál es la la visión que tenemos
+sí empezar a trabajar con eh agentes
+o inteligencias artificiales
+llamaré chat que repito no es un chat pero
+um visualmente
+lo podemos interpretar como un chat
+eh a los cuales vos le
+simplemente consultes
+todo esto y te genere este panorama
+para que a futuro
+vaya interlasando
+perdón vaya interconectando eh y haga los los lazos con
+otros agentes dentro de la empresa
+este es el agente facturación
+pero vas a tener el agente repito no sé eh
+legales el agente técnico el agente no sé qué eh
+vos sabrás me entendés
+por eso yo entiendo que vos vas a definir primera
+primeramente el organigrama de la empresa
+el curso grama de los sectores y todo lo demás
+en base a esa información
+ahí sí nosotros hacemos un análisis yo hago un análisis
+y bueno me dan una
+esto es lo que podemos
+automatizar
+digitalmente que a vos te va a servir así y así
+a ustedes y bueno
+por qué te lo digo por qué te lo ofrezco y pues sí
+obviamente nosotros sí claro podremos ir a vender
+eh pequeños software eh eh enlatados o a medida
+para esto que vos estás buscando de hecho
+Lemmy ya lo tiene de hecho Big sis hace eso
+qué quieren hacer justamente
+a los 1 300 clientes y le che mirá acá
+este te te ofrezco esto
+donde el mismo cliente haga le haga preguntas al chat
+cómo la viste la el
+el formulario ese que yo respondí era algo así che
+cuál es el producto
+tal o dame el historial
+qué hacían los de Córdoba los de Montecristo
+eh me pidieron generar justamente un chat
+interno de los productos de su e commerce interno
+ujum entonces eso oíste tener 1 1 asistente virtual
+que maneje
+toda la data toda la info y que tome decisiones
+decisiones este pura y exclusivamente
+bajo las indicaciones que les demos ujum
+una cosa es un sistema
+eh automatizado como el workflow chiquitito
+donde vos definís 100%
+la predictibilidad de lo que va a hacer
+ujum va a hacer lo que vos le digas que haga el agente
+armado en base a a toda esta información
+difiere en que
+no va a ser eh predecible al 100x100
+va a ser efectivo y eficaz si se quiere en un 90%
+porque va a estar en un constante
+proceso de aprendizaje
+de los propios datos
+internos y de las propias órdenes que vos leés
+ahí es donde justamente vamos mejorando esos procesos
+y podés interactuar con nube podés
+cómo se ordena la información
+todo lo que quieras y
+no lo tenés que entrar en un servidor lo entrás
+sí lo podemos eh si me preguntás nube
+una nube si me preguntás nube n 8 n eh o make
+son los dos principales
+si me preguntás a mí
+me tiramos a a doble be ese o el del Google cloud
+y listo qué le pasa al al este viejo de Dixie
+no no no quiero
+eh son son muy reacios ahí tengo el tema de los datos
+y demás las nubes
+no no 1 1 soba claro una tecnología
+un kobol programó el sistema
+hace 25 años sabés lo que es migrar todo eso
+son 5 años de migraciones
+bueno menos pero por ahí eh
+el tema es este que están con la cabeza cerrada bueno
+eh qué necesitarías para tal o tal base de datos eh qué
+sistema ya lo investigué ya lo preparé ya le dije mirá
+una 64Hz una placa de video tal y tal
+una buena compu
+pero si me preguntás no la nube toda la vida
+entonces y y usted y usted
+cuál a ver cómo estás planteando tu modelo de negocio
+lo estoy planteando hoy hoy lo estoy armando porque vos
+vos vas a tener como dos etapas una etapa de desarrollo
+exacto
+eh una etapa de desarrollo de implementación y después
+tiene una etapa de mantenimiento lógicamente
+lógicamente
+eh el mantenimiento
+y en esa etapa de mantenimiento qué
+qué tenés porque vos deberías tener
+eh eh el el se el servicio de nube por supuesto
+incluir en ese mantenimiento el y una mesa de luz
+exactamente exactamente
+vos lo has dicho ujum
+de actualizaciones o mejores ojos
+eso eso es tácito porque
+la gran ventaja
+de trabajar los psicólogos van a trabajar con servidor
+fantástico obviamente vamos a estar ahí eh con con
+qué no quiero un servidor
+dónde lo pongo el servidor
+es una computadora base
+me entendés lo ponés donde vos te cante me entendés
+yo lo trajo en la nube yo lo trajo en la nube
+este quilombo de de los nodos el eh que el que
+no el quilombo el chiquito era de era de tres
+sabés lo que me costó
+llevarlo a llevarlo a tres nodos
+por qué sí porque
+a dónde mierda lo pongo que hay que bajar que que el
+sí está bien pero eh
+sí sí sí sí ya entendí ya entendí vos vos tenés
+vos vas a tener
+el el el agente
+qué qué qué cómo interactúas con esa gente interactúas
+yo todo el tiempo lo voy a ir a lo voy a ir que
+cómo me entregas por WhatsApp cómo interactúas
+eh la el la plataforma este o la
+interfaz que vos quieras querés que te
+eh que te cree yo
+una interfaz propia que diga
+eh open door eh ahí eso
+querés por WhatsApp por WhatsApp querés
+como sea pero el el el tema es después
+perdonala que no no comprendí la de de después este
+por ejemplo sí por ejemplo de
+no sé
+todos los
+este
+todos los eh colaboradores de la empresa
+tienen instalada la aplicación poné 1 1 1
+um bueno dale qué sé yo ponele dale dale sí sí
+eh no sé hago una facturación le saco una foto
+a dónde me lo lleva este
+lo vamos a llevar
+al servidor sí lo vamos a llevar al servidor de nube
+y después yo cómo accedo a toda esa información
+me van a tener que crear un interfaz
+me van a crear otro tal cual
+ojo querés la interfaz la interfaz
+querés el WhatsApp el WhatsApp querés Telegram
+Telegram querés mail
+mail está bien pero voy a tener que tener una interfaz porque voy a tener que ver toda la
+facturación lógico lógico
+vas a tener que me
+vas a tener que meter informes
+voy a tener que tener cuadros de mando
+saber que hermano
+lógico a lo que te quiero decir es que te lo llevo
+desde un chat de WhatsApp
+a ese dashboard este con
+con la interfaz que si me preguntás
+en realidad Emily ya vendía
+eso y lo que estamos haciendo es aplicándolo este
+o queriendo aplicar la digitalización de los sistemas
+a por ejemplo ese
+él tiene 1 1 administración de inmobiliarios
+Lubricentro y de facturación
+qué querían hacer los de
+bixis de hecho los de bixis le quieren comprar el
+entonces por ejemplo la parte de facturación está
+che vos ernán vos me
+al Johnny le gusta que tenga
+este el panel de de de factura el
+el día de hoy
+y además de los 45 filtros
+de tal o tal y a vos te gusta hasta
+el otro no te da problema
+pues nosotros no no ya no es diseñar el software
+el sistema en sí
+es preparar a la gente
+para que cuando vos querás algo
+lo crea a tu medida
+basándose en la información que tiene
+de la empresa
+repito es un 90% eficaz
+en los primeros meses
+porque justamente se está
+autoalimentando de la propia información
+que le va moderando
+claramente nosotros tenemos el el soporte continuo
+porque a diferencia de otros sistemas
+no es un sistema estático por así decirlo es un sistema
+eh que está en constante
+flujo cambiario
+eh todo el todo el tiempo además todos los días tenés
+nuevas posibilidades
+por qué lo veo copado para
+ah y por qué te lo cuento esto y mirá es fácil
+en el más allá que nosotros
+ahora vamos a hacerlo esto y demás con el flaco sí
+queremos ganar un sope pero más que ganar un sope
+es ser referentes en esto
+bueno sí y como no te voy a decir a vos
+che yo sé que ustedes me están
+están arrancando
+no te quiero vender nada te quiero decir bueno
+sí podemos armar algo genial
+pero a la vez ir aprendiendo juntos
+pues prefiero ir aprendiendo y armándolo
+juntos con vos y no con los demás otros obviamente
+primero de por sí lo haría
+pero y menos con estos otros
+que se quieren un poco bañar
+por eso también está bueno el contacto con este flaco
+legal porque él me dijo no mirá
+esto se hace así así así
+ah yo no voy a
+ya sabés ya no
+con ya no puedo confiar ni en la sombra del
+con la gente como no te voy a decir a vos ya
+si ya ya a vos es otro tema me entendés este
+no bueno pero es que
+encontraste y se lo dije claramente
+pero vos me dijiste che también tenemos este
+vos me dijiste
+estamos con proyectos latentes
+nos juntamos en el proyecto
+bueno si hay una financiación
+y ahí sí te voy a decir no mirá si hay una
+la financiación que te estamos pidiendo tal vez eh
+yo estoy buscando
+salir a vender un poco de software inclusive
+sistema de facturación
+estoy hablando de algo de de dos millones de mangos
+eh a tres meses me entendés ni siquiera
+mensual estoy hablando no no por eso pero ahí ahí
+ahí voy me entiende hay que ah hay que armarlo bien
+pero te quiero decir
+eso es lo que está todo en mi mente ahora
+lo que nosotros necesitamos sí
+eh lo pensamos hacer ahora
+no eh pensábamos resolverlo con un flaco y tirarle
+100 Lucas al mes listo pensábamos hacer eso pero
+lo vamos pensando y lo vamos armando
+todo depende mirá eh hoy en día eh
+nosotros hemos tenido
+facturaciones
+de 4 5 palomas es lo que venimos manejando verdad
+eh nosotros eh
+tenemos un par de proyectos muy grandes
+te diría que tienen
+uno ya
+nos dieron lo que hay ya nos confirmaron me salda rosa
+no algo me dijo uno en San Luis San Luis perdón que ese
+tiene un movimiento de facturación que nos permite
+moverte movernos tiene una
+facturación de $120 000 un proyecto muy bueno
+muy interesante que ese yo creo que
+ese y este
+hemos cotizado 1 1 línea de media tensión en la Valle
+que también son 120 Lucas
+cualquiera es un proyecto ni a ver si saben los dos
+eh a nosotros ya nos dan margen de movimiento viste
+no a otro margen
+sí qué te parece pues
+son proyectos que nos van a permitir
+este financiar crecimiento
+obvio obvio obvio no
+este
+así que bueno
+eh todo depende pero
+bueno eso es lo que quiero hacer
+pero bueno y de alguna forma
+paga o no paga
+che nada lo lo que podemos ir así
+de dejemos de ser pues podemos podemos ir definiendo
+qué procesos
+por eso el que tenemos el que tenemos que resolver
+tenemos 1 1 urgencia que es
+resolver el tema facturación no eso está claro
+eh ordenar el tema facturación y después tenemos que ir
+definiendo
+los otros procesos que yo los tengo en mente
+pero me tengo que sentar armar los mapas de procesos
+bueno
+este me tengo que sentar
+tengo una pregunta tengo una pregunta paréntesis
+me imagino que vos
+en tu día a día estás colapsado vos
+me decís tengo una hora me tengo que sentar y demás
+hoy en día
+qué herramientas estás usando vos
+más allá de la persona más allá de un recurso humano
+qué herramienta técnica eh eh eh
+digital estás usando para la ayuda de esa gestión
+esa gestión de no porque a ver porque hoy en día la
+a ver estamos muy focalizados en lo comercial
+entonces hoy en día estamos
+utilizando herramientas que yo trabajaba en imsa
+herramientas que yo me he traído que son las
+planillas de Excel de la puta madre que que están o sea
+planillas de Excel que están preparadas para realizar
+cotizaciones
+eh
+me traigo esas herramientas
+son las herramientas que estamos usando para cotizar
+esas planillas
+son las fuentes
+principales te diría para
+por ejemplo el agente cotización por decirte sí sí
+habría que verlo bien cómo los cómo se estructura
+porque las son cotizaciones muy dinámicas
+viste o sea no no no no no acá acá no no estás
+cotizando no estás vendiendo un producto
+no estás vendiendo
+sabes qué sabes qué es notebook el m
+no no sabes no
+bueno ahora nos vamos
+solo te voy a mostrar una herramienta
+que es una de las que
+diría que es mi va a ser mi brazo derecho
+repito yo
+yo estuve tomando mucho esto que vos me estás diciendo
+me pesa muchísimo mate
+o sea todo lo que nosotros pero porque a ver la idea
+bueno
+estamos
+el Johnny y yo está el Leo sí y está la mano del Leo
+sí al Leo y la mano del Leo no nos queremos más
+sí yo no quiero al hermano Leo je je je al Leo tampoco
+por qué qué pasó no está en otro porque no está en otro
+y nosotros necesitamos gente que empuje
+esto necesitamos yo empuje
+yo quiero recontraempuje empuje
+yo te puedo mostrar el chat con el Johnny
+estamos
+interactuamos con el Johnny que con con la Yani
+y todo el día interactuamos con él
+estamos empujando para que esto salga
+meter proyecto y meter guita estamos empujando
+pero estamos muy
+muy centrados en la parte comercial entendés entonces
+el resto lo
+yo lo que el otro día lo que le decía a Jorge
+nosotros tenemos que nosotros
+tenemos que centrar
+en esto nosotros tenemos que desarrollar negocios
+la parte más importante de una empresa
+es desarrollar negocios
+y el resto eh son procesos administrativos
+que tenemos que delegarlos nosotros no podemos estar
+centrados en los procesos administrativos
+solo tenemos que ordenarlos
+y después los procesos administrativos
+tienen que seguir solos
+nosotros tenemos que centrarnos en los negocios
+lo que acabas de decir es
+el proceso administrativo tiene que seguir solo
+bueno es esto bueno por eso te digo
+pero ojo no es yo te lo estoy vendiendo a ver es esto
+te quiero decir pero
+bueno por eso todo lo que nosotros
+podamos resolverlo de esta forma y que
+que el Johnny y yo podamos
+seguir focalizado en lo que realmente importa
+esto importa amigo le estoy diciendo
+en lo que nosotros
+sí sí realmente
+aportamos digamos no nosotros aportamos no
+es que para eso está la
+división de tecnología de la empresa
+me quiero imaginar o no
+por eso este a a nivel estratégico
+a ver nosotros creamos esto porque a nivel estratégico
+nosotros tenemos
+capacidad contacto somos conocidos en el medio claro
+ahí aportamos yo no aporto ordenando una factura
+le pago 100 Lucas a un pendejo que me lo ordene o mejor
+consigo una herramienta que me lo ordene yo no aporto
+a ordenarte la factura
+yo aporto la herramienta que te ordena la factura
+como vos querés
+y te da la data que vos no sabés
+que tenés y necesitás de la factura
+bueno como vos querás cuando vos querás
+bueno entonces eh me gusta mucho la idea la verdad que
+me la van a listo este ah bueno
+empecemos a trabajar en todos los procesos este
+este es el proceso
+eh que de forma más urgente necesitamos ordenar
+no porque ahí está por medio están los otros flacos y y
+nosotros queremos ordenar la parte nuestra viste
+queremos saber muy bien qué guita metimos nosotros
+cómo la metimos
+este queremos saber cuánto llevamos rescatando
+que hemos ordenado esa parte
+eh y el resto de los procesos lo vamos a ir generando
+el otro proceso que ahora lo tenemos en
+a ver pues estamos vendiendo servicios entonces todavía
+qué está definime
+en Diez Palabras open Doors
+qué hace qué son qué van a hacer qué está pasando
+opendorse es una empresa focalizada en proyectos
+y servicios
+eh del área del de de electricidad
+de generación y y transmisión de energía
+estamos focalizados en eso ujum
+pura exclusivamente están o sea este centrado también
+eh vas en la zona esta en San Martín
+y ya tenés los pro eh los
+proyectos de San Luis ahí tirame
+ahí los títulos por lo menos para ubicarme yo
+a ver eh
+o dame el modelo de negocio de upendora
+sí pero por arriba repito título
+a ver tenemos dos fortalezas tenemos
+una es la parte de distribución
+y transmisión de energía
+que es el Johnny
+y otra es la parte de generación de energía que soy yo
+ujum o sea son nuestras o sea
+nuestras fortalezas
+están ahí porque que es donde nosotros
+comercialmente somos fuertes
+donde somos conocidos donde tenemos
+este cierto estatus ujum tenemos ya cierta
+sí trayectoria trayectoria
+tenemos un récord
+ahí digamos entonces tenemos un récord
+ahí y nosotros
+nuestra fortaleza comercial está ahí nosotros
+queremos explotar eso
+queremos explotar eso
+este
+después qué tenemos
+tenemos muchos contactos comerciales
+Johnny tiene muchísimo contacto
+en la parte de distribución y transmisión
+y yo tengo muchísimo contacto en la parte de generación
+entonces nada tenemos
+conocimientos técnicos y tenemos apertura comercial
+ahí entonces lo que queremos explotar es eso
+eh a dónde queremos ir eh hoy en día estamos eh
+lo más sencillo por una cuestión de
+eh de estructura
+necesaria es vender servicios
+los servicios los podemos vender
+nosotros dos podemos buscar otro flaco que nos ayude
+y vamos vendiendo servicios y y con eso estamos eh
+generando las bases digamos no
+estamos empezando a ser conocidos como Open
+door no como Johnny Hernán sino como Open door
+para mí son los open door ustedes entonces está
+estamos estamos
+estamos empezando ahí donde queremos ir a proyectos
+los proyectos tienen otra complejidad veamos
+los proyectos por nivel de margen
+margen sobre materiales los proyectos nada
+estamos hablando de
+medio millón de dólares un millón de dólares
+estamos hablando de de otra
+de otra cosa proyecto no entonces queremos llegar ahí
+a dónde nos queremos entrar en proyectos
+a nivel técnico sencillos
+pero que tenga que nivel de facturación importante
+ujum no
+eh nosotros queremos apostamos al p por q no tanto al
+este eh eh eh digamos al
+em a la complejidad del proyecto
+es la realidad
+bien este
+em
+es eso claro
+eh cuando empecemos a desarrollar proyectos
+o si nos sale
+el proyecto de Lavalle un par de
+más que estamos cotizando son proyectos
+eh tiene eh un nivel
+o sea una complejidad administrativa mayor no
+porque tenés que gestionar
+el programa tenés que gestionar sí un contratista
+tenés que sectorizar todo el cursograma interno
+tenés que gestionar compras
+eh
+tenés que tener contratos más complejos
+de cumplimiento más complejos tenés que generalmente
+ya ya involucrás liberaciones de calidad
+o sea
+involucrás
+una complejidad mayor a nivel gestión y
+ahí bueno eso
+eso hay que hay que empezar
+también a ordenar todo eso
+hay que empezar a generar esos
+procesos y empezar a ordenarlo también
+todavía no nos topamos con eso
+porque todavía no hemos hecho proyectos
+un servicio más simple no
+eh emitir una orden de compra
+generalmente ni siquiera hace falta un contrato
+depende del nivel de servicio pero generalmente
+son montón menores
+no tenés un contrato no tenés compra o tenés
+1 2 contratos son
+relativamente sencillos de manejar
+esos son contratos esos contratos
+inclusive hasta esos contratos
+eh son los que las los propios agentes
+terminan manejando
+eh la idea
+de en este caso
+de de nexia porque seguimos
+todos los pasos nosotros ya somos nexia
+es eh digitalizar y automatizar
+a través de estos agentes
+todos esos procesos que
+no tienen que estar en la cabeza de de Johnny o Hernán
+ya que este
+van a gestionar como bien me dijiste vos
+sus dos grandes fortalezas el resto
+es lo que nosotros buscamos
+yo yo con el Johnny la semana pasada
+nos juntamos específicamente a hablar de esto
+específicamente a hablar de esto pero yo necesitamos
+un flaco para manejar solo esto
+porque yo no voy a pensar en esto
+yo no le voy a dedicar
+una hora a ordenar una factura en un Drive
+no lo voy a hacer
+no lo voy a hacer me postulo
+así que bueno dale
+dale ya empecemos a hablar
+listo empecemos a hablar
+eh lo principal es ordenar facturación
+eso es lo principal
+ya está eh y después
+después lo que yo estoy seguro que se nos viene
+como segundo
+eh el día que estamos
+firmando un contrato para hacer un proyecto
+es ordenar cuestión de compras
+es lo segundo que se nos viene
+hermano sabes por qué me
+complejo del punto de vista de ingeniería
+y se generan muchos documentos entonces
+hay que ordenar esa documentación eh
+hay que gestionar esa documentación
+la gestión de la documentación la
+gestión de documentación de ingeniería
+la gestión de documentación
+es justamente
+lo que necesita
+eh
+eh el agente
+el agente que nosotros eh generamos diseñamos
+entrenamos
+justamente
+están hechos para eso conexiones de todo tipo
+eh Apis de la que se te ocurra
+es la que vamos a usar
+para que haga lo que open door necesita Hernán
+necesita dentro de open door
+o yo necesito dentro de open door o
+quien ni siquiera existe
+necesita dentro de open door por ahí tal vez usted
+obviamente ustedes están focalizando en lo tecnológico
+pero um
+a qué te referís a ver
+al desarrollo de la herramienta ah eh
+pero hasta ahí hay hay otro tema
+en general que pasa con las empresas chicas a ver
+justo
+en mi caso yo te
+digo tengo experiencia para trabajar con empresas
+que son ordenadas y tienen em
+o sea que certifican ISO 9 001 están hiperordenadas
+y tienen procedimientos para todo entonces
+es una cuestión de tiempo nada más para ir ordenando
+mis procesos internos pero hay muchas empresas
+de estas que seguramente
+de la mayoría de las pymes o empresas chicas que no
+saben cómo ordenar su proceso mental
+otro servicio que puedo venir con esto que ustedes
+pueden vender es
+yo te genero esos procesos
+y yo te ordeno
+sabes por qué me río
+pues mientras estamos hablando ahora
+sos vos no te voy a mentir
+yo grabé esta última parte
+cuando ya te pregunté de vendedor
+porque yo me creé un agente de agentes
+yo para mí me creé un agente
+que hace justamente lo que vos me estás diciendo
+estoy entrenando a un agente
+que le genere la estructura interna y los procesos
+este a empresas como ustedes a empresas como nosotros
+esto lo diseñé en estos días y es justamente también
+el fuerte que voy a alargar
+ya que él me va a estar en la parte de facturación
+aplicada
+yo estoy en la parte de generación de procesos internos
+o de orden de procesos internos
+cómo te lo voy a mostrar
+bueno ahora mientras la llamo a Renato
+te mato y es un poco la idea de che este
+bueno te felicito
+bueno gracias
+te quiero
+yo también te quiero vas a crecer en serio te va
+a ir bien gracias por todo sí mientras puedo
+te quiero bueno es eso si necesitás algo

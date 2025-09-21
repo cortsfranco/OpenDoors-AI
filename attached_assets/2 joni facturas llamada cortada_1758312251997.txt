@@ -1,0 +1,178 @@
+vaya que mandé un
+audio largo pero bueno viste que a veces no es como
+como mostrarlo en
+eh en pantalla hacer un algo un poquito más
+más eh detallado totalmente así que
+así que bueno quería sumarles
+información a los que vos
+perdón que te haya molestado
+perdón que te hayas postergado en realidad
+hermano no es que te hayas postergado
+sino que bueno hay unas cuestiones ahí ya pero
+hablaremos tranquilo
+pero bueno pero bueno estamos
+estamos en Vilma así siempre así
+por adentro no sé así es afuera je
+je te juro que pienso en vos
+te juro que en estos días estoy pensando
+en vos me escapé al Carrizal el domingo
+digo cómo hace el Johnny cómo hace tal o tal
+porque por dentro
+igual que vos por fuera sí dale hermano te quiero mucho
+sí sí sí sí hay que hay que obligarse ja ja
+sí señor perdón me estoy poniendo manteca de cacao
+no te hagas problema
+si por eso te mostré a la profe para que veas que
+este hay algo más
+ya le di ya le dije que ya le dije que el Johnny
+es el mejor
+qué estoy liberado sí
+contame contame
+bueno hermano em
+bueno mirá no sé si vos ves la pantalla a ver voy a
+yo veo y de paso te pido
+que igual saco capturas yo pero cualquier cosa o
+eh yo te pido ahí que me
+sí que me mandés captura
+dale perfecto
+mirá
+ahí te voy a compartir
+quiero mostrarte no sé si ves bien me vas avisando
+veo perfecto igual vos
+como te digo si me tirás unas capturas joya joyuela
+sí igual en realidad
+después te vas
+te voy a hacer una copia y te voy a pasar en realidad
+em
+te voy a pasar una copia del de de de esa tabla
+para que puedas
+eh jugar con ella y verla y todo no hay problema
+perfecto
+que se ve lo que lo que me interesa mostrarte acá
+es lo siguiente
+solo tenemos
+eh bueno tenemos la entrada y bastante ordenado
+todas las las cuestiones nuestras viste sí
+en la parte de nosotros solo
+tenemos la parte de lo que es facturación viste sí
+eh tenemos acá un balance de lo que es facturas
+emitidas donde vamos poniendo eh
+o por año eh por mes
+y vamos cargando todas las facturas que son las
+emitidas por quién
+por quiénes son emitidas por quiénes son recibidas
+entonces vamos vamos agregando viste
+eh todas las facturas viste perfecto
+que acá acabo de darme cuenta que hay un
+hay una que no está bien
+que esto tiene que ver una carpeta que ya 0 1
+eh
+Hernán y Johnny
+ahí está
+son muy hinchados con el orden y todo y bueno y tenemos
+estas cuestiones viste que bueno te consumen
+tiempo que te pero bueno
+yendo al al al
+al grano bueno tenemos
+toda la parte de facturación que es una carpeta
+acá que tenemos
+más acá emitida la factura que nosotros emitimos
+que es el dinero que teóricamente nos entra
+sí y las recibidas que son las que nosotros emití
+emitimos para pagar algún subcontrato o para
+no sé para hacer compensación de IVA o para
+cualquier tipo de teji maneje que hacemos
+ah eh tenemos facturas recibidas
+perfecto pueden ser factura a o factura c bien
+después tenemos
+acá una carpetita donde ponemos los
+componentes del
+pago del IVA que lo vamos haciendo en forma
+en forma gradual viste y
+y cómo se llama
+acá estoy con mi compañero esa
+divino divino
+y bueno y
+y tenemos la parte
+bueno aparte en la parte de otro
+ponemos algún tipo de de cuestión así que que
+que sea de la parte de lo que es contabilidad
+facturación
+bien en la parte de balance de facturación nosotros
+tenemos em
+una tablita uno como un Excel un DOC que hemos armado
+que es bastante completo
+ahí te lo voy a mostrar a ver si lo puedes ver
+puedo ver avisame si lo ves bien puedo verlo
+bueno eh este
+este DOC lo que
+lo que tiene este este chip perdón sí en realidad eh
+si vos lo ves bien acá
+lo veo bien
+mirá vos tenés
+es una es una tablita en donde nosotros hemos
+puesto un par de
+de títulos viste donde tenemos una lo que es la fecha
+el
+todo lo que es lo que factura emite o recibe el Hernán
+yo Maxi Leo bien algún
+1 1 titulito de de otro impuesto su total
+y lo que sea bueno en esta en esta
+tablita nosotros tenemos un sector que es la parte de
+ventas
+en la parte de arriba sí y después la parte de compra
+la parte de arriba son las más las facturas emitidas
+que sería plata recibida sí y la de abajo son facturas
+facturas em
+recibidas que es plata
+plata que sale es gasto por decirlo así sí
+que bueno acá nosotros tenemos
+eh varios cuadritos condicionales
+y por ejemplo esta plata este
+esta factura la le decimos para compensar
+el IVA son factura
+a porque estamos en el en el cuadro de factura a
+eh a la derecha tenemos
+el el cuadrito
+o sea la tablita de facturas
+b de facturas c perdón que estas no no
+no sirven para el IVA
+pero sí sirven para tener en cuenta el ingreso y
+y egresos de dinero
+entonces perfecto sí afecta la parte de ganancias
+viste que de ganancias vos todo lo que ingresa se resta
+lo que egresa lo que sale
+y esa diferencia
+que vos ganás por decirlo así te cobran
+30 y 5% a fin de año
+lo que es el impuesto a las ganancias
+bueno
+entonces acá nosotros qué es lo que vamos haciendo
+vamos cargando la la fecha la factura
+donde tenemos en cuenta
+la parte del Leo la parte de IVA
+ujum después tenemos eh
+cómo se llama el subtotal
+y después tenemos la el valor total de la factura
+si este hubiera tenido
+movimiento de cuenta por ejemplo le ponemos
+sí y bueno acá cambia la condición se pone roja
+porque es una salida perfecto si es no no pasa nada
+entonces es porque
+es una factura neutra
+por decirlo así
+que la hemos usado nada más para compensar IVA
+bien al final de todo el
+el análisis este este estamos
+estamos con pestañas que estamos
+a nivel mensual no nuestro período de de análisis
+va desde
+desde um eh abril eh desde mayo de de de un año
+hasta abril del otro año
+entonces justo nosotros agarramos
+empezamos a tener movimiento de cuenta
+en el periodo justo
+unos dos meses o un mes antes de abril entonces
+para el para el general que le hemos puesto general 20
+24 como un análisis de ese período de que
+le pusimos 20 24 porque en realidad es parte de 24

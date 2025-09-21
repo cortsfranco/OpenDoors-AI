@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14-alpine # Usamos una imagen ligera y estable de PostgreSQL
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - "5432:5432" # Mapea el puerto de tu PC al puerto del contenedor
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Guarda los datos para que no se borren
+
+volumes:
+  pgdata:

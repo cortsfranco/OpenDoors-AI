@@ -1,0 +1,640 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import './styles/dialog-overrides.css';
+@import './styles/color-updates.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(222.2, 84%, 4.9%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(222.2, 84%, 4.9%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(222.2, 84%, 4.9%);
+  --primary: hsl(221.2, 83.2%, 53.3%);
+  --primary-foreground: hsl(210, 40%, 98%);
+  --secondary: hsl(210, 40%, 96%);
+  --secondary-foreground: hsl(222.2, 84%, 4.9%);
+  --muted: hsl(210, 40%, 96%);
+  --muted-foreground: hsl(215.4, 16.3%, 46.9%);
+  --accent: hsl(210, 40%, 96%);
+  --accent-foreground: hsl(222.2, 84%, 4.9%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(210, 40%, 98%);
+  --border: hsl(214.3, 31.8%, 91.4%);
+  --input: hsl(214.3, 31.8%, 91.4%);
+  --ring: hsl(221.2, 83.2%, 53.3%);
+  --radius: 0.5rem;
+  --chart-1: hsl(12, 76%, 61%);
+  --chart-2: hsl(173, 58%, 39%);
+  --chart-3: hsl(197, 37%, 24%);
+  --chart-4: hsl(43, 74%, 66%);
+  --chart-5: hsl(27, 87%, 67%);
+  
+  /* Financial specific colors */
+  --income-green: hsl(142, 70%, 40%);
+  --expense-red: hsl(0, 72%, 55%);
+  --financial-blue: hsl(217, 91%, 95%);
+  --financial-blue-dark: hsl(221, 83%, 53%);
+  
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: Menlo, monospace;
+}
+
+.dark {
+  /* Subtle dark mode with transparency and blue tones */
+  --background: hsl(220, 15%, 8%);
+  --foreground: hsl(210, 20%, 92%);
+  --card: hsl(220, 20%, 12%);
+  --card-foreground: hsl(210, 15%, 88%);
+  --popover: hsl(220, 18%, 10%);
+  --popover-foreground: hsl(210, 20%, 90%);
+  --primary: hsl(210, 85%, 60%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(220, 15%, 18%);
+  --secondary-foreground: hsl(210, 15%, 85%);
+  --muted: hsl(220, 20%, 14%);
+  --muted-foreground: hsl(215, 10%, 55%);
+  --accent: hsl(220, 25%, 16%);
+  --accent-foreground: hsl(210, 80%, 65%);
+  --destructive: hsl(0, 65%, 60%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(220, 15%, 20%);
+  --input: hsl(220, 20%, 16%);
+  --ring: hsl(210, 80%, 60%);
+  --chart-1: hsl(210, 85%, 65%);
+  --chart-2: hsl(142, 75%, 55%);
+  --chart-3: hsl(45, 85%, 65%);
+  --chart-4: hsl(142, 70%, 50%);
+  --chart-5: hsl(340, 70%, 65%);
+  
+  /* Financial specific colors for dark mode - maintain readability */
+  --income-green: hsl(142, 70%, 55%);
+  --expense-red: hsl(0, 70%, 65%);
+  --financial-blue: hsl(217, 60%, 25%);
+  --financial-blue-dark: hsl(210, 80%, 60%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Inter', system-ui, sans-serif;
+    overflow-x: hidden;
+  }
+
+  html {
+    overflow-x: hidden;
+  }
+
+  /* Global min-width prevention for text overflow */
+  .min-w-0 {
+    min-width: 0;
+  }
+}
+
+@layer components {
+  .sidebar-transition {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .card-hover {
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Mobile-first container defaults */
+  .container-mobile {
+    @apply max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Text clamp utilities */
+  .text-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .text-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .text-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* No scrollbar utility */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Safe area padding bottom */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Sticky toolbar utilities */
+  .sticky-toolbar {
+    position: sticky;
+    bottom: 0;
+    z-index: 40;
+    background: hsl(var(--background));
+    border-top: 1px solid hsl(var(--border));
+    padding: env(safe-area-inset-bottom) 1rem 1rem;
+  }
+
+  /* Safe area utilities */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-left {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .safe-right {
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  /* Table row styles with alternating colors */
+  .table-row-hover {
+    transition: background-color 0.2s ease;
+  }
+  
+  .table-row-hover:nth-child(even) {
+    background-color: hsla(207, 90%, 54%, 0.03); /* Very subtle blue with transparency */
+  }
+  
+  .dark .table-row-hover:nth-child(even) {
+    background-color: hsla(207, 90%, 54%, 0.05);
+  }
+  
+  .table-row-hover:hover {
+    background-color: hsla(207, 90%, 54%, 0.08) !important;
+  }
+  
+  .dark .table-row-hover:hover {
+    background-color: hsla(207, 90%, 54%, 0.12) !important;
+  }
+  
+  .drag-zone {
+    transition: all 0.3s ease;
+  }
+  
+  .drag-zone.drag-over {
+    background-color: hsl(var(--financial-blue));
+    border-color: hsl(var(--financial-blue-dark));
+  }
+  
+  .status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  
+  .status-income {
+    background-color: hsl(var(--income-green));
+  }
+  
+  .status-expense {
+    background-color: hsl(var(--expense-red));
+  }
+  
+  .toast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+  }
+  
+  .chat-floating {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 999;
+  }
+  
+  /* Fix main content padding on mobile */
+  @media (max-width: 768px) {
+    main > div {
+      padding: 0.5rem;
+    }
+  }
+  
+  /* Enhanced Mobile responsive styles */
+  @media (max-width: 768px) {
+    .sidebar-transition {
+      width: 100%;
+      max-width: 16rem;
+    }
+    
+    .card-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    .table-container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin: 0 -1rem;
+      padding: 0 1rem;
+    }
+    
+    /* Enhanced horizontal overflow prevention */
+    html, body {
+      overflow-x: hidden !important;
+      max-width: 100vw;
+      position: relative;
+      box-sizing: border-box;
+    }
+    
+    /* Prevent any element from causing horizontal scroll */
+    #root, #root > *, main, main > * {
+      max-width: 100vw;
+      overflow-x: hidden;
+      box-sizing: border-box;
+    }
+    
+    *, *::before, *::after {
+      box-sizing: border-box;
+      max-width: 100%;
+    }
+    
+    /* Fix padding issues on mobile */
+    main {
+      padding: 0 0.75rem;
+      max-width: 100vw;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    
+    /* Container responsive defaults */
+    .container {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      max-width: 100vw;
+    }
+    
+    /* Adjust chart containers for mobile */
+    .recharts-wrapper {
+      max-width: 100%;
+    }
+    
+    /* Fix card padding on mobile */
+    .card {
+      padding: 1rem;
+    }
+    
+    /* Prevent text from breaking vertically - more targeted approach */
+    h1, h2, h3, h4, h5, h6, p, label, button {
+      word-wrap: normal;
+      white-space: normal;
+      overflow-wrap: normal;
+    }
+    
+    /* Specific fixes for forms and cards */
+    .card h1, .card h2, .card h3, .card h4, .card p {
+      white-space: normal;
+      word-wrap: break-word;
+    }
+    
+    /* Form elements should wrap normally */
+    form label, form button, form input, form select {
+      white-space: normal;
+    }
+    
+    /* Fix table cell overflow - keep text on single line only in tables */
+    .mobile-scroll-container td,
+    .mobile-scroll-container th,
+    .overflow-x-auto td,
+    .overflow-x-auto th {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0.5rem;
+      min-width: 80px;
+    }
+    
+    /* Normal text outside tables should wrap */
+    .card-body *, .dialog-content *, .form-content * {
+      white-space: normal !important;
+    }
+    
+    /* Responsive table handling with horizontal scroll */
+    .table-container,
+    .overflow-x-auto {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      max-width: 100vw;
+    }
+    
+    .table-container table,
+    .overflow-x-auto table {
+      min-width: 600px;
+      table-layout: fixed;
+    }
+    
+    /* Form elements on mobile */
+    input, select, textarea {
+      min-width: 0;
+      max-width: 100%;
+    }
+    
+    /* Fix mobile chat button visibility */
+    .mobile-chat-button {
+      z-index: 60;
+    }
+  }
+  
+  /* Subtle gradients and colors for cards */
+  .gradient-income {
+    background: linear-gradient(135deg, hsla(142, 70%, 40%, 0.03) 0%, hsla(142, 70%, 40%, 0.06) 100%);
+    border: 1px solid hsla(142, 70%, 40%, 0.15);
+  }
+  
+  .gradient-expense {
+    background: linear-gradient(135deg, hsla(0, 72%, 55%, 0.03) 0%, hsla(0, 72%, 55%, 0.06) 100%);
+    border: 1px solid hsla(0, 72%, 55%, 0.15);
+  }
+  
+  .gradient-primary {
+    background: linear-gradient(135deg, hsla(221.2, 83.2%, 53.3%, 0.03) 0%, hsla(221.2, 83.2%, 53.3%, 0.06) 100%);
+    border: 1px solid hsla(221.2, 83.2%, 53.3%, 0.15);
+  }
+  
+  .gradient-ai {
+    background: linear-gradient(135deg, hsla(280, 84%, 60%, 0.05) 0%, hsla(220, 84%, 60%, 0.05) 100%);
+    border: 1px solid hsla(250, 84%, 60%, 0.2);
+  }
+  
+  /* File upload button styles */
+  .file-upload-button {
+    @apply px-4 py-2 border-2 border-primary/20 hover:border-primary/40 bg-background hover:bg-primary/5 transition-all duration-200 rounded-md font-medium;
+    min-width: 150px;
+  }
+  
+  /* Active tab styling */
+  .tab-active {
+    @apply relative border-b-2 border-primary bg-muted/30;
+  }
+  
+  .tab-inactive {
+    @apply border-b border-transparent hover:border-muted-foreground/20 hover:bg-muted/10 transition-all duration-200;
+  }
+  
+  /* Scrollable container for mobile */
+  .mobile-scroll-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground)) transparent;
+  }
+  
+  .mobile-scroll-container::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .mobile-scroll-container::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .mobile-scroll-container::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground));
+    border-radius: 3px;
+  }
+}
+
+/* Critical Mobile Responsiveness Fixes */
+@media (max-width: 640px) {
+  /* Prevent text outlining/stroking on mobile */
+  * {
+    -webkit-text-stroke: 0px !important;
+    text-stroke: 0px !important;
+    -webkit-text-fill-color: inherit !important;
+  }
+  
+  /* Fix headings breaking into multiple lines */
+  h1, h2, h3, h4, h5, h6 {
+    @apply break-words leading-tight;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+  
+  /* Center buttons and forms properly - but not all buttons */
+  .btn-mobile-full, button.btn-mobile-full {
+    @apply w-full justify-center;
+    min-width: auto;
+  }
+  
+  /* Form buttons should be full width */
+  form button[type="submit"], 
+  .form-container button,
+  .modal-actions button {
+    @apply w-full justify-center;
+    min-width: auto;
+  }
+  
+  /* Fix input and select centering */
+  input, select, textarea {
+    @apply w-full;
+    text-align: left;
+  }
+  
+  /* Proper table responsiveness */
+  .table-responsive {
+    @apply overflow-x-auto;
+  }
+  
+  .table-responsive table {
+    @apply min-w-full;
+  }
+  
+  /* Dialog and modal centering */
+  [data-radix-popper-content-wrapper] {
+    @apply mx-4;
+    max-width: calc(100vw - 2rem);
+  }
+  
+  /* Card responsive adjustments */
+  .card {
+    @apply mx-0 p-3;
+  }
+  
+  /* Grid responsive adjustments */
+  .grid-responsive {
+    @apply grid-cols-1 gap-3;
+  }
+}
+
+/* Green progress bar for successful uploads */
+.progress-success [data-state="complete"] {
+  background-color: hsl(142, 76%, 60%) !important;
+}
+
+.progress-success .relative {
+  background-color: hsl(142, 76%, 90%) !important;
+}
+
+/* ============ SUBTLE UI ENHANCEMENTS ============ */
+
+/* Enhanced button styles with subtle borders and transparency */
+.btn-enhanced {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
+}
+
+.btn-enhanced:hover {
+  border-color: rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.98);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dark .btn-enhanced {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(30, 30, 30, 0.95);
+}
+
+.dark .btn-enhanced:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(40, 40, 40, 0.98);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Enhanced primary buttons */
+.btn-primary-enhanced {
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.95), rgba(37, 99, 235, 0.95));
+  backdrop-filter: blur(8px);
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.btn-primary-enhanced:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 1), rgba(37, 99, 235, 1));
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.3);
+}
+
+/* Enhanced destructive buttons */
+.btn-destructive-enhanced {
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.95), rgba(220, 38, 38, 0.95));
+  backdrop-filter: blur(8px);
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.btn-destructive-enhanced:hover {
+  border-color: rgba(239, 68, 68, 0.5);
+  background: linear-gradient(135deg, rgba(239, 68, 68, 1), rgba(220, 38, 38, 1));
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.3);
+}
+
+/* Modal and popup backgrounds matching sidebar theme */
+.modal-enhanced {
+  background: linear-gradient(135deg, 
+    rgba(248, 250, 252, 0.98), 
+    rgba(241, 245, 249, 0.98)
+  );
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(203, 213, 225, 0.5);
+}
+
+.dark .modal-enhanced {
+  background: linear-gradient(135deg, 
+    rgba(30, 41, 59, 0.98), 
+    rgba(15, 23, 42, 0.98)
+  );
+  border: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+/* Enhanced spacing classes */
+.spacing-enhanced {
+  padding: 1.5rem;
+}
+
+.spacing-enhanced-sm {
+  padding: 1rem;
+}
+
+.spacing-enhanced-lg {
+  padding: 2rem;
+}
+
+/* Better container spacing */
+.container-enhanced {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: calc(100vw - 3rem);
+}
+
+@media (min-width: 640px) {
+  .container-enhanced {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    max-width: calc(100vw - 4rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-enhanced {
+    padding-left: 3rem;
+    padding-right: 3rem;
+    max-width: calc(100vw - 6rem);
+  }
+}
+
+/* Enhanced card backgrounds */
+.card-enhanced {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(203, 213, 225, 0.3);
+}
+
+.dark .card-enhanced {
+  background: rgba(30, 41, 59, 0.9);
+  border: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+/* Progress bar success state - simplified and corrected */
+.progress-success .bg-primary {
+  background-color: var(--income-green) !important;
+}
+
+.progress-error .bg-primary {
+  background-color: var(--expense-red) !important;
+}
