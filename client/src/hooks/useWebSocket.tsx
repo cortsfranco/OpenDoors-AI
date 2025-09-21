@@ -35,10 +35,14 @@ export const WebSocketProvider = ({ children }: { children: ReactNode }) => {
   const connect = () => {
     if (!user) return;
 
-    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const host = window.location.hostname;
-    const port = window.location.port || (protocol === 'wss:' ? '443' : '80');
-    const wsUrl = `${protocol}//${host}:${port}/ws`;
+    // Antes: Usaba window.location.port, que fallaba
+    // const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    // const host = window.location.hostname;
+    // const port = window.location.port || (protocol === 'wss:' ? '443' : '80');
+    // const wsUrl = `${protocol}//${host}:${port}/ws`;
+
+    // Después: La URL se construye de forma fija para tu entorno local
+    const wsUrl = `ws://localhost:3000/ws`;
 
     try {
       const ws = new WebSocket(wsUrl);
@@ -186,24 +190,36 @@ export const WebSocketProvider = ({ children }: { children: ReactNode }) => {
         });
         break;
 
-      case 'upload:success':
-        // Successful processing - green with check
-        toast({
-          title: "✅ Factura cargada",
-          description: `${message.data?.fileName} se procesó correctamente`,
-          duration: 4000,
-          className: "bg-green-50 border-green-200 text-green-900",
-        });
-        
-        // Refresh invoice data
-        queryClient.invalidateQueries({ queryKey: ['/api/invoices'] });
-        queryClient.invalidateQueries({ queryKey: ['/api/recent-invoices'] });
-        queryClient.invalidateQueries({ queryKey: ['/api/uploads/recent'] });
-        queryClient.invalidateQueries({ queryKey: ['/api/kpis'] });
-        queryClient.invalidateQueries({ queryKey: ['/api/chart-data'] });
-        queryClient.invalidateQueries({ queryKey: ['/api/quick-stats'] });
-        break;
+        case 'upload:success':
+    // Successful processing - green with check
+    toast({
+        title: "✅ Factura cargada",
+        description: `${message.data?.fileName} se procesó correctamente`,
+        duration: 4000,
+        className: "bg-green-50 border-green-200 text-green-900",
+    });
+    
+    // Forzar la recarga de los datos de las facturas
+    queryClient.invalidateQueries({ queryKey: ['/api/invoices'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/recent-invoices'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/kpis'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/chart-data'] });
+    queryClient.invalidateQueries({ queryKey: ['/api/quick-stats'] });
 
+    // Forzar la recarga de la lista de cargas de facturas
+    queryClient.invalidateQueries({ queryKey: ['/api/uploads/recent'] }); // Invalida la caché
+
+    // Y luego, forzar la recarga de la información de la página actual
+    const currentPage = 1; // Suponemos que la primera página
+    const pageSize = 5;    // y el tamaño de la página son estos
+    queryClient.fetchQuery({
+        queryKey: ['/api/uploads/recent', currentPage, pageSize],
+        queryFn: () => {
+            return fetch(`/api/uploads/recent?page=${currentPage}&limit=${pageSize}`).then(res => res.json());
+        }
+    });
+
+    break;
       case 'upload:duplicate':
         // Duplicate file detected - informative orange
         toast({

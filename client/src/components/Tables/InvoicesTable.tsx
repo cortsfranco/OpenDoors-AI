@@ -565,11 +565,11 @@ export default function InvoicesTable({
                           <div className="flex justify-between items-center">
                             <span className="text-muted-foreground">Estado:</span>
                             <PaymentStatus 
-                              currentStatus={invoice.paymentStatus}
-                              invoiceId={invoice.id}
-                              paymentDate={invoice.paymentDate?.toISOString() || null}
-                              editable={true}
-                            />
+    currentStatus={invoice.paymentStatus}
+    invoiceId={invoice.id}
+    paymentDate={invoice.paymentDate ? new Date(invoice.paymentDate).toISOString() : null}
+    editable={true}
+/>
                           </div>
                           {invoice.invoiceNumber && (
                             <div className="flex justify-between items-center">
