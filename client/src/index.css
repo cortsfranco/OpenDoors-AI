@@ -1,11 +1,15 @@
+/* 1. Imports de CSS estándar PRIMERO, para cumplir la regla de CSS */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import './styles/dialog-overrides.css';
+@import './styles/color-updates.css';
+
+/* 2. Directivas de Tailwind DESPUÉS, para que apliquen sus estilos base */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Después vienen tus imports y estilos personalizados */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@import './styles/dialog-overrides.css';
-@import './styles/color-updates.css';
+/* 3. Cualquier otra regla personalizada que tengas, como :root, va al final */
+
 
 :root {
   --background: hsl(0, 0%, 100%);
