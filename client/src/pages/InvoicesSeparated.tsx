@@ -1,20 +1,18 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
-import { formatCurrency, formatCurrencyWithDecimals } from "@/lib/utils";
+import { formatCurrency, formatCurrencyWithDecimals, cn } from "@/lib/utils";
 import { TrendingUp, TrendingDown, FileText, Download, Upload } from "lucide-react";
 import InvoicesTable from "@/components/Tables/InvoicesTable";
 import { useState } from "react";
 
 export default function InvoicesSeparated() {
+  const [activeTab, setActiveTab] = useState("income");
   const [incomePage, setIncomePage] = useState(1);
   const [expensePage, setExpensePage] = useState(1);
   const [neutralPage, setNeutralPage] = useState(1);
   const pageSize = 50;
 
-  // Separate queries for income and expense invoices
   const { data: incomeData, isLoading: incomeLoading } = useQuery({
     queryKey: ["/api/invoices", { type: "income", page: incomePage }],
     queryFn: async () => {
@@ -79,242 +77,159 @@ export default function InvoicesSeparated() {
     <div className="p-3 sm:p-6 space-y-4 sm:space-y-6" data-testid="invoices-separated-page">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-3 sm:space-y-0">
         <h1 className="text-xl sm:text-3xl font-bold">Facturas por Tipo</h1>
+        {/* =============================================================== */}
+        {/* INICIO DE LA CORRECCIÓN DE BOTONES                            */}
+        {/* =============================================================== */}
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
-          <Button variant="outline" size="sm" className="text-xs sm:text-sm" data-testid="button-export-excel">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="text-xs sm:text-sm bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900/40 dark:text-green-300 dark:hover:bg-green-900/60" 
+            data-testid="button-export-excel"
+          >
             <Download className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
             <span className="sm:hidden">Excel</span>
             <span className="hidden sm:inline">Exportar Excel</span>
           </Button>
-          <Button variant="outline" size="sm" className="text-xs sm:text-sm" data-testid="button-import-excel">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className="text-xs sm:text-sm bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900/40 dark:text-blue-300 dark:hover:bg-blue-900/60" 
+            data-testid="button-import-excel"
+          >
             <Upload className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
             <span className="sm:hidden">Import</span>
             <span className="hidden sm:inline">Importar Excel</span>
           </Button>
         </div>
+        {/* =============================================================== */}
+        {/* FIN DE LA CORRECCIÓN DE BOTONES                               */}
+        {/* =============================================================== */}
       </div>
 
-      <Tabs defaultValue="income" className="w-full">
-        <div className="container-mobile overflow-x-auto">
-          <TabsList className="flex w-full min-w-max sm:grid sm:grid-cols-3 gap-1 sm:gap-2">
-          <TabsTrigger value="income" data-testid="tab-income" className="shrink-0 flex items-center gap-1 sm:gap-2 py-2 px-2 sm:px-3 text-xs sm:text-sm min-w-max">
-            <TrendingUp className="h-3 w-3 sm:h-4 sm:w-4 text-green-600" />
-            <span className="whitespace-nowrap font-medium">Ventas</span>
-            <span className="hidden sm:inline whitespace-nowrap">(Emitidas)</span>
-            <Badge className="bg-green-100 text-green-800 text-xs px-1.5 py-0.5 shrink-0">
-              {incomeTotals.count}
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger value="expense" data-testid="tab-expense" className="shrink-0 flex items-center gap-1 sm:gap-2 py-2 px-2 sm:px-3 text-xs sm:text-sm min-w-max">
-            <TrendingDown className="h-3 w-3 sm:h-4 sm:w-4 text-red-600" />
-            <span className="whitespace-nowrap font-medium">Compras</span>
-            <span className="hidden sm:inline whitespace-nowrap">(Recibidas)</span>
-            <Badge className="bg-red-100 text-red-800 text-xs px-1.5 py-0.5 shrink-0">
-              {expenseTotals.count}
-            </Badge>
-          </TabsTrigger>
-          <TabsTrigger value="neutral" data-testid="tab-neutral" className="shrink-0 flex items-center gap-1 sm:gap-2 py-2 px-2 sm:px-3 text-xs sm:text-sm min-w-max">
-            <FileText className="h-3 w-3 sm:h-4 sm:w-4 text-gray-600" />
-            <span className="whitespace-nowrap font-medium">Neutras</span>
-            <span className="hidden sm:inline whitespace-nowrap">(Compensación)</span>
-            <Badge className="bg-gray-100 text-gray-800 text-xs px-1.5 py-0.5 shrink-0">
-              {neutralTotals.count}
-            </Badge>
-          </TabsTrigger>
-          </TabsList>
-        </div>
-
-        <TabsContent value="income" className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground text-clamp-1">
-                  Total Ventas
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <p className="text-lg sm:text-2xl font-bold text-green-600 text-clamp-1" title={formatCurrency(incomeTotals.total)}>
-                  {formatCurrency(incomeTotals.total)}
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground text-clamp-1">
-                  Subtotal
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <p className="text-lg sm:text-2xl font-bold text-clamp-1" title={formatCurrency(incomeTotals.subtotal)}>
-                  {formatCurrency(incomeTotals.subtotal)}
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground text-clamp-1">
-                  IVA Cobrado
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <p className="text-lg sm:text-2xl font-bold text-clamp-1" title={formatCurrencyWithDecimals(incomeTotals.iva)}>
-                  {formatCurrencyWithDecimals(incomeTotals.iva)}
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground text-clamp-1">
-                  Cantidad
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <p className="text-lg sm:text-2xl font-bold text-clamp-1" title={incomeTotals.count.toString()}>
-                  {incomeTotals.count}
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-          {!incomeLoading && incomeData?.invoices && (
-            <div className="container-mobile">
-              <InvoicesTable 
-                invoices={incomeData.invoices} 
-                total={incomeData.total || incomeTotals.count}
-                currentPage={incomePage}
-                pageSize={pageSize}
-                onPageChange={setIncomePage}
-              />
-            </div>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {/* TARJETA DE VENTAS */}
+        <Card
+          onClick={() => setActiveTab("income")}
+          className={cn(
+            "cursor-pointer transition-all hover:shadow-md bg-green-50/50 dark:bg-green-900/20",
+            activeTab === "income" && "ring-2 ring-green-500 border-green-500"
           )}
-        </TabsContent>
-
-        <TabsContent value="expense" className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground text-clamp-1">
-                  Total Compras
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <p className="text-lg sm:text-2xl font-bold text-red-600 text-clamp-1" title={formatCurrency(expenseTotals.total)}>
-                  {formatCurrency(expenseTotals.total)}
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground text-clamp-1">
-                  Subtotal
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <p className="text-lg sm:text-2xl font-bold text-clamp-1" title={formatCurrency(expenseTotals.subtotal)}>
-                  {formatCurrency(expenseTotals.subtotal)}
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground text-clamp-1">
-                  IVA Pagado
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <p className="text-lg sm:text-2xl font-bold text-clamp-1" title={formatCurrencyWithDecimals(expenseTotals.iva)}>
-                  {formatCurrencyWithDecimals(expenseTotals.iva)}
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground text-clamp-1">
-                  Cantidad
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <p className="text-lg sm:text-2xl font-bold text-clamp-1" title={expenseTotals.count.toString()}>
-                  {expenseTotals.count}
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-          {!expenseLoading && expenseData?.invoices && (
-            <div className="container-mobile">
-              <InvoicesTable 
-                invoices={expenseData.invoices} 
-                total={expenseData.total || expenseTotals.count}
-                currentPage={expensePage}
-                pageSize={pageSize}
-                onPageChange={setExpensePage}
-              />
+        >
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-semibold text-green-800 dark:text-green-300">Ventas (Emitidas)</CardTitle>
+            <TrendingUp className="h-5 w-5 text-green-600 dark:text-green-400" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {formatCurrency(incomeTotals.total)}
             </div>
-          )}
-        </TabsContent>
+            <p className="text-xs text-muted-foreground">
+              {incomeTotals.count} facturas
+            </p>
+          </CardContent>
+        </Card>
 
-        <TabsContent value="neutral" className="space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground text-clamp-1">
-                  Total Neutras
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <p className="text-lg sm:text-2xl font-bold text-gray-600 text-clamp-1" title={formatCurrency(neutralTotals.total)}>
-                  {formatCurrency(neutralTotals.total)}
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground text-clamp-1">
-                  Subtotal
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <p className="text-lg sm:text-2xl font-bold text-clamp-1" title={formatCurrency(neutralTotals.subtotal)}>
-                  {formatCurrency(neutralTotals.subtotal)}
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground text-clamp-1">
-                  IVA Compensado
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <p className="text-lg sm:text-2xl font-bold text-clamp-1" title={formatCurrencyWithDecimals(neutralTotals.iva)}>
-                  {formatCurrencyWithDecimals(neutralTotals.iva)}
-                </p>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader className="pb-2">
-                <CardTitle className="text-xs sm:text-sm font-medium text-muted-foreground text-clamp-1">
-                  Cantidad
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="pb-3">
-                <p className="text-lg sm:text-2xl font-bold text-clamp-1" title={neutralTotals.count.toString()}>
-                  {neutralTotals.count}
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-          {!neutralLoading && neutralData?.invoices && (
-            <div className="container-mobile">
-              <InvoicesTable 
-                invoices={neutralData.invoices} 
-                total={neutralData.total || neutralTotals.count}
-                currentPage={neutralPage}
-                pageSize={pageSize}
-                onPageChange={setNeutralPage}
-              />
-            </div>
+        {/* TARJETA DE COMPRAS */}
+        <Card
+          onClick={() => setActiveTab("expense")}
+          className={cn(
+            "cursor-pointer transition-all hover:shadow-md bg-red-50/50 dark:bg-red-900/20",
+            activeTab === "expense" && "ring-2 ring-red-500 border-red-500"
           )}
-        </TabsContent>
-      </Tabs>
+        >
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-semibold text-red-800 dark:text-red-300">Compras (Recibidas)</CardTitle>
+            <TrendingDown className="h-5 w-5 text-red-600 dark:text-red-400" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {formatCurrency(expenseTotals.total)}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {expenseTotals.count} facturas
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* TARJETA DE NEUTRAS */}
+        <Card
+          onClick={() => setActiveTab("neutral")}
+          className={cn(
+            "cursor-pointer transition-all hover:shadow-md bg-gray-50/50 dark:bg-gray-900/20",
+            activeTab === "neutral" && "ring-2 ring-gray-500 border-gray-500"
+          )}
+        >
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-semibold text-gray-800 dark:text-gray-300">Neutras (Compensación)</CardTitle>
+            <FileText className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">
+              {formatCurrency(neutralTotals.total)}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              {neutralTotals.count} facturas
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+      
+      <div className="mt-6">
+        {activeTab === 'income' && (
+          <div>
+            {!incomeLoading && incomeData?.invoices && (
+              <Card>
+                <CardContent className="p-0 sm:p-4">
+                  <InvoicesTable 
+                    invoices={incomeData.invoices} 
+                    total={incomeData.total || incomeTotals.count}
+                    currentPage={incomePage}
+                    pageSize={pageSize}
+                    onPageChange={setIncomePage}
+                  />
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'expense' && (
+           <div>
+            {!expenseLoading && expenseData?.invoices && (
+              <Card>
+                <CardContent className="p-0 sm:p-4">
+                  <InvoicesTable 
+                    invoices={expenseData.invoices} 
+                    total={expenseData.total || expenseTotals.count}
+                    currentPage={expensePage}
+                    pageSize={pageSize}
+                    onPageChange={setExpensePage}
+                  />
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'neutral' && (
+           <div>
+            {!neutralLoading && neutralData?.invoices && (
+              <Card>
+                <CardContent className="p-0 sm:p-4">
+                  <InvoicesTable 
+                    invoices={neutralData.invoices} 
+                    total={neutralData.total || neutralTotals.count}
+                    currentPage={neutralPage}
+                    pageSize={pageSize}
+                    onPageChange={setNeutralPage}
+                  />
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

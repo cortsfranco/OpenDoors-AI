@@ -49,7 +49,13 @@ export function Toaster() {
           </Toast>
         )
       })}
-      <ToastViewport />
+      {/* =============================================================== */}
+      {/* INICIO DE LA CORRECCIÓN: Añadimos una clase para un ancho mayor */}
+      {/* =============================================================== */}
+      <ToastViewport className="sm:max-w-lg" />
+      {/* =============================================================== */}
+      {/* FIN DE LA CORRECCIÓN */}
+      {/* =============================================================== */}
     </ToastProvider>
   )
 }

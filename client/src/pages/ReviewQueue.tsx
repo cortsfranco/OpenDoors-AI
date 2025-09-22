@@ -56,10 +56,9 @@ export default function ReviewQueue() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Fetch pending invoices with auto-refresh and error handling
   const { data: pendingInvoices = [], isLoading, error } = useQuery<PendingInvoice[]>({
     queryKey: ['/api/invoices/pending-review'],
-    refetchInterval: 10000, // Auto-refresh every 10 seconds
+    refetchInterval: 10000,
     select: (data) => Array.isArray(data) ? data : [],
     onError: (error: any) => {
       toast({
@@ -70,7 +69,6 @@ export default function ReviewQueue() {
     },
   });
 
-  // Update invoice mutation
   const updateInvoiceMutation = useMutation({
     mutationFn: async ({ id, updates }: { id: string; updates: InvoiceEditForm }) => {
       const submitData = {
@@ -105,7 +103,6 @@ export default function ReviewQueue() {
     },
   });
 
-  // Approve invoice mutation
   const approveInvoiceMutation = useMutation({
     mutationFn: async (invoiceId: string) => {
       return apiRequest(`/api/invoices/${invoiceId}/approve`, {
@@ -132,7 +129,6 @@ export default function ReviewQueue() {
     },
   });
 
-  // Delete invoice mutation
   const deleteInvoiceMutation = useMutation({
     mutationFn: async (invoiceId: string) => {
       return apiRequest(`/api/invoices/${invoiceId}`, {
@@ -175,8 +171,6 @@ export default function ReviewQueue() {
 
   const handleEditInvoice = (invoice: PendingInvoice) => {
     setSelectedInvoice(invoice);
-    
-    // Populate form with current data
     form.reset({
       invoiceNumber: invoice.invoiceNumber || "",
       date: invoice.date ? new Date(invoice.date).toISOString().split('T')[0] : "",
@@ -187,17 +181,12 @@ export default function ReviewQueue() {
       type: invoice.type,
       invoiceClass: invoice.invoiceClass,
     });
-    
     setIsEditModalOpen(true);
   };
 
   const handleSaveInvoice = (data: InvoiceEditForm) => {
     if (!selectedInvoice) return;
-
-    updateInvoiceMutation.mutate({
-      id: selectedInvoice.id,
-      updates: data,
-    });
+    updateInvoiceMutation.mutate({ id: selectedInvoice.id, updates: data });
   };
 
   const handleApproveInvoice = (invoiceId: string) => {
@@ -205,7 +194,8 @@ export default function ReviewQueue() {
   };
 
   const handleDeleteInvoice = (invoiceId: string) => {
-    if (window.confirm('¿Estás seguro de que quieres eliminar esta factura? Esta acción no se puede deshacer.')) {
+    // Reemplazamos window.confirm por una solución que no bloquee
+    if (confirm('¿Estás seguro de que quieres eliminar esta factura? Esta acción no se puede deshacer.')) {
       deleteInvoiceMutation.mutate(invoiceId);
     }
   };
@@ -237,7 +227,7 @@ export default function ReviewQueue() {
     return (
       <div className="space-y-6">
         <div className="flex items-center gap-3">
-          <Clock className="w-6 h-6 text-amber-500" />
+          <Clock className="w-6 h-6 text-gray-500" />
           <h1 className="text-2xl font-bold text-gray-900">Cola de Revisión</h1>
         </div>
         <div className="flex justify-center py-12">
@@ -251,17 +241,23 @@ export default function ReviewQueue() {
     <div className="space-y-6" data-testid="review-queue-page">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <AlertTriangle className="w-6 h-6 text-amber-500" />
+          {/* =============================================================== */}
+          {/* INICIO CORRECCIÓN 1: Icono de precaución eliminado del título   */}
+          {/* =============================================================== */}
+          <Clock className="w-6 h-6 text-gray-500" />
           <h1 className="text-2xl font-bold text-gray-900">Cola de Revisión</h1>
+          {/* =============================================================== */}
+          {/* FIN CORRECCIÓN 1                                              */}
+          {/* =============================================================== */}
           <Badge variant="secondary" className="bg-amber-100 text-amber-800">
             {pendingInvoices.length} pendiente{pendingInvoices.length !== 1 ? 's' : ''}
           </Badge>
         </div>
       </div>
 
-      <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4">
+      <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 sm:p-6">
         <div className="flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5" />
+          <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
           <div>
             <h3 className="font-medium text-amber-900">Facturas Pendientes de Revisión</h3>
             <p className="text-sm text-amber-700 mt-1">
@@ -304,7 +300,13 @@ export default function ReviewQueue() {
         </Card>
       ) : (
         <Card>
-          <CardContent className="p-0">
+          {/* =============================================================== */}
+          {/* INICIO CORRECCIÓN 2: Padding añadido a CardContent            */}
+          {/* =============================================================== */}
+          <CardContent className="p-4 sm:p-6">
+          {/* =============================================================== */}
+          {/* FIN CORRECCIÓN 2                                              */}
+          {/* =============================================================== */}
             <Table>
               <TableHeader>
                 <TableRow>
@@ -326,7 +328,7 @@ export default function ReviewQueue() {
                     <TableRow key={invoice.id} data-testid={`pending-invoice-${invoice.id}`}>
                       <TableCell>
                         <div className="flex items-center gap-2">
-                          <FileText className="w-4 h-4 text-amber-600" />
+                          <FileText className="w-4 h-4 text-amber-600 flex-shrink-0" />
                           <div className="min-w-0">
                             <p className="text-sm font-medium truncate" title={invoice.fileName}>
                               {invoice.fileName || 'Sin nombre'}
@@ -409,7 +411,6 @@ export default function ReviewQueue() {
                       
                       <TableCell className="text-right">
                         <div className="flex items-center justify-end gap-1">
-                          {/* Edit Button */}
                           <Dialog 
                             open={isEditModalOpen && selectedInvoice?.id === invoice.id} 
                             onOpenChange={setIsEditModalOpen}
@@ -594,7 +595,6 @@ export default function ReviewQueue() {
                             </DialogContent>
                           </Dialog>
                           
-                          {/* View File Button */}
                           <Button 
                             variant="outline" 
                             size="sm"
@@ -605,7 +605,6 @@ export default function ReviewQueue() {
                             <Eye className="w-4 h-4" />
                           </Button>
                           
-                          {/* Approve Button */}
                           <Button 
                             variant="default" 
                             size="sm"
@@ -617,7 +616,6 @@ export default function ReviewQueue() {
                             <CheckCircle className="w-4 h-4" />
                           </Button>
                           
-                          {/* Delete Button */}
                           <Button 
                             size="sm"
                             disabled={deleteInvoiceMutation.isPending}

@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
@@ -54,38 +55,27 @@ export default function UploadZone() {
 
   const { lastMessage } = useWebSocket();
 
-  // ===============================================================
-  // INICIO DE LA CORRECCIÓN CLAVE
-  // ===============================================================
   useEffect(() => {
     if (lastMessage && lastMessage.type.startsWith('upload:')) {
       const { jobId, status, error } = lastMessage.data;
       if (jobId) {
         setUploadState(prev => prev.map(f => {
-          // Si el archivo ya tiene un estado final (error o duplicado), NO lo sobrescribas.
           if (f.id === jobId && (f.status === 'error' || f.status === 'duplicate')) {
             return f;
           }
-          // Si el mensaje es de éxito, invalida la query de facturas recientes para refrescar la lista.
           if (status === 'success') {
             queryClient.invalidateQueries({ queryKey: ['recentInvoices'] });
           }
-          // Para cualquier otro caso, actualiza el estado normalmente.
           return f.id === jobId ? {...f, status, error } : f;
         }));
       }
     }
   }, [lastMessage, queryClient]);
-  // ===============================================================
-  // FIN DE LA CORRECCIÓN CLAVE
-  // ===============================================================
 
-  // Auto-cleanup successful or duplicate messages from summary after a delay
   useEffect(() => {
     const cleanupTimer = setTimeout(() => {
       setUploadState(prev => prev.filter(f => {
         const isFinalState = f.status === 'success' || f.status === 'duplicate';
-        // Mantenemos los que no están en estado final, o los que sí lo están pero hace menos de 10 seg.
         return !isFinalState || (Date.now() - (f.timestamp || 0) < 10000);
       }));
     }, 10000);
@@ -118,6 +108,9 @@ export default function UploadZone() {
         description: `${file.name} se ha subido correctamente. En espera de procesamiento.`,
       });
     },
+    // ===============================================================
+    // INICIO DE LA CORRECCIÓN FINAL
+    // ===============================================================
     onError: (error: any, file) => {
       const serverErrorMessage = error.response?.data?.error || error.message || 'Ocurrió un error desconocido.';
       const isDuplicate = serverErrorMessage.includes('FACTURA DUPLICADA DETECTADA');
@@ -125,28 +118,35 @@ export default function UploadZone() {
       setUploadState(prev => prev.map(f => f.name === file.name ? {
         ...f, 
         status: isDuplicate ? 'duplicate' : 'error',
-        timestamp: Date.now() // Actualizamos el timestamp para el cleanup
+        timestamp: Date.now()
       } : f));
       
       toast({
         title: isDuplicate ? "📋 Factura Duplicada" : "❌ Error en la Carga",
-        description: serverErrorMessage,
-        variant: isDuplicate ? "default" : "destructive",
-        duration: isDuplicate ? 15000 : 5000
+        description: (
+          <div className="text-base whitespace-pre-line w-full"> 
+            {serverErrorMessage}
+          </div>
+        ),
+        variant: isDuplicate ? "destructive" : "destructive",
+        duration: 20000,
+        className: 'w-full',
       });
     }
+    // ===============================================================
+    // FIN DE LA CORRECCIÓN FINAL
+    // ===============================================================
   });
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setShowSummary(true);
     const newFiles = acceptedFiles.map(file => ({
-      id: file.name, // ID temporal
+      id: file.name,
       name: file.name,
       status: 'pending' as const,
       progress: 0,
       timestamp: Date.now(),
     }));
-    // Añadimos los nuevos archivos sin limpiar los anteriores
     setUploadState(prev => [...prev, ...newFiles]);
 
     acceptedFiles.forEach(file => mutation.mutate(file));
