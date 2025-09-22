@@ -1049,15 +1049,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
           invoiceDate = null;
         }
       }
-      
       // Log warning if no date could be extracted
       if (!invoiceDate) {
         console.warn(`⚠️ No valid date extracted for invoice ${invoiceNumber}. Date will be NULL in database.`);
       } else {
         console.log(`✅ Invoice date extracted: ${invoiceDate.toISOString().split('T')[0]}`);
       }
-      
+
+      // ===============================================================
+      // INICIO DEL CAMBIO 5: Generar "fingerprint" de la factura
+      // ===============================================================
+      const crypto = require('crypto');
+      const invoiceClientCuit = ((extractedData as any).supplier_cuit || (extractedData as any).cuit || '').trim().toUpperCase();
+      const dateISO = invoiceDate ? invoiceDate.toISOString().split('T')[0] : '';
+      const totalCents = Math.round(totalValue * 100);
+      const fingerprintData = `${invoiceClientCuit}|${invoiceNumber}|${dateISO}|${extractedData.type || 'expense'}|${totalCents}`;
+      const fingerprint = crypto.createHash('sha256').update(fingerprintData).digest('hex');
+      // ===============================================================
+      // FIN DEL CAMBIO 5
+      // ===============================================================
+
       const invoice = await storage.createInvoice({
+        fingerprint, // ← AQUÍ ESTÁ EL CAMBIO 6
         type: extractedData.type || 'expense',
         invoiceClass: (extractedData as any).invoice_class || 'A', // Include invoice class from AI extraction
         date: invoiceDate, // Can be null - database should handle it
@@ -1097,7 +1110,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }),
         ipAddress: req.ip,
       });
-
       // Notify WebSocket clients about new invoice
       wsManager.notifyInvoiceChange('created', invoice, uploadedBy);
 

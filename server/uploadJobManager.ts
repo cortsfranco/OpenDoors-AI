@@ -228,7 +228,7 @@ export class UploadJobManager {
       }
 
       // Proceso de extracción con IA (ahora con timeout de 5 minutos)
-      let extractedData = null;
+      let extractedData: any = null;
       
       try {
         console.log(`🔍 Processing ${job.fileName} with Azure Document Intelligence...`);
@@ -250,7 +250,7 @@ export class UploadJobManager {
         
         extractedData = await Promise.race([aiProcessingPromise, timeoutPromise]);
         
-        if (!extractedData || extractedData.total === 0) {
+        if (!extractedData || !extractedData.total || extractedData.total === 0) {
           console.log(`📄 Trying Python backend for ${job.fileName}...`);
           const fileBuffer = fs.readFileSync(job.filePath);
           const pythonResult = await pythonAIProxy.processInvoiceWithAI(

@@ -13,7 +13,7 @@ const AZURE_DOC_INTELLIGENCE_KEY = process.env.AZURE_DOC_INTELLIGENCE_KEY;
 
 // Azure OpenAI configuration with fallback to regular OpenAI
 const AZURE_OPENAI_ENDPOINT = process.env.AZURE_OPENAI_ENDPOINT;
-const AZURE_OPENAI_KEY = process.env.AZURE_OPENAI_KEY || process.env.OPENAI_API_KEY;
+const AZURE_OPENAI_KEY = process.env.AZURE_OPENAI_API_KEY || process.env.OPENAI_API_KEY;
 const AZURE_OPENAI_DEPLOYMENT = process.env.AZURE_OPENAI_DEPLOYMENT || "gpt-4o-mini"; // Using gpt-4o-mini deployment
 const USE_AZURE = !!AZURE_OPENAI_ENDPOINT; // Only use Azure if endpoint is configured
 
@@ -453,7 +453,7 @@ export class AzureInvoiceProcessor {
         type: type,
         needs_review: needsReview,
         detection_method: detectionMethod,
-        description: description,
+        description: description ?? undefined,
       };
 
       // Calculate subtotal if we have total and VAT

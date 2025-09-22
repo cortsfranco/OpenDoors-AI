@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
 import { Cloud, FileText, Camera, FileCheck2, Loader2, XCircle, FileWarning } from "lucide-react";
@@ -64,7 +64,7 @@ export default function UploadZone() {
   // Auto-cleanup duplicate messages after 10 seconds
   useEffect(() => {
     const cleanupTimer = setTimeout(() => {
-      setUploadState(prev => prev.filter(f => f.status !== 'duplicate' || Date.now() - f.timestamp < 10000));
+      setUploadState(prev => prev.filter(f => f.status !== 'duplicate' || Date.now() - (f.timestamp || 0) < 10000));
     }, 10000);
 
     return () => clearTimeout(cleanupTimer);
@@ -81,8 +81,9 @@ export default function UploadZone() {
       });
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Error en la carga');
+        // En lugar de lanzar un error simple, pasamos el objeto de error completo
+        const errorData = await response.json();
+        throw { response: { data: errorData } }; 
       }
       
       const data = await response.json();
@@ -95,19 +96,30 @@ export default function UploadZone() {
         description: `${file.name} se ha subido correctamente. En espera de procesamiento.`,
       });
     },
-    onError: (error, file) => {
-      const isDuplicate = error.message?.includes('FACTURA DUPLICADA DETECTADA');
+    // ===============================================================
+    // INICIO DE LA CORRECCIÓN
+    // ===============================================================
+    onError: (error: any, file) => {
+      // Intentamos obtener el mensaje detallado del servidor
+      const serverErrorMessage = error.response?.data?.error || error.message || 'Ocurrió un error desconocido.';
+
+      const isDuplicate = serverErrorMessage.includes('FACTURA DUPLICADA DETECTADA');
+      
       setUploadState(prev => prev.map(f => f.name === file.name ? {
         ...f, 
         status: isDuplicate ? 'duplicate' : 'error'
       } : f));
       
       toast({
-        title: isDuplicate ? "Factura duplicada" : "Error en la carga",
-        description: `${file.name}: ${error.message}`,
-        variant: isDuplicate ? "default" : "destructive"
+        title: isDuplicate ? "📋 Factura Duplicada" : "❌ Error en la Carga",
+        description: serverErrorMessage, // <-- Muestra el mensaje detallado
+        variant: isDuplicate ? "default" : "destructive",
+        duration: isDuplicate ? 15000 : 5000 // Más tiempo para leer el mensaje de duplicado
       });
     }
+    // ===============================================================
+    // FIN DE LA CORRECCIÓN
+    // ===============================================================
   });
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -123,7 +135,6 @@ export default function UploadZone() {
     acceptedFiles.forEach(file => mutation.mutate(file));
   }, [mutation]);
 
-  // CORREGIDO: se agregó isDragActive al hook
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept: {
@@ -135,7 +146,8 @@ export default function UploadZone() {
     multiple: true,
   });
 
-  const handleCameraClick = () => {
+  const handleCameraClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Evita que se abra el selector de archivos
     console.log('Open camera');
   };
 
@@ -159,7 +171,7 @@ export default function UploadZone() {
         {...getRootProps()}
         className={cn(
           "bg-card rounded-lg border-2 border-dashed border-border p-6 text-center drag-zone transition-all duration-300 hover:border-primary cursor-pointer",
-          (isDragActive || isHovering) && "border-primary/50 bg-gray-50 dark:bg-gray-800" // AQUI SE USA isDragActive
+          (isDragActive || isHovering) && "border-primary/50 bg-gray-50 dark:bg-gray-800"
         )}
         onDragEnter={() => setIsHovering(true)}
         onDragLeave={() => setIsHovering(false)}
@@ -179,6 +191,7 @@ export default function UploadZone() {
             <Button
               type="button"
               data-testid="select-files-button"
+              onClick={(e) => e.stopPropagation()} // Evita que el click en el botón active el dropzone
             >
               <FileText className="w-4 h-4 mr-2" />
               Seleccionar Archivos

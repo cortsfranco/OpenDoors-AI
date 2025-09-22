@@ -164,10 +164,8 @@ export default function Upload() {
           <h3 className="text-lg font-semibold text-emerald-700 dark:text-emerald-400 mb-4">
             Cargar archivo de factura
           </h3>
-          <UploadZone
-            onFileSelect={handleFileSelect}
-            disabled={createInvoiceMutation.isPending}
-          />
+          <UploadZone />
+
         </div>
 
         {/* Manual Entry Button */}
