@@ -15,8 +15,8 @@ export interface UploadJobExtended extends DBUploadJob {
 export class UploadJobManager {
   private processing = false;
   private queue: string[] = [];
-  private concurrency = 5; // Max concurrent processing jobs
-  private processingFingerprints = new Set<string>(); // Prevent race conditions on duplicates
+  private concurrency = 10; // Max concurrent processing jobs - AUMENTADO
+  private processingFingerprints = new Set<string>();
 
   constructor() {
     // Auto-cleanup old jobs every 5 minutes
@@ -34,13 +34,11 @@ export class UploadJobManager {
     try {
       console.log('🔄 Recovering pending upload jobs...');
       
-      // Get jobs that were processing when server stopped
       const pendingJobs = await storage.getUploadJobsByStatus('processing');
       const queuedJobs = await storage.getUploadJobsByStatus('queued');
       
       console.log(`Found ${pendingJobs.length} processing and ${queuedJobs.length} queued jobs to recover`);
       
-      // Reset processing jobs back to queued (they lost their process)
       for (const job of pendingJobs) {
         await storage.updateUploadJob(job.id, { 
           status: 'queued',
@@ -49,7 +47,6 @@ export class UploadJobManager {
         this.queue.push(job.id);
       }
       
-      // Add queued jobs back to queue
       for (const job of queuedJobs) {
         this.queue.push(job.id);
       }
@@ -64,17 +61,14 @@ export class UploadJobManager {
     }
   }
 
-  // Generate unique job ID
   private generateJobId(): string {
     return crypto.randomUUID();
   }
 
-  // Generate file fingerprint for duplicate detection
   public static generateFingerprint(buffer: Buffer): string {
     return crypto.createHash('sha256').update(buffer).digest('hex');
   }
 
-  // Create new upload job - now persisted to database
   async createJob(userId: string, fileName: string, fileSize: number, fingerprint: string, filePath: string, uploadedByName?: string, ownerName?: string): Promise<DBUploadJob> {
     try {
       const job = await storage.createUploadJob({
@@ -92,7 +86,6 @@ export class UploadJobManager {
 
       this.queue.push(job.id);
       
-      // Emit WebSocket event
       wsManager.sendToUser(userId, {
         type: 'upload:queued',
         data: {
@@ -102,7 +95,6 @@ export class UploadJobManager {
         }
       });
 
-      // Start processing if not already running
       this.processQueue();
 
       console.log(`📝 Created persistent job ${job.id} for ${fileName}`);
@@ -113,13 +105,11 @@ export class UploadJobManager {
     }
   }
 
-  // Update job status - now persisted to database
   async updateJob(jobId: string, updates: Partial<InsertUploadJob>): Promise<DBUploadJob | null> {
     try {
       const updatedJob = await storage.updateUploadJob(jobId, updates);
       if (!updatedJob) return null;
 
-      // Emit WebSocket event for status changes
       if (updates.status) {
         wsManager.sendToUser(updatedJob.userId, {
           type: `upload:${updates.status}`,
@@ -140,7 +130,6 @@ export class UploadJobManager {
     }
   }
 
-  // Get job by ID - now from database
   async getJob(jobId: string): Promise<DBUploadJob | null> {
     try {
       const job = await storage.getUploadJob(jobId);
@@ -151,7 +140,6 @@ export class UploadJobManager {
     }
   }
 
-  // Get recent jobs for a user (last N minutes) - now from database
   async getRecentJobs(userId: string, minutes: number = 10): Promise<DBUploadJob[]> {
     try {
       return await storage.getRecentUploadJobs(userId, minutes);
@@ -161,13 +149,11 @@ export class UploadJobManager {
     }
   }
 
-  // Process job queue
   private async processQueue(): Promise<void> {
     if (this.processing) return;
     this.processing = true;
 
     while (this.queue.length > 0) {
-      // Process up to 'concurrency' jobs simultaneously
       const currentBatch = this.queue.splice(0, this.concurrency);
       const promises = currentBatch.map(jobId => this.processJob(jobId));
       
@@ -181,7 +167,6 @@ export class UploadJobManager {
     this.processing = false;
   }
 
-  // Process individual job with real invoice processing logic
   private async processJob(jobId: string): Promise<void> {
     const job = await this.getJob(jobId);
     if (!job || job.status !== 'queued') return;
@@ -191,79 +176,58 @@ export class UploadJobManager {
     console.log(`🚀 Starting job ${jobId} (${job.fileName}) - Queue size: ${this.queue.length}`);
 
     try {
-      // Update status to processing
       await this.updateJob(jobId, { status: 'processing' });
       
-      // Track fingerprint to prevent race conditions
       if (this.processingFingerprints.has(job.fingerprint)) {
         throw new Error('Archivo idéntico ya está siendo procesado');
       }
       this.processingFingerprints.add(job.fingerprint);
       tempFilePath = job.filePath;
 
-      // Enhanced duplicate detection using Azure AI for data verification
+      // === INICIO DEL CÓDIGO DE DIAGNÓSTICO DE DUPLICADOS ===
+      console.log(`🔎 Buscando duplicado con fingerprint: ${job.fingerprint}`);
       const existingInvoice = await storage.findInvoiceByFingerprint(job.fingerprint);
+      console.log(`➡️ Resultado de la búsqueda: ${existingInvoice ? 'DUPLICADO ENCONTRADO' : 'No se encontraron duplicados'}`);
+      // === FIN DEL CÓDIGO DE DIAGNÓSTICO ===
+
       if (existingInvoice) {
-        
-        // Extract data from current file using Azure AI to compare with existing invoice
-        const currentData = await this.extractInvoiceDataForComparison(job.filePath);
-        
-        // Compare critical data points
-        const comparison = this.compareInvoiceData(currentData, existingInvoice);
-        
-        // Mark as duplicate with detailed comparison information
+        // Marcamos como duplicado con información detallada
         await this.updateJob(jobId, { 
           status: 'duplicate',
           error: `📋 FACTURA DUPLICADA DETECTADA\n` +
-                `🔍 Archivo original: ${existingInvoice.fileName || 'N/A'}\n` +
-                `📅 Fecha: ${existingInvoice.date || 'N/A'}\n` +
-                `💰 Monto: $${existingInvoice.totalAmount || 'N/A'}\n` +
-                `🏢 Cliente/Proveedor: ${existingInvoice.clientProviderName || 'N/A'}\n` +
-                `📄 Nro. Factura: ${existingInvoice.invoiceNumber || 'N/A'}\n` +
-                `👤 Cargada por: ${existingInvoice.uploadedByName || 'Usuario'}\n` +
-                `📊 Similitud: ${comparison.similarity}%\n` +
-                `⚠️ La carga ha sido bloqueada para evitar duplicación de datos`
+                 `🔍 Archivo original: ${existingInvoice.fileName || 'N/A'}\n` +
+                 `📅 Fecha: ${existingInvoice.date || 'N/A'}\n` +
+                 `💰 Monto: $${existingInvoice.totalAmount || 'N/A'}\n` +
+                 `🏢 Cliente/Proveedor: ${existingInvoice.clientProviderName || 'N/A'}\n` +
+                 `📄 Nro. Factura: ${existingInvoice.invoiceNumber || 'N/A'}\n` +
+                 `👤 Cargada por: ${existingInvoice.uploadedByName || 'Usuario'}\n` +
+                 `⚠️ La carga ha sido bloqueada para evitar duplicación de datos`
         });
         
-        // Clean up uploaded file
         if (job.filePath && fs.existsSync(job.filePath)) {
           fs.unlinkSync(job.filePath);
         }
         
-        // Log detailed activity for duplicate detection
         await storage.createActivityLog({
           userId: job.userId,
           userName: job.uploadedByName || 'Usuario',
           actionType: 'upload',
           entityType: 'invoice',
           entityId: existingInvoice.id,
-          description: `🚫 Intentó cargar factura duplicada: ${job.fileName} (Similitud: ${comparison.similarity}%)`,
-          metadata: JSON.stringify({ 
-            duplicate: true, 
-            originalInvoice: existingInvoice.id,
-            currentData: currentData,
-            existingData: {
-              date: existingInvoice.date,
-              amount: existingInvoice.totalAmount,
-              client: existingInvoice.clientProviderName,
-              number: existingInvoice.invoiceNumber
-            },
-            comparison: comparison
-          }),
+          description: `🚫 Intentó cargar factura duplicada: ${job.fileName}`,
+          metadata: JSON.stringify({ duplicate: true, originalInvoice: existingInvoice.id }),
         });
         
-        console.log(`🚫 Duplicate detected and blocked: ${job.fileName} (${comparison.similarity}% similarity to existing invoice ${existingInvoice.id})`);
+        console.log(`🚫 Duplicate detected and blocked: ${job.fileName} `);
         return;
       }
 
-      // Process file with AI extraction
+      // Proceso de extracción con IA (ahora con timeout de 5 minutos)
       let extractedData = null;
       
       try {
-        // Try Azure Document Intelligence first
         console.log(`🔍 Processing ${job.fileName} with Azure Document Intelligence...`);
         
-        // Detect type from filename
         let invoiceType: 'income' | 'expense' | undefined;
         const fileNameLower = job.fileName.toLowerCase();
         
@@ -273,16 +237,15 @@ export class UploadJobManager {
           invoiceType = 'expense';
         }
         
-        // Add timeout for AI processing (3 minutes max)
+        // Timeout AUMENTADO a 5 minutos
         const aiProcessingPromise = azureProcessor.processInvoice(job.filePath, invoiceType);
         const timeoutPromise = new Promise((_, reject) => {
-          setTimeout(() => reject(new Error('AI processing timeout (3 minutes)')), 3 * 60 * 1000);
+          setTimeout(() => reject(new Error('AI processing timeout (5 minutes)')), 5 * 60 * 1000);
         });
         
         extractedData = await Promise.race([aiProcessingPromise, timeoutPromise]);
         
         if (!extractedData || extractedData.total === 0) {
-          // Try Python backend as fallback
           console.log(`📄 Trying Python backend for ${job.fileName}...`);
           const fileBuffer = fs.readFileSync(job.filePath);
           const pythonResult = await pythonAIProxy.processInvoiceWithAI(
@@ -303,37 +266,33 @@ export class UploadJobManager {
         throw new Error('No se pudo extraer información de la factura con IA');
       }
 
-      // Process extracted data same as original endpoint
       const clientName = extractedData.client_name || 'Cliente extraído por IA';
       const invoiceNumber = extractedData.invoice_number || `INV-${Date.now()}`;
       const totalAmount = parseFloat(extractedData.total?.toString() || '0');
       const subtotalAmount = parseFloat((extractedData as any).subtotal?.toString() || (totalAmount * 0.79).toString());
       const ivaAmount = parseFloat(extractedData.vat_amount?.toString() || (totalAmount * 0.21).toString());
 
-      // 🔍 CRITICAL DATA VALIDATION for Review Status
       const hasCriticalDataMissing = (
-        !extractedData.date ||                                    // Missing date
-        totalAmount <= 0 ||                                      // Missing or invalid amount
-        !clientName || clientName === 'Cliente extraído por IA' || // Missing or generic client
-        !invoiceNumber || invoiceNumber.startsWith('INV-')       // Missing or generated invoice number
+        !extractedData.date || 
+        totalAmount <= 0 || 
+        !clientName || clientName === 'Cliente extraído por IA' || 
+        !invoiceNumber || invoiceNumber.startsWith('INV-')
       );
       
-      // Determine review status based on data completeness
       const reviewStatus = hasCriticalDataMissing ? 'pending_review' : 'approved';
       const needsReview = hasCriticalDataMissing || (extractedData as any).needs_review || false;
       
       console.log(`📋 Data validation result for ${job.fileName}:`);
-      console.log(`   - Date: ${extractedData.date ? '✅' : '❌ Missing'}`);
-      console.log(`   - Amount: ${totalAmount > 0 ? '✅' : '❌ Invalid'}`);
-      console.log(`   - Client: ${clientName && clientName !== 'Cliente extraído por IA' ? '✅' : '❌ Missing/Generic'}`);
-      console.log(`   - Invoice#: ${invoiceNumber && !invoiceNumber.startsWith('INV-') ? '✅' : '❌ Missing/Generated'}`);
-      console.log(`   - Review Status: ${reviewStatus.toUpperCase()}`);
+      console.log(`   - Date: ${extractedData.date ? '✅' : '❌ Missing'}`);
+      console.log(`   - Amount: ${totalAmount > 0 ? '✅' : '❌ Invalid'}`);
+      console.log(`   - Client: ${clientName && clientName !== 'Cliente extraído por IA' ? '✅' : '❌ Missing/Generic'}`);
+      console.log(`   - Invoice#: ${invoiceNumber && !invoiceNumber.startsWith('INV-') ? '✅' : '❌ Missing/Generated'}`);
+      console.log(`   - Review Status: ${reviewStatus.toUpperCase()}`);
       
       if (reviewStatus === 'pending_review') {
         console.log(`⚠️ Invoice ${invoiceNumber} requires manual review due to missing critical data`);
       }
 
-      // Create or find client/provider
       let clientProviderId = null;
       if (clientName) {
         let clientProvider = await storage.getClientProviderByName(clientName);
@@ -349,7 +308,6 @@ export class UploadJobManager {
         clientProviderId = clientProvider.id;
       }
 
-      // Parse date carefully
       let invoiceDate: Date | null = null;
       if ('date' in extractedData && extractedData.date) {
         try {
@@ -363,7 +321,6 @@ export class UploadJobManager {
         }
       }
 
-      // Create invoice with review status
       const invoice = await storage.createInvoice({
         type: extractedData.type || 'expense',
         invoiceClass: (extractedData as any).invoice_class || 'A',
@@ -388,12 +345,10 @@ export class UploadJobManager {
         reviewStatus: reviewStatus as 'approved' | 'pending_review' | 'draft'
       });
 
-      // Mark invoice as processed
       if (extractedData && totalAmount > 0) {
         await storage.markInvoiceAsProcessed(invoice.id);
       }
 
-      // Log activity
       await storage.createActivityLog({
         userId: job.userId,
         userName: job.uploadedByName || 'Usuario',
@@ -409,10 +364,8 @@ export class UploadJobManager {
         }),
       });
 
-      // Notify WebSocket clients about new invoice
       wsManager.notifyInvoiceChange('created', invoice, job.userId);
 
-      // Mark job as successful
       await this.updateJob(jobId, { 
         status: 'success', 
         invoiceId: invoice.id 
@@ -423,10 +376,8 @@ export class UploadJobManager {
     } catch (error) {
       console.error(`❌ Error processing job ${jobId} (${job.fileName}):`, error);
       
-      // Implement retry logic before marking as error
       await this.handleJobFailure(jobId, error instanceof Error ? error.message : 'Error desconocido en el procesamiento');
       
-      // Log activity for failed upload attempt
       try {
         await storage.createActivityLog({
           userId: job.userId,
@@ -446,11 +397,9 @@ export class UploadJobManager {
         console.warn('Could not log failed upload activity:', logError);
       }
     } finally {
-      // Always clean up fingerprint lock - CRITICAL for preventing permanent blocks
       this.processingFingerprints.delete(job.fingerprint);
       console.log(`🔓 Released fingerprint lock for ${job.fingerprint}`);
       
-      // Always clean up temp file - prevent disk bloat
       if (tempFilePath && fs.existsSync(tempFilePath)) {
         try {
           fs.unlinkSync(tempFilePath);
@@ -460,7 +409,6 @@ export class UploadJobManager {
         }
       }
       
-      // Log job completion status
       try {
         const finalJob = await this.getJob(jobId);
         if (finalJob) {
@@ -472,12 +420,10 @@ export class UploadJobManager {
     }
   }
 
-  // Cleanup old jobs (older than 15 minutes) - now database based
   private async cleanup(): Promise<void> {
     try {
-      // Get jobs older than 15 minutes that are complete
       const cutoff = new Date(Date.now() - 15 * 60 * 1000);
-      const oldJobs = await storage.getRecentUploadJobs('', 60 * 24); // Get all jobs from last 24 hours
+      const oldJobs = await storage.getRecentUploadJobs('', 60 * 24);
       
       const jobsToDelete = oldJobs.filter(job => 
         job.createdAt < cutoff && 
@@ -496,10 +442,8 @@ export class UploadJobManager {
     }
   }
 
-  // Get all jobs (for debugging) - now database based
   async getAllJobs(): Promise<DBUploadJob[]> {
     try {
-      // Get all recent jobs for debugging (last 24 hours)
       return await storage.getRecentUploadJobs('', 60 * 24);
     } catch (error) {
       console.error('❌ Error getting all upload jobs:', error);
@@ -507,17 +451,15 @@ export class UploadJobManager {
     }
   }
 
-  // Handle job failure with retry logic - CRITICAL for zero-loss guarantee
   private async handleJobFailure(jobId: string, errorMessage: string): Promise<void> {
     try {
       const job = await this.getJob(jobId);
       if (!job) return;
 
       const currentRetries = job.retryCount || 0;
-      const maxRetries = 3; // Maximum retry attempts
+      const maxRetries = 3;
 
       if (currentRetries < maxRetries) {
-        // Increment retry count and requeue for another attempt
         await this.updateJob(jobId, {
           status: 'queued',
           retryCount: currentRetries + 1,
@@ -526,12 +468,10 @@ export class UploadJobManager {
         
         console.log(`🔄 Job ${jobId} requeued for retry ${currentRetries + 1}/${maxRetries}`);
         
-        // Add back to queue for processing
         this.queue.push(jobId);
         this.processQueue();
         
       } else {
-        // Max retries exceeded - quarantine the job
         await this.updateJob(jobId, {
           status: 'quarantined',
           error: `${errorMessage} (Excedido límite de reintentos: ${maxRetries})`
@@ -541,7 +481,6 @@ export class UploadJobManager {
       }
     } catch (error) {
       console.error(`❌ Error handling job failure for ${jobId}:`, error);
-      // As last resort, mark as error
       await this.updateJob(jobId, { 
         status: 'error', 
         error: errorMessage 
@@ -549,11 +488,9 @@ export class UploadJobManager {
     }
   }
 
-  // Watchdog to detect and recover stuck jobs - prevents permanent processing locks
   private async watchdog(): Promise<void> {
     try {
-      const cutoff = new Date(Date.now() - 5 * 60 * 1000); // 5 minutes timeout
-      // Get all processing jobs across all users - more robust than getRecentUploadJobs
+      const cutoff = new Date(Date.now() - 5 * 60 * 1000);
       const processingJobs = await storage.getUploadJobsByStatus('processing');
       
       const stuckJobs = processingJobs.filter(job => 
@@ -573,7 +510,6 @@ export class UploadJobManager {
     }
   }
 
-  // Start watchdog timer - runs every 2 minutes
   private startWatchdog(): void {
     setInterval(() => {
       this.watchdog();
@@ -581,7 +517,6 @@ export class UploadJobManager {
     console.log('👀 Upload job watchdog started (2 min intervals)');
   }
 
-  // Extract invoice data from file for comparison purposes
   private async extractInvoiceDataForComparison(filePath: string): Promise<{
     date?: string;
     amount?: number;
@@ -591,11 +526,8 @@ export class UploadJobManager {
     type?: string;
   }> {
     try {
-      // Use the same Azure AI extraction logic
       const fileBuffer = fs.readFileSync(filePath);
       
-      // For now, return basic extracted data - this would integrate with Azure AI
-      // In a full implementation, this would call the Azure Document Intelligence API
       return {
         date: undefined,
         amount: undefined,
@@ -610,7 +542,6 @@ export class UploadJobManager {
     }
   }
 
-  // Compare invoice data to determine similarity
   private compareInvoiceData(currentData: any, existingInvoice: any): {
     similarity: number;
     matches: string[];
@@ -621,7 +552,6 @@ export class UploadJobManager {
     let totalFields = 0;
     let matchingFields = 0;
 
-    // Compare date
     totalFields++;
     if (currentData.date && existingInvoice.date) {
       if (currentData.date === existingInvoice.date) {
@@ -632,7 +562,6 @@ export class UploadJobManager {
       }
     }
 
-    // Compare amount
     totalFields++;
     if (currentData.amount && existingInvoice.totalAmount) {
       if (Math.abs(currentData.amount - parseFloat(existingInvoice.totalAmount)) < 0.01) {
@@ -643,7 +572,6 @@ export class UploadJobManager {
       }
     }
 
-    // Compare client/provider
     totalFields++;
     if (currentData.client && existingInvoice.clientProviderName) {
       if (currentData.client.toLowerCase().includes(existingInvoice.clientProviderName.toLowerCase()) ||
@@ -655,7 +583,6 @@ export class UploadJobManager {
       }
     }
 
-    // Compare invoice number
     totalFields++;
     if (currentData.invoiceNumber && existingInvoice.invoiceNumber) {
       if (currentData.invoiceNumber === existingInvoice.invoiceNumber) {
@@ -676,5 +603,4 @@ export class UploadJobManager {
   }
 }
 
-// Export singleton instance
 export const uploadJobManager = new UploadJobManager();

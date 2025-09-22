@@ -79,7 +79,7 @@ export const invoices = pgTable("invoices", {
   filePath: text("file_path"),
   fileName: text("file_name"),
   fileSize: integer("file_size"), // File size in bytes for duplicate detection
-  fingerprint: text("fingerprint").unique(), // SHA-256 hash for row-level duplicate detection
+  fingerprint: varchar('fingerprint', { length: 64 }).notNull().unique(), // SHA-256 es de 64 caracteres
   extractedData: text("extracted_data"), // JSON string of AI extracted data
   processed: boolean("processed").default(false),
   needsReview: boolean("needs_review").notNull().default(false),

@@ -11,7 +11,10 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "test:db": "tsx test-db.js",
-    "setup": "npm run test:db && npm run db:push"
+    "setup": "npm run test:db && npm run db:push",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
+    
   },
   "dependencies": {
     "@azure/ai-form-recognizer": "^5.1.0",

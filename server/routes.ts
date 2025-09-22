@@ -4,8 +4,8 @@ import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import { storage } from "./storage";
 import { z } from "zod";
-import { 
-  insertInvoiceSchema, 
+import {
+  insertInvoiceSchema,
   insertClientProviderSchema,
   fiscalPeriodQuerySchema,
   ivaComponentCreateSchema,
@@ -990,11 +990,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
         ? ((extractedData as any).supplier_cuit || null)
         : null;
       const invoiceNumber = 'invoice_number' in extractedData ? extractedData.invoice_number : 
-                           'invoiceNumber' in extractedData ? extractedData.invoiceNumber : `INV-${Date.now()}`;
+                            'invoiceNumber' in extractedData ? extractedData.invoiceNumber : `INV-${Date.now()}`;
       const totalAmount = 'total' in extractedData ? extractedData.total : 
-                         'totalAmount' in extractedData ? parseFloat(extractedData.totalAmount) : 0;
+                          'totalAmount' in extractedData ? parseFloat(extractedData.totalAmount) : 0;
       const vatAmount = 'vat_amount' in extractedData ? extractedData.vat_amount : 
-                       'ivaAmount' in extractedData ? parseFloat(extractedData.ivaAmount) : 0;
+                        'ivaAmount' in extractedData ? parseFloat(extractedData.ivaAmount) : 0;
       
       // Crear o buscar el cliente/proveedor automáticamente
       let clientProviderId = null;
@@ -1065,8 +1065,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         clientProviderId, // Asociar con el cliente/proveedor
         invoiceNumber: invoiceNumber || `INV-${Date.now()}`,
         subtotal: subtotalValue.toString(),  // Convert to string after rounding
-        ivaAmount: ivaValue.toString(),       // Convert to string after rounding
-        totalAmount: totalValue.toString(),   // Convert to string after rounding
+        ivaAmount: ivaValue.toString(),      // Convert to string after rounding
+        totalAmount: totalValue.toString(),  // Convert to string after rounding
         uploadedBy,
         uploadedByName,
         ownerId: uploadedBy, // Por defecto, el propietario es quien sube la factura
@@ -1541,7 +1541,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           entityType: 'invoice',
           entityId: req.params.id,
           description: `Eliminó permanentemente factura de la papelera`,
-          metadata: JSON.stringify({ permanent: true }),
+          metadata: null,
           ipAddress: req.ip,
         });
       }
@@ -1603,7 +1603,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           if (pythonResponse.success) {
             res.json({ response: pythonResponse.answer });
           } else {
-            // Fallback to original processor
+            // Fallback to original AI processor
             const response = await invoiceProcessor.processQuery(message);
             res.json({ response });
           }
@@ -1657,7 +1657,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const csvData = validInvoices.map(invoice => {
           const cuit = invoice.clientProvider?.cuit || '';
           const dateStr = invoice.date ? new Date(invoice.date).toLocaleDateString('es-AR') : 'Sin fecha';
-          return `${invoice.id},${invoice.type === 'income' ? 'Ingreso' : 'Egreso'},${dateStr},${new Date(invoice.createdAt).toLocaleDateString('es-AR')},${invoice.clientProviderName},${cuit},${invoice.invoiceNumber || ''},"${invoice.subtotal}","${invoice.ivaAmount}","${invoice.totalAmount}",${invoice.uploadedByName}`;
+          const createdAtStr = new Date(invoice.createdAt).toLocaleDateString('es-AR');
+          return `"${invoice.id}","${invoice.type === 'income' ? 'Ingreso' : 'Egreso'}","${dateStr}","${createdAtStr}","${invoice.clientProviderName}","${cuit}","${invoice.invoiceNumber || ''}","${invoice.subtotal}","${invoice.ivaAmount}","${invoice.totalAmount}","${invoice.uploadedByName}"`;
         }).join('\n');
 
         res.setHeader('Content-Type', 'text/csv');
@@ -1955,7 +1956,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Export endpoints
   app.get("/api/export/csv", requireAuth, async (req, res) => {
     try {
       const filters = {

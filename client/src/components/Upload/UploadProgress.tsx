@@ -10,7 +10,7 @@ interface UploadJob {
   id: string;
   fileName: string;
   fileSize: number;
-  status: 'queued' | 'processing' | 'success' | 'duplicate' | 'error';
+  status: 'queued' | 'processing' | 'success' | 'duplicate' | 'error' | 'quarantined'; // Agregamos 'quarantined'
   invoiceId?: string;
   error?: string;
   createdAt: string;
@@ -69,9 +69,68 @@ const loadJobsFromSession = (): UploadJob[] => {
   return [];
 };
 
+// ============ INICIO DE LOS CAMBIOS ============
+
+// 1. Mejoramos los porcentajes de progreso
+const getProgress = (status: string) => {
+  switch (status) {
+    case 'queued': return 10;
+    case 'processing': return 60;
+    case 'success': return 100;
+    case 'duplicate': return 100;
+    case 'error': return 100;
+    case 'quarantined': return 100;
+    default: return 5;
+  }
+};
+
+// 2. Mejoramos los textos de estado con emojis
+const getStatusText = (status: string) => {
+  switch (status) {
+    case 'queued': return 'En cola de procesamiento...';
+    case 'processing': return 'Analizando con Azure AI...';
+    case 'success': return 'Factura procesada correctamente ✅';
+    case 'duplicate': return 'Factura duplicada - omitida ⚠️';
+    case 'error': return 'Error en el procesamiento ❌';
+    case 'quarantined': return 'Requiere atención manual 🔍';
+    default: return 'Iniciando...';
+  }
+};
+
+// 3. Iconos mejorados para los nuevos estados
+const getStatusIcon = (status: string) => {
+  switch (status) {
+    case 'success':
+      return <CheckCircle className="w-4 h-4 text-income-green" />;
+    case 'duplicate':
+      return <Clock className="w-4 h-4 text-orange-500" />;
+    case 'error':
+      return <XCircle className="w-4 h-4 text-expense-red" />; // Usamos XCircle para errores
+    case 'quarantined':
+      return <AlertCircle className="w-4 h-4 text-yellow-500" />; // Nuevo icono para cuarentena
+    case 'queued':
+      return <RefreshCw className="w-4 h-4 text-gray-500" />;
+    default:
+      return <Loader className="w-4 h-4 animate-spin text-primary" />;
+  }
+};
+
 export default function UploadProgress({ showRecentJobs = true }: UploadProgressProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [jobs, setJobs] = useState<UploadJob[]>(() => loadJobsFromSession());
+  const [showContent, setShowContent] = useState(true); // Nuevo estado para controlar la visibilidad
+
+  // Nuevo useEffect para limpiar la lista después de 5 minutos
+  useEffect(() => {
+    if (jobs.length > 0) {
+      const timer = setTimeout(() => {
+        setJobs([]); // Limpia la lista
+        saveJobsToSession([]); // Limpia también la sesión
+        setShowContent(false); // Oculta el componente
+      }, 5 * 60 * 1000); // 5 minutos
+      return () => clearTimeout(timer);
+    }
+  }, [jobs]);
   
   // Fetch recent upload jobs with pagination
   const { data: recentJobsResponse, refetch } = useQuery<UploadJobsResponse>({
@@ -80,7 +139,7 @@ export default function UploadProgress({ showRecentJobs = true }: UploadProgress
       fetch(`/api/uploads/recent?page=${currentPage}&limit=5`, {
         credentials: 'include'
       }).then(res => res.json()),
-    refetchInterval: 5000, // Poll every 5 seconds
+    refetchInterval: 2000, // Polling más rápido a 2 segundos
   });
 
   // Update local state when data changes
@@ -109,50 +168,7 @@ export default function UploadProgress({ showRecentJobs = true }: UploadProgress
   // Listen for WebSocket updates
   useWebSocket();
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'queued':
-        return 'En cola...';
-      case 'processing':
-        return 'Procesando con IA...';
-      case 'success':
-        return 'Completado';
-      case 'duplicate':
-        return 'Duplicado (información)';
-      case 'error':
-        return 'Error al procesar';
-      default:
-        return '';
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case 'success':
-        return <CheckCircle className="w-4 h-4 text-income-green" />;
-      case 'duplicate':
-        return <Clock className="w-4 h-4 text-orange-500" />;
-      case 'error':
-        return <AlertCircle className="w-4 h-4 text-expense-red" />;
-      case 'queued':
-        return <RefreshCw className="w-4 h-4 text-gray-500" />;
-      default:
-        return <Loader className="w-4 h-4 animate-spin text-primary" />;
-    }
-  };
-
-  const getProgress = (status: string) => {
-    switch (status) {
-      case 'queued': return 50;        // 50% cuando la factura ha sido cargada
-      case 'processing': return 75;    // 75% durante procesamiento
-      case 'success': return 100;      // 100% cuando los datos han sido procesados
-      case 'duplicate': return 100;    // 100% para duplicados (procesamiento completo)
-      case 'error': return 100;        // 100% para errores (procesamiento completo)
-      default: return 25;              // Estado inicial
-    }
-  };
-
-  if (!showRecentJobs || !jobs || jobs.length === 0) {
+  if (!showRecentJobs || !jobs || jobs.length === 0 || !showContent) {
     return null;
   }
 
@@ -179,9 +195,20 @@ export default function UploadProgress({ showRecentJobs = true }: UploadProgress
             </div>
             
             <div className="mb-2">
+              {/* Barra de progreso mejorada con clases dinámicas */}
               <Progress 
                 value={getProgress(job.status)}
-                className={`progress-bar ${job.status === 'success' || job.status === 'duplicate' ? 'progress-success' : job.status === 'error' ? 'progress-error' : ''}`}
+                className={`h-3 progress-bar ${
+                  job.status === 'success'
+                    ? 'progress-success [&>div]:bg-green-500' // Quitamos animate-pulse del éxito
+                    : job.status === 'duplicate'
+                    ? 'progress-duplicate [&>div]:bg-yellow-500'
+                    : job.status === 'error' || job.status === 'quarantined'
+                    ? 'progress-error [&>div]:bg-red-500'
+                    : job.status === 'processing'
+                    ? 'progress-processing [&>div]:bg-blue-500 [&>div]:animate-pulse' // El pulso solo en procesamiento
+                    : 'progress-queued [&>div]:bg-gray-400'
+                }`}
                 data-testid="progress-bar"
               />
             </div>
