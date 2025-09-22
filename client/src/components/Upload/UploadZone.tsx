@@ -3,7 +3,7 @@ import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
 import { Cloud, FileText, Camera, FileCheck2, Loader2, XCircle, FileWarning } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { Badge } from "@/components/ui/badge";
@@ -50,21 +50,44 @@ export default function UploadZone() {
   const [isHovering, setIsHovering] = useState(false);
   const [uploadState, setUploadState] = useState<UploadProgressState[]>([]);
   const [showSummary, setShowSummary] = useState(false);
+  const queryClient = useQueryClient();
 
   const { lastMessage } = useWebSocket();
+
+  // ===============================================================
+  // INICIO DE LA CORRECCIÓN CLAVE
+  // ===============================================================
   useEffect(() => {
     if (lastMessage && lastMessage.type.startsWith('upload:')) {
       const { jobId, status, error } = lastMessage.data;
       if (jobId) {
-        setUploadState(prev => prev.map(f => f.id === jobId ? {...f, status, error} : f));
+        setUploadState(prev => prev.map(f => {
+          // Si el archivo ya tiene un estado final (error o duplicado), NO lo sobrescribas.
+          if (f.id === jobId && (f.status === 'error' || f.status === 'duplicate')) {
+            return f;
+          }
+          // Si el mensaje es de éxito, invalida la query de facturas recientes para refrescar la lista.
+          if (status === 'success') {
+            queryClient.invalidateQueries({ queryKey: ['recentInvoices'] });
+          }
+          // Para cualquier otro caso, actualiza el estado normalmente.
+          return f.id === jobId ? {...f, status, error } : f;
+        }));
       }
     }
-  }, [lastMessage]);
+  }, [lastMessage, queryClient]);
+  // ===============================================================
+  // FIN DE LA CORRECCIÓN CLAVE
+  // ===============================================================
 
-  // Auto-cleanup duplicate messages after 10 seconds
+  // Auto-cleanup successful or duplicate messages from summary after a delay
   useEffect(() => {
     const cleanupTimer = setTimeout(() => {
-      setUploadState(prev => prev.filter(f => f.status !== 'duplicate' || Date.now() - (f.timestamp || 0) < 10000));
+      setUploadState(prev => prev.filter(f => {
+        const isFinalState = f.status === 'success' || f.status === 'duplicate';
+        // Mantenemos los que no están en estado final, o los que sí lo están pero hace menos de 10 seg.
+        return !isFinalState || (Date.now() - (f.timestamp || 0) < 10000);
+      }));
     }, 10000);
 
     return () => clearTimeout(cleanupTimer);
@@ -81,7 +104,6 @@ export default function UploadZone() {
       });
 
       if (!response.ok) {
-        // En lugar de lanzar un error simple, pasamos el objeto de error completo
         const errorData = await response.json();
         throw { response: { data: errorData } }; 
       }
@@ -96,41 +118,36 @@ export default function UploadZone() {
         description: `${file.name} se ha subido correctamente. En espera de procesamiento.`,
       });
     },
-    // ===============================================================
-    // INICIO DE LA CORRECCIÓN
-    // ===============================================================
     onError: (error: any, file) => {
-      // Intentamos obtener el mensaje detallado del servidor
       const serverErrorMessage = error.response?.data?.error || error.message || 'Ocurrió un error desconocido.';
-
       const isDuplicate = serverErrorMessage.includes('FACTURA DUPLICADA DETECTADA');
       
       setUploadState(prev => prev.map(f => f.name === file.name ? {
         ...f, 
-        status: isDuplicate ? 'duplicate' : 'error'
+        status: isDuplicate ? 'duplicate' : 'error',
+        timestamp: Date.now() // Actualizamos el timestamp para el cleanup
       } : f));
       
       toast({
         title: isDuplicate ? "📋 Factura Duplicada" : "❌ Error en la Carga",
-        description: serverErrorMessage, // <-- Muestra el mensaje detallado
+        description: serverErrorMessage,
         variant: isDuplicate ? "default" : "destructive",
-        duration: isDuplicate ? 15000 : 5000 // Más tiempo para leer el mensaje de duplicado
+        duration: isDuplicate ? 15000 : 5000
       });
     }
-    // ===============================================================
-    // FIN DE LA CORRECCIÓN
-    // ===============================================================
   });
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setShowSummary(true);
-    setUploadState(acceptedFiles.map(file => ({
-      id: file.name,
+    const newFiles = acceptedFiles.map(file => ({
+      id: file.name, // ID temporal
       name: file.name,
-      status: 'pending',
+      status: 'pending' as const,
       progress: 0,
       timestamp: Date.now(),
-    })));
+    }));
+    // Añadimos los nuevos archivos sin limpiar los anteriores
+    setUploadState(prev => [...prev, ...newFiles]);
 
     acceptedFiles.forEach(file => mutation.mutate(file));
   }, [mutation]);
@@ -147,22 +164,19 @@ export default function UploadZone() {
   });
 
   const handleCameraClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Evita que se abra el selector de archivos
+    e.stopPropagation();
     console.log('Open camera');
   };
 
   const getSummaryMessage = () => {
     const total = uploadState.length;
     if (total === 0) return null;
-
-    const completed = uploadState.filter(f => f.status === 'success' || f.status === 'duplicate' || f.status === 'error').length;
+    const completed = uploadState.filter(f => ['success', 'duplicate', 'error'].includes(f.status)).length;
     const pending = total - completed;
-
     if (completed === total) {
       return `¡Procesamiento completado! ${completed} de ${total} archivos procesados.`;
-    } else {
-      return `Procesando... ${completed} de ${total} archivos procesados. (${pending} pendientes)`;
     }
+    return `Procesando... ${completed} de ${total} archivos procesados. (${pending} pendientes)`;
   };
 
   return (
@@ -186,12 +200,10 @@ export default function UploadZone() {
           <p className="text-muted-foreground mb-4">
             Formatos soportados: PDF, JPG, PNG (máx. 10MB por archivo) - Puedes seleccionar múltiples archivos
           </p>
-          
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button
               type="button"
               data-testid="select-files-button"
-              onClick={(e) => e.stopPropagation()} // Evita que el click en el botón active el dropzone
             >
               <FileText className="w-4 h-4 mr-2" />
               Seleccionar Archivos
@@ -209,20 +221,22 @@ export default function UploadZone() {
         </div>
       </div>
 
-      {showSummary && (
-        <div className="flex flex-col gap-2 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border">
+      {showSummary && uploadState.length > 0 && (
+        <div className="flex flex-col gap-2 p-4 bg-card rounded-lg border">
           <div className="flex items-center gap-2 text-sm text-foreground">
             <FileText className="w-4 h-4" />
             <span>{getSummaryMessage()}</span>
           </div>
-          <ul className="space-y-1 text-sm text-gray-700 dark:text-gray-300">
+          <ul className="space-y-1 text-sm text-muted-foreground">
             {uploadState.map(file => (
               <li key={file.id} className="flex items-center gap-2 justify-between">
                 <div className="flex items-center gap-2">
                   {getIconForStatus(file.status)}
                   <span className="text-xs">{file.name}</span>
                 </div>
-                <Badge variant="secondary">{getStatusText(file.status)}</Badge>
+                <Badge variant={file.status === 'duplicate' || file.status === 'error' ? 'destructive' : file.status === 'success' ? 'default' : 'secondary'}>
+                  {getStatusText(file.status)}
+                </Badge>
               </li>
             ))}
           </ul>
