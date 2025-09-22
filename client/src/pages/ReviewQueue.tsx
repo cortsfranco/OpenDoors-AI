@@ -194,7 +194,6 @@ export default function ReviewQueue() {
   };
 
   const handleDeleteInvoice = (invoiceId: string) => {
-    // Reemplazamos window.confirm por una solución que no bloquee
     if (confirm('¿Estás seguro de que quieres eliminar esta factura? Esta acción no se puede deshacer.')) {
       deleteInvoiceMutation.mutate(invoiceId);
     }
@@ -225,7 +224,7 @@ export default function ReviewQueue() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="p-6 space-y-6">
         <div className="flex items-center gap-3">
           <Clock className="w-6 h-6 text-gray-500" />
           <h1 className="text-2xl font-bold text-gray-900">Cola de Revisión</h1>
@@ -238,17 +237,14 @@ export default function ReviewQueue() {
   }
 
   return (
-    <div className="space-y-6" data-testid="review-queue-page">
+    // ===============================================================
+    // CORRECCIÓN 1: Reducido el padding/espaciado general
+    // ===============================================================
+    <div className="p-6 space-y-6" data-testid="review-queue-page">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          {/* =============================================================== */}
-          {/* INICIO CORRECCIÓN 1: Icono de precaución eliminado del título   */}
-          {/* =============================================================== */}
           <Clock className="w-6 h-6 text-gray-500" />
           <h1 className="text-2xl font-bold text-gray-900">Cola de Revisión</h1>
-          {/* =============================================================== */}
-          {/* FIN CORRECCIÓN 1                                              */}
-          {/* =============================================================== */}
           <Badge variant="secondary" className="bg-amber-100 text-amber-800">
             {pendingInvoices.length} pendiente{pendingInvoices.length !== 1 ? 's' : ''}
           </Badge>
@@ -256,15 +252,11 @@ export default function ReviewQueue() {
       </div>
 
       <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 sm:p-6">
-        <div className="flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
-          <div>
-            <h3 className="font-medium text-amber-900">Facturas Pendientes de Revisión</h3>
-            <p className="text-sm text-amber-700 mt-1">
-              Estas facturas requieren revisión manual antes de ser incluidas en los cálculos financieros. 
-              Completa los datos faltantes y aprueba las facturas para que aparezcan en reportes y KPIs.
-            </p>
-          </div>
+        <div className="flex items-start">
+          <p className="text-sm text-amber-700">
+            Estas facturas requieren revisión manual antes de ser incluidas en los cálculos financieros. 
+            Completa los datos faltantes y aprueba las facturas para que aparezcan en reportes y KPIs.
+          </p>
         </div>
       </div>
 
@@ -300,15 +292,12 @@ export default function ReviewQueue() {
         </Card>
       ) : (
         <Card>
-          {/* =============================================================== */}
-          {/* INICIO CORRECCIÓN 2: Padding añadido a CardContent            */}
-          {/* =============================================================== */}
-          <CardContent className="p-4 sm:p-6">
-          {/* =============================================================== */}
-          {/* FIN CORRECCIÓN 2                                              */}
-          {/* =============================================================== */}
+          <CardContent className="p-0">
             <Table>
-              <TableHeader>
+              {/* =============================================================== */}
+              {/* CORRECCIÓN 2: Color sutil en la cabecera de la tabla        */}
+              {/* =============================================================== */}
+              <TableHeader className="bg-gray-50 dark:bg-gray-800/50">
                 <TableRow>
                   <TableHead className="w-[200px]">Archivo</TableHead>
                   <TableHead>N° Factura</TableHead>
@@ -325,7 +314,7 @@ export default function ReviewQueue() {
                   const missingFields = getMissingFieldsDisplay(invoice);
                   
                   return (
-                    <TableRow key={invoice.id} data-testid={`pending-invoice-${invoice.id}`}>
+                    <TableRow key={invoice.id} data-testid={`pending-invoice-${invoice.id}`} className="dark:border-gray-800">
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <FileText className="w-4 h-4 text-amber-600 flex-shrink-0" />

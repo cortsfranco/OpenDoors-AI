@@ -2,7 +2,17 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
+  // ===============================================================
+  // INICIO DE LA CORRECCIÓN
+  // ===============================================================
+  content: [
+    "./client/index.html", 
+    "./client/src/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{ts,tsx}", // <-- ESTA ES LA LÍNEA CLAVE QUE FALTABA
+  ],
+  // ===============================================================
+  // FIN DE LA CORRECCIÓN
+  // ===============================================================
   theme: {
     extend: {
       borderRadius: {

@@ -1,9 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-@import './styles/dialog-overrides.css';
-@import './styles/color-updates.css';
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Después vienen tus imports y estilos personalizados */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import './styles/dialog-overrides.css';
+@import './styles/color-updates.css';
 
 :root {
   --background: hsl(0, 0%, 100%);
