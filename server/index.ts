@@ -11,7 +11,7 @@ const app = express();
 app.use(cors({
   origin: true, // Allow all origins for testing
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'], // Agregamos PATCH para las actualizaciones
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
 
@@ -23,6 +23,7 @@ app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 app.use('/uploads', express.static('uploads'));
 
 (async () => {
+  // Las rutas de tu API ahora se registran en este archivo
   const server = await registerRoutes(app);
 
   // Add logging middleware after routes
@@ -59,12 +60,13 @@ app.use('/uploads', express.static('uploads'));
   // Initialize WebSocket server
   wsManager.initialize(server);
 
+  // CORREGIDO: Error handler ya no crashea el servidor
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";
-
+    console.error('Server error:', err); // Registra el error en la consola
     res.status(status).json({ message });
-    throw err;
+    // ELIMINADA: La línea 'throw err;' que crasheaba el servidor
   });
 
   if (app.get("env") === "development") {
