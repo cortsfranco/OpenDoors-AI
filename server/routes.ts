@@ -1109,77 +1109,103 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Async upload endpoints for non-blocking file upload
-  app.post("/api/uploads", requireAuth, upload.array('files'), async (req, res) => {
+  app.post("/api/uploads", requireAuth, upload.single('uploadFile'), async (req, res) => {
     try {
-      const files = req.files as Express.Multer.File[];
-      if (!files || files.length === 0) {
-        return res.status(400).json({ error: "No se proporcionaron archivos" });
+      const file = req.file;
+      if (!file) {
+        return res.status(400).json({ error: "No se proporcionó archivo" });
       }
 
       const userId = req.session.user!.id;
       const uploadedByName = req.session.user!.displayName;
       const ownerName = req.body.ownerName || uploadedByName;
       
-      const jobResults = [];
+      try {
+        // Generate fingerprint for duplicate detection
+        const fileBuffer = fs.readFileSync(file.path);
+        const fingerprint = UploadJobManager.generateFingerprint(fileBuffer);
 
-      for (const file of files) {
-        try {
-          // Generate fingerprint for duplicate detection
-          const fileBuffer = fs.readFileSync(file.path);
-          const fingerprint = UploadJobManager.generateFingerprint(fileBuffer);
-
-          // Create upload job with all required data - now persisted to database
-          
-          const job = await uploadJobManager.createJob(
-            userId,
-            file.originalname,
-            file.size,
-            fingerprint,
-            file.path,
-            uploadedByName,
-            ownerName
-          );
-
-          jobResults.push({
-            jobId: job.id,
-            fileName: job.fileName,
-            status: job.status
-          });
-
-        } catch (error: any) {
-          // Handle individual file errors (especially duplicates) gracefully
-          console.warn(`Error creating job for file ${file.originalname}:`, error);
-          
-          // Clean up uploaded file if there was an error
+        // Check for duplicates BEFORE creating the job
+        const existingInvoice = await storage.findInvoiceByFingerprint(fingerprint);
+        if (existingInvoice) {
+          // Clean up uploaded file
           if (fs.existsSync(file.path)) {
-            try {
-              fs.unlinkSync(file.path);
-            } catch (cleanupError) {
-              console.error(`Failed to cleanup file ${file.path}:`, cleanupError);
-            }
+            fs.unlinkSync(file.path);
           }
-
-          // Add error result for this file
-          jobResults.push({
-            jobId: null,
-            fileName: file.originalname,
-            status: 'error',
-            error: error.message?.includes('duplicate key') 
-              ? 'Este archivo ya fue cargado anteriormente'
-              : error.message || 'Error al crear trabajo de carga'
+          
+          // Return duplicate error with detailed information
+          return res.status(400).json({
+            error: `📋 FACTURA DUPLICADA DETECTADA\n` +
+                   `🔍 Archivo original: ${existingInvoice.fileName || 'N/A'}\n` +
+                   `📅 Fecha: ${existingInvoice.date || 'N/A'}\n` +
+                   `💰 Monto: $${existingInvoice.totalAmount || 'N/A'}\n` +
+                   `🏢 Cliente/Proveedor: ${existingInvoice.clientProviderName || 'Cliente no identificado'}\n` +
+                   `📄 Nro. Factura: ${existingInvoice.invoiceNumber || 'N/A'}\n` +
+                   `👤 Cargada por: ${existingInvoice.uploadedByName || 'Usuario'}\n` +
+                   `⚠️ La carga ha sido bloqueada para evitar duplicación de datos`
           });
         }
-      }
 
-      // Return immediately with job IDs - processing happens asynchronously
-      res.status(202).json({
-        message: `${files.length} archivo(s) en cola para procesamiento`,
-        jobs: jobResults
-      });
+        // Create upload job with all required data - now persisted to database
+        const job = await uploadJobManager.createJob(
+          userId,
+          file.originalname,
+          file.size,
+          fingerprint,
+          file.path,
+          uploadedByName,
+          ownerName
+        );
+
+        // Return immediately with job ID - processing happens asynchronously
+        res.status(202).json({
+          message: `${file.originalname} en cola para procesamiento`,
+          jobId: job.id,
+          fileName: job.fileName,
+          status: job.status
+        });
+
+      } catch (error: any) {
+        // Handle file errors (especially duplicates) gracefully
+        console.warn(`Error creating job for file ${file.originalname}:`, error);
+        
+        // Clean up uploaded file if there was an error
+        if (fs.existsSync(file.path)) {
+          try {
+            fs.unlinkSync(file.path);
+          } catch (cleanupError) {
+            console.error(`Failed to cleanup file ${file.path}:`, cleanupError);
+          }
+        }
+
+        // Return error response
+        res.status(400).json({
+          error: error.message?.includes('duplicate key') 
+            ? 'Este archivo ya fue cargado anteriormente'
+            : error.message || 'Error al crear trabajo de carga'
+        });
+      }
 
     } catch (error) {
       console.error('Error creating upload jobs:', error);
       res.status(500).json({ error: "Error al crear trabajos de carga" });
+    }
+  });
+
+  // Clean up specific upload job (admin only)
+  app.delete("/api/uploads/:jobId", requireAuth, requireRole('admin'), async (req, res) => {
+    try {
+      const { jobId } = req.params;
+      const success = await storage.deleteUploadJob(jobId);
+      
+      if (success) {
+        res.json({ success: true, message: "Job eliminado correctamente" });
+      } else {
+        res.status(404).json({ error: "Job no encontrado" });
+      }
+    } catch (error) {
+      console.error('Error deleting upload job:', error);
+      res.status(500).json({ error: "Error al eliminar el job" });
     }
   });
 

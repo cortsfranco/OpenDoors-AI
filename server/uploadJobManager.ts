@@ -191,6 +191,10 @@ export class UploadJobManager {
       // === FIN DEL CÓDIGO DE DIAGNÓSTICO ===
 
       if (existingInvoice) {
+        // Extract data from current file for comparison
+        const currentData = await this.extractInvoiceDataForComparison(job.filePath);
+        const comparison = this.compareInvoiceData(currentData, existingInvoice);
+        
         // Marcamos como duplicado con información detallada
         await this.updateJob(jobId, { 
           status: 'duplicate',
@@ -198,9 +202,10 @@ export class UploadJobManager {
                  `🔍 Archivo original: ${existingInvoice.fileName || 'N/A'}\n` +
                  `📅 Fecha: ${existingInvoice.date || 'N/A'}\n` +
                  `💰 Monto: $${existingInvoice.totalAmount || 'N/A'}\n` +
-                 `🏢 Cliente/Proveedor: ${existingInvoice.clientProviderName || 'N/A'}\n` +
+                 `🏢 Cliente/Proveedor: ${existingInvoice.clientProviderName || 'Cliente no identificado'}\n` +
                  `📄 Nro. Factura: ${existingInvoice.invoiceNumber || 'N/A'}\n` +
                  `👤 Cargada por: ${existingInvoice.uploadedByName || 'Usuario'}\n` +
+                 `📊 Similitud: ${comparison.similarity}%\n` +
                  `⚠️ La carga ha sido bloqueada para evitar duplicación de datos`
         });
         
@@ -526,16 +531,22 @@ export class UploadJobManager {
     type?: string;
   }> {
     try {
+      // Try to extract data using Azure AI for comparison
       const fileBuffer = fs.readFileSync(filePath);
+      const extractedData = await azureProcessor.processInvoice(filePath, undefined);
       
-      return {
-        date: undefined,
-        amount: undefined,
-        client: undefined,
-        invoiceNumber: undefined,
-        cuit: undefined,
-        type: undefined
-      };
+      if (extractedData) {
+        return {
+          date: extractedData.date,
+          amount: extractedData.total,
+          client: extractedData.client_name,
+          invoiceNumber: extractedData.invoice_number,
+          cuit: (extractedData as any).supplier_cuit,
+          type: extractedData.type
+        };
+      }
+      
+      return {};
     } catch (error) {
       console.error('Error extracting data for comparison:', error);
       return {};

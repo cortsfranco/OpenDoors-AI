@@ -183,10 +183,36 @@ export class AzureInvoiceProcessor {
         invoiceNumber = invoiceNumber.replace(/^(Nº|N°|#)\s*/g, '').trim();
       }
       
-      // Extract raw client name based on invoice type
+      // Extract raw client name based on invoice type with multiple fallbacks
       let rawClientName = type === 'income' 
-        ? this.extractField(fields.CustomerName || fields.BillTo) // Who we invoice to
-        : this.extractField(fields.VendorName || fields.Vendor);   // Who invoices us
+        ? this.extractField(fields.CustomerName || fields.BillTo || fields.Customer || fields.ClientName) // Who we invoice to
+        : this.extractField(fields.VendorName || fields.Vendor || fields.SupplierName || fields.Supplier || fields.CompanyName);   // Who invoices us
+      
+      // If no client name found, try to extract from document content
+      if (!rawClientName || rawClientName.trim() === '') {
+        const documentText = result.content || '';
+        
+        // Try to find company names in the document text
+        const companyPatterns = [
+          /(?:razón social|empresa|cliente|proveedor)[\s:]*([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑ\s\.\&\-]+)/i,
+          /([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑ\s\.\&\-]{3,})\s*(?:S\.A\.|S\.A\.S\.|S\.R\.L\.|LTD|INC)/i,
+          /(?:de|para|a favor de)[\s:]*([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑ\s\.\&\-]{3,})/i
+        ];
+        
+        for (const pattern of companyPatterns) {
+          const match = documentText.match(pattern);
+          if (match && match[1]) {
+            const candidate = match[1].trim();
+            // Filter out common non-company words
+            if (!/^(factura|comprobante|fecha|total|subtotal|iva|impuestos|documento)$/i.test(candidate) &&
+                candidate.length > 3 && candidate.length < 100) {
+              rawClientName = candidate;
+              console.log(`🔍 Extracted client name from document text: ${rawClientName}`);
+              break;
+            }
+          }
+        }
+      }
       
       // Known Open Doors variations to filter out
       const openDoorsVariations = [
@@ -212,10 +238,36 @@ export class AzureInvoiceProcessor {
           // Try alternative fields for the actual client
           rawClientName = this.extractField(fields.BillTo || fields.ShipTo || fields.RemittanceAddressRecipient);
           
-          // If still OpenDoors or empty, mark as unknown
+          // If still OpenDoors or empty, try to extract from other fields
           if (!rawClientName || openDoorsVariations.some(v => rawClientName?.toLowerCase().includes(v.toLowerCase()))) {
-            rawClientName = 'Cliente no identificado';
-            console.log('❌ Could not identify real client, using placeholder');
+            // Try alternative extraction methods
+            const alternativeFields = [
+              fields.CustomerAddress,
+              fields.VendorAddress,
+              fields.BillToAddress,
+              fields.ShipToAddress
+            ];
+            
+            for (const field of alternativeFields) {
+              if (field && typeof field === 'string') {
+                const addressMatch = field.match(/([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑ\s\.\&\-]{3,})/);
+                if (addressMatch && addressMatch[1]) {
+                  const candidate = addressMatch[1].trim();
+                  if (!openDoorsVariations.some(v => candidate.toLowerCase().includes(v.toLowerCase())) &&
+                      candidate.length > 3 && candidate.length < 50) {
+                    rawClientName = candidate;
+                    console.log(`🔍 Extracted client name from address field: ${rawClientName}`);
+                    break;
+                  }
+                }
+              }
+            }
+            
+            // Only use placeholder as last resort
+            if (!rawClientName || openDoorsVariations.some(v => rawClientName?.toLowerCase().includes(v.toLowerCase()))) {
+              rawClientName = 'Cliente no identificado';
+              console.log('❌ Could not identify real client, using placeholder');
+            }
           }
         }
       }

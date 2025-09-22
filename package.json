@@ -14,7 +14,6 @@
     "setup": "npm run test:db && npm run db:push",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
-    
   },
   "dependencies": {
     "@azure/ai-form-recognizer": "^5.1.0",
@@ -52,6 +51,7 @@
     "@radix-ui/react-tooltip": "^1.2.0",
     "@tanstack/react-query": "^5.60.5",
     "@types/bcrypt": "^6.0.0",
+    "@types/cors": "^2.8.19",
     "@types/form-data": "^2.2.1",
     "@types/multer": "^2.0.0",
     "@types/pg": "^8.15.5",
@@ -61,6 +61,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "connect-pg-simple": "^10.0.0",
+    "cors": "^2.8.5",
     "cross-env": "^10.0.0",
     "date-fns": "^3.6.0",
     "dotenv": "^17.2.2",

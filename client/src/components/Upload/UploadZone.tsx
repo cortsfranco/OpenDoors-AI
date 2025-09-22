@@ -13,6 +13,7 @@ interface UploadProgressState {
   name: string;
   status: 'pending' | 'uploading' | 'processing' | 'success' | 'duplicate' | 'error';
   progress: number;
+  timestamp?: number;
 }
 
 const getIconForStatus = (status: UploadProgressState['status']) => {
@@ -60,10 +61,19 @@ export default function UploadZone() {
     }
   }, [lastMessage]);
 
+  // Auto-cleanup duplicate messages after 10 seconds
+  useEffect(() => {
+    const cleanupTimer = setTimeout(() => {
+      setUploadState(prev => prev.filter(f => f.status !== 'duplicate' || Date.now() - f.timestamp < 10000));
+    }, 10000);
+
+    return () => clearTimeout(cleanupTimer);
+  }, [uploadState]);
+
   const mutation = useMutation({
     mutationFn: async (file: File) => {
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('uploadFile', file);
       
       const response = await fetch('/api/uploads', {
         method: 'POST',
@@ -86,11 +96,16 @@ export default function UploadZone() {
       });
     },
     onError: (error, file) => {
-      setUploadState(prev => prev.map(f => f.name === file.name ? {...f, status: 'error'} : f));
+      const isDuplicate = error.message?.includes('FACTURA DUPLICADA DETECTADA');
+      setUploadState(prev => prev.map(f => f.name === file.name ? {
+        ...f, 
+        status: isDuplicate ? 'duplicate' : 'error'
+      } : f));
+      
       toast({
-        title: "Error en la carga",
+        title: isDuplicate ? "Factura duplicada" : "Error en la carga",
         description: `${file.name}: ${error.message}`,
-        variant: "destructive"
+        variant: isDuplicate ? "default" : "destructive"
       });
     }
   });
@@ -102,6 +117,7 @@ export default function UploadZone() {
       name: file.name,
       status: 'pending',
       progress: 0,
+      timestamp: Date.now(),
     })));
 
     acceptedFiles.forEach(file => mutation.mutate(file));
