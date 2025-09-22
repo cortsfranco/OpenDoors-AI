@@ -110,11 +110,9 @@ export default function Upload() {
     }
   };
 
-
-
   return (
     <div className="p-6 space-y-6" data-testid="upload-page">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <h2 className="text-2xl font-bold text-foreground mb-2">
             Hola {user?.displayName?.split(' ')[0] || 'Usuario'}, Cargar Nueva Factura
@@ -124,63 +122,73 @@ export default function Upload() {
           </p>
         </div>
 
-        {/* Owner Selection Section */}
-        <div className="mb-6 p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-xl border border-purple-200 dark:border-purple-800">
-          <h3 className="text-lg font-semibold text-purple-700 dark:text-purple-400 mb-4">
-            Propietario de la factura
-          </h3>
-          <div className="space-y-4">
-            <div>
-              <Label htmlFor="owner">Socio de OpenDoors</Label>
-              <Select value={selectedOwner} onValueChange={setSelectedOwner}>
-                <SelectTrigger id="owner" className="w-full">
-                  <SelectValue placeholder="Seleccionar propietario" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Joni">Joni</SelectItem>
-                  <SelectItem value="Hernán">Hernán</SelectItem>
-                  <SelectItem value="Otro">Otro (especificar)</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            {selectedOwner === 'Otro' && (
+        {/* =============================================================== */}
+        {/* INICIO CORRECCIÓN: Grid de 3 columnas para los bloques        */}
+        {/* =============================================================== */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* Bloque 1: Owner Selection Section */}
+          <div className="p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-xl border border-purple-200 dark:border-purple-800 h-full flex flex-col">
+            <h3 className="text-lg font-semibold text-purple-700 dark:text-purple-400 mb-4">
+              Propietario de la factura
+            </h3>
+            <div className="space-y-4">
               <div>
-                <Label htmlFor="customOwner">Nombre del propietario</Label>
-                <Input
-                  id="customOwner"
-                  type="text"
-                  value={customOwner}
-                  onChange={(e) => setCustomOwner(e.target.value)}
-                  placeholder="Ingrese el nombre del propietario"
-                />
+                <Label htmlFor="owner">Socio de OpenDoors</Label>
+                <Select value={selectedOwner} onValueChange={setSelectedOwner}>
+                  <SelectTrigger id="owner" className="w-full">
+                    <SelectValue placeholder="Seleccionar propietario" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Joni">Joni</SelectItem>
+                    <SelectItem value="Hernán">Hernán</SelectItem>
+                    <SelectItem value="Otro">Otro (especificar)</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-            )}
+              {selectedOwner === 'Otro' && (
+                <div>
+                  <Label htmlFor="customOwner">Nombre del propietario</Label>
+                  <Input
+                    id="customOwner"
+                    type="text"
+                    value={customOwner}
+                    onChange={(e) => setCustomOwner(e.target.value)}
+                    placeholder="Ingrese el nombre del propietario"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Bloque 2: Upload Zone Section */}
+          <div className="p-6 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 rounded-xl border border-emerald-200 dark:border-emerald-800 h-full flex flex-col">
+            <h3 className="text-lg font-semibold text-emerald-700 dark:text-emerald-400 mb-4">
+              Cargar archivo de factura
+            </h3>
+            <div className="flex-grow">
+              <UploadZone />
+            </div>
+          </div>
+          
+          {/* Bloque 3: Manual Entry Button convertido en Card */}
+          <div className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border border-blue-200 dark:border-blue-800 h-full flex flex-col justify-center items-center">
+             <h3 className="text-lg font-semibold text-blue-700 dark:text-blue-400 mb-4 text-center">
+              ¿No tienes el archivo?
+            </h3>
+            <Button
+              onClick={() => setShowManualForm(true)}
+              variant="outline"
+              className="w-full bg-white/50"
+              data-testid="manual-entry-button"
+            >
+              <Edit className="w-4 h-4 mr-2" />
+              Ingresar Datos Manualmente
+            </Button>
           </div>
         </div>
-
-
-        {/* Upload Zone Section */}
-        <div className="mb-6 p-6 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 rounded-xl border border-emerald-200 dark:border-emerald-800">
-          <h3 className="text-lg font-semibold text-emerald-700 dark:text-emerald-400 mb-4">
-            Cargar archivo de factura
-          </h3>
-          <UploadZone />
-
-        </div>
-
-        {/* Manual Entry Button */}
-        <div className="mb-6 flex justify-center">
-          <Button
-            onClick={() => setShowManualForm(true)}
-            variant="outline"
-            className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 text-blue-700 dark:text-blue-400 border-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30"
-            data-testid="manual-entry-button"
-          >
-            <Edit className="w-4 h-4 mr-2" />
-            Ingresar Datos Manualmente
-          </Button>
-        </div>
-
+        {/* =============================================================== */}
+        {/* FIN CORRECCIÓN: Fin del Grid                                  */}
+        {/* =============================================================== */}
 
         {/* Upload Progress - Real-time job tracking */}
         <UploadProgress showRecentJobs={true} />

@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -79,7 +80,6 @@ export default function InvoicesTable({
   
   const handleBulkDelete = async () => {
     if (selectedInvoices.size === 0) return;
-    // Show confirmation modal
     setShowBulkDeleteConfirm(true);
   };
   
@@ -92,7 +92,6 @@ export default function InvoicesTable({
     let failureCount = 0;
     
     try {
-      // Delete each invoice
       for (const invoiceId of invoiceIds) {
         try {
           await deleteInvoiceMutation.mutateAsync({
@@ -107,7 +106,6 @@ export default function InvoicesTable({
         }
       }
       
-      // Show result toast
       if (successCount > 0 && failureCount === 0) {
         toast({
           title: "Facturas eliminadas",
@@ -127,7 +125,6 @@ export default function InvoicesTable({
         });
       }
       
-      // Clear selection if at least one was deleted
       if (successCount > 0) {
         setSelectedInvoices(new Set());
       }
@@ -169,7 +166,6 @@ export default function InvoicesTable({
         document.body.removeChild(a);
         window.URL.revokeObjectURL(url);
         
-        // Clear selection after successful export
         setSelectedInvoices(new Set());
       }
     } catch (error) {
@@ -195,11 +191,9 @@ export default function InvoicesTable({
         const contentType = response.headers.get('content-type');
         
         if (contentType && contentType.includes('application/json')) {
-          // Handle multi-file response (coming soon message)
           const data = await response.json();
           alert(data.message || data.error);
         } else {
-          // Handle single file download
           const blob = await response.blob();
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement('a');
@@ -240,7 +234,6 @@ export default function InvoicesTable({
           description: `Se actualizó el estado de pago de ${result.updated} factura${result.updated > 1 ? 's' : ''}`,
         });
         
-        // Clear selection after successful update
         setSelectedInvoices(new Set());
       } else {
         throw new Error('Failed to update payment status');
@@ -255,7 +248,6 @@ export default function InvoicesTable({
     }
   };
   
-  // Calculate totals for selected invoices
   const selectedTotals = invoices
     .filter(inv => selectedInvoices.has(inv.id))
     .reduce<{ total: number; iva: number; count: number }>(
@@ -331,7 +323,6 @@ export default function InvoicesTable({
 
   const handleViewFile = (invoice: InvoiceWithRelations) => {
     if (!invoice.filePath) return;
-    // Usar Google Drive Viewer para mostrar el archivo
     const fileUrl = `${window.location.origin}/api/invoices/${invoice.id}/file`;
     const googleViewerUrl = `https://drive.google.com/viewerng/viewer?embedded=true&url=${encodeURIComponent(fileUrl)}`;
     window.open(googleViewerUrl, '_blank');
@@ -469,7 +460,7 @@ export default function InvoicesTable({
         </div>
       )}
       
-      <Card data-testid="invoices-table">
+      <div className="border rounded-lg overflow-hidden">
         {/* Mobile Card View */}
         <div className="sm:hidden">
           <div className="p-4 border-b bg-muted/20">
@@ -565,11 +556,11 @@ export default function InvoicesTable({
                           <div className="flex justify-between items-center">
                             <span className="text-muted-foreground">Estado:</span>
                             <PaymentStatus 
-    currentStatus={invoice.paymentStatus}
-    invoiceId={invoice.id}
-    paymentDate={invoice.paymentDate ? new Date(invoice.paymentDate).toISOString() : null}
-    editable={true}
-/>
+                              currentStatus={invoice.paymentStatus}
+                              invoiceId={invoice.id}
+                              paymentDate={invoice.paymentDate ? new Date(invoice.paymentDate).toISOString() : null}
+                              editable={true}
+                            />
                           </div>
                           {invoice.invoiceNumber && (
                             <div className="flex justify-between items-center">
@@ -597,10 +588,12 @@ export default function InvoicesTable({
           </div>
         </div>
 
-        {/* Desktop Table View */}
+        {/* =============================================================== */}
+        {/* INICIO DE LA CORRECCIÓN DE ESTILOS DE LA TABLA DE ESCRITORIO  */}
+        {/* =============================================================== */}
         <div className="hidden sm:block mobile-scroll-container">
           <table className="w-full">
-            <thead className="bg-muted/50">
+            <thead className="bg-blue-600/75 text-white">
               <tr>
                 <th className="px-4 py-3 text-left">
                   <Checkbox
@@ -609,74 +602,74 @@ export default function InvoicesTable({
                     data-testid="select-all"
                   />
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                <th className="px-4 py-3 text-left text-sm font-medium uppercase">
                   #
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                   Categoría
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                <th className="px-4 py-3 text-left text-sm font-medium uppercase">
                   Clase
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                   <button
                     onClick={() => handleSort('date')}
-                    className="flex items-center hover:text-foreground transition-colors"
+                    className="flex items-center hover:opacity-80 transition-opacity"
                     data-testid="sort-date"
                   >
                     Fecha Emisión
                     {getSortIcon('date')}
                   </button>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                   <button
                     onClick={() => handleSort('createdAt')}
-                    className="flex items-center hover:text-foreground transition-colors"
+                    className="flex items-center hover:opacity-80 transition-opacity"
                     data-testid="sort-upload-date"
                   >
                     Fecha Ingreso
                     {getSortIcon('createdAt')}
                   </button>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                   <button
                     onClick={() => handleSort('client')}
-                    className="flex items-center hover:text-foreground transition-colors"
+                    className="flex items-center hover:opacity-80 transition-opacity"
                     data-testid="sort-client"
                   >
                     Cliente/Proveedor
                     {getSortIcon('client')}
                   </button>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                   Detalle
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                   Número
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                   <button
                     onClick={() => handleSort('amount')}
-                    className="flex items-center hover:text-foreground transition-colors"
+                    className="flex items-center hover:opacity-80 transition-opacity"
                     data-testid="sort-amount"
                   >
                     Total
                     {getSortIcon('amount')}
                   </button>
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                   IVA
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                   Estado Pago
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                   Cargado por
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                   Propietario
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                <th className="px-6 py-3 text-left text-sm font-medium uppercase">
                   Acciones
                 </th>
               </tr>
@@ -685,7 +678,7 @@ export default function InvoicesTable({
               {invoices.map((invoice, index) => (
                 <tr
                   key={invoice.id}
-                  className="table-row-hover"
+                  className="hover:bg-green-50/50 dark:hover:bg-green-900/20"
                   data-testid={`invoice-row-${invoice.id}`}
                 >
                   <td className="px-4 py-4">
@@ -837,7 +830,6 @@ export default function InvoicesTable({
           </table>
         </div>
         
-        {/* Pagination */}
         <div className="px-6 py-4 border-t border-border">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="text-sm text-muted-foreground text-center sm:text-left">
@@ -879,7 +871,7 @@ export default function InvoicesTable({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => onPageChange(currentPage + 1)}
+                onClick={() => onPagechange(currentPage + 1)}
                 disabled={currentPage >= totalPages}
                 data-testid="next-page"
                 className="px-2 sm:px-4"
@@ -890,7 +882,7 @@ export default function InvoicesTable({
             </div>
           </div>
         </div>
-      </Card>
+      </div>
 
       <EditInvoiceModal
         isOpen={!!editingInvoice}

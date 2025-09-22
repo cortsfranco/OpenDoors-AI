@@ -29,7 +29,6 @@ export default function Analytics() {
     to: undefined
   });
   
-  // Export options state
   const [selectedExportItems, setSelectedExportItems] = useState({
     kpiCards: true,
     charts: true,
@@ -40,11 +39,9 @@ export default function Analytics() {
 
   const handleDateRangeChange = (range: DateRange) => {
     setDateRange(range);
-    // Aquí eventualmente se filtrarán los datos
     console.log('Date range changed:', range);
   };
 
-  // Export mutations
   const exportCSVMutation = useMutation({
     mutationFn: async () => {
       const params = new URLSearchParams();
@@ -123,7 +120,6 @@ export default function Analytics() {
 
   const syncGoogleSheetsMutation = useMutation({
     mutationFn: async () => {
-      // Prepare analytics data for Google Sheets
       const params = new URLSearchParams();
       if (dateRange.from) params.append('startDate', format(dateRange.from, 'yyyy-MM-dd'));
       if (dateRange.to) params.append('endDate', format(dateRange.to, 'yyyy-MM-dd'));
@@ -159,149 +155,150 @@ export default function Analytics() {
   const firstName = user?.displayName?.split(' ')[0] || 'Usuario';
 
   return (
-    <div className="container-mobile" data-testid="analytics-page">
-      <div className="space-y-4 sm:space-y-6">
-        {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 min-w-0">
-          <div className="flex flex-col gap-3 min-w-0">
-            <Link href="/" target="_self">
-              <Button variant="ghost" size="sm" data-testid="back-to-dashboard" className="w-fit">
-                <ArrowLeft className="w-4 h-4 mr-2 flex-shrink-0" />
-                <span className="min-w-0">Dashboard</span>
-              </Button>
-            </Link>
-            <div className="min-w-0">
-              <h1 className="text-xl sm:text-2xl font-bold leading-tight flex items-center min-w-0 gap-2">
-                <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
-                <span className="min-w-0 break-words">Analytics Ejecutivos</span>
-              </h1>
-              <p className="text-sm sm:text-base text-muted-foreground mt-1 min-w-0 break-words">
-                Análisis financiero avanzado y reportes para {firstName}
-              </p>
-            </div>
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6" data-testid="analytics-page">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 min-w-0">
+        <div className="flex flex-col gap-3 min-w-0">
+          <Link href="/" target="_self">
+            <Button variant="ghost" size="sm" data-testid="back-to-dashboard" className="w-fit">
+              <ArrowLeft className="w-4 h-4 mr-2 flex-shrink-0" />
+              <span className="min-w-0">Dashboard</span>
+            </Button>
+          </Link>
+          <div className="min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold leading-tight flex items-center min-w-0 gap-2">
+              <BarChart3 className="w-5 h-5 sm:w-6 sm:h-6 text-primary flex-shrink-0" />
+              <span className="min-w-0 break-words">Analytics Ejecutivos</span>
+            </h1>
+            <p className="text-sm sm:text-base text-muted-foreground mt-1 min-w-0 break-words">
+              Análisis financiero avanzado y reportes para {firstName}
+            </p>
           </div>
-          
-          {/* Period Filter & Export Actions */}
-          <div className="flex flex-col gap-3 w-full sm:w-auto min-w-0">
-            <Badge variant="outline" className="text-xs sm:text-sm w-fit min-w-0 text-clamp-1">
-              {dateRange.from ? (
-                dateRange.to && dateRange.from.getTime() !== dateRange.to.getTime() ? (
-                  `${format(dateRange.from, 'dd/MM/yy', { locale: es })} - ${format(dateRange.to, 'dd/MM/yy', { locale: es })}`
-                ) : (
-                  format(dateRange.from, 'dd/MM/yyyy', { locale: es })
-                )
+        </div>
+        
+        {/* Period Filter & Export Actions */}
+        <div className="flex flex-col gap-3 w-full sm:w-auto min-w-0">
+          <Badge variant="outline" className="text-xs sm:text-sm w-fit min-w-0 text-clamp-1">
+            {dateRange.from ? (
+              dateRange.to && dateRange.from.getTime() !== dateRange.to.getTime() ? (
+                `${format(dateRange.from, 'dd/MM/yy', { locale: es })} - ${format(dateRange.to, 'dd/MM/yy', { locale: es })}`
               ) : (
-                "Todos los períodos"
-              )}
-            </Badge>
-            <div className="flex flex-col sm:flex-row gap-2">
-              <AdvancedDateRangePicker
-                value={dateRange}
-                onChange={handleDateRangeChange}
-                placeholder="Filtrar por período"
-                showPresets={true}
-                showFiscalPeriods={true}
-                className="w-full sm:w-64 min-w-0"
-              />
-              
-              {/* Export Actions */}
-              <div className="flex gap-2">
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <Button variant="success" size="sm" data-testid="export-analytics-button">
-                      <Download className="w-4 h-4 mr-2" />
-                      Exportar
-                    </Button>
-                  </SheetTrigger>
-                  <SheetContent>
-                    <SheetHeader>
-                      <SheetTitle>Exportar Analytics Ejecutivos</SheetTitle>
-                      <SheetDescription>
-                        Selecciona qué elementos incluir en la exportación
-                      </SheetDescription>
-                    </SheetHeader>
-                    
-                    <div className="space-y-6 mt-6">
-                      {/* Export Items Selection */}
-                      <div>
-                        <Label className="text-sm font-medium mb-3 block">Elementos a exportar</Label>
-                        <div className="space-y-3">
-                          {Object.entries({
-                            kpiCards: 'Tarjetas KPI del período',
-                            charts: 'Gráficos y análisis avanzados',
-                            projections: 'Proyecciones y estimaciones',
-                            alerts: 'Alertas y recomendaciones',
-                            dateRange: 'Información del período filtrado'
-                          }).map(([key, label]) => (
-                            <div key={key} className="flex items-center space-x-2">
-                              <Checkbox
-                                id={key}
-                                checked={selectedExportItems[key as keyof typeof selectedExportItems]}
-                                onCheckedChange={(checked) => 
-                                  setSelectedExportItems(prev => ({
-                                    ...prev,
-                                    [key]: checked
-                                  }))
-                                }
-                                data-testid={`checkbox-export-${key}`}
-                              />
-                              <Label htmlFor={key} className="text-sm leading-none">
-                                {label}
-                              </Label>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      <Separator />
-                      
-                      {/* Export Format Options */}
+                format(dateRange.from, 'dd/MM/yyyy', { locale: es })
+              )
+            ) : (
+              "Todos los períodos"
+            )}
+          </Badge>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <AdvancedDateRangePicker
+              value={dateRange}
+              onChange={handleDateRangeChange}
+              placeholder="Filtrar por período"
+              showPresets={true}
+              showFiscalPeriods={true}
+              className="w-full sm:w-64 min-w-0"
+            />
+            
+            {/* Export Actions */}
+            <div className="flex gap-2">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="success" size="sm" data-testid="export-analytics-button">
+                    <Download className="w-4 h-4 mr-2" />
+                    Exportar
+                  </Button>
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader>
+                    <SheetTitle>Exportar Analytics Ejecutivos</SheetTitle>
+                    <SheetDescription>
+                      Selecciona qué elementos incluir en la exportación
+                    </SheetDescription>
+                  </SheetHeader>
+                  
+                  <div className="space-y-6 mt-6">
+                    {/* Export Items Selection */}
+                    <div>
+                      <Label className="text-sm font-medium mb-3 block">Elementos a exportar</Label>
                       <div className="space-y-3">
-                        <Label className="text-sm font-medium">Formatos disponibles</Label>
-                        
-                        <Button 
-                          onClick={() => exportCSVMutation.mutate()}
-                          disabled={exportCSVMutation.isPending}
-                          variant="success"
-                          className="w-full justify-start"
-                          data-testid="export-csv-analytics"
-                        >
-                          <FileText className="w-4 h-4 mr-2" />
-                          {exportCSVMutation.isPending ? "Exportando..." : "Exportar como CSV"}
-                        </Button>
-                        
-                        <Button 
-                          onClick={() => exportExcelMutation.mutate()}
-                          disabled={exportExcelMutation.isPending}
-                          variant="success"
-                          className="w-full justify-start"
-                          data-testid="export-excel-analytics"
-                        >
-                          <FileSpreadsheet className="w-4 h-4 mr-2" />
-                          {exportExcelMutation.isPending ? "Exportando..." : "Exportar como Excel"}
-                        </Button>
-                        
-                        <Button 
-                          onClick={() => syncGoogleSheetsMutation.mutate()}
-                          disabled={syncGoogleSheetsMutation.isPending}
-                          variant="success"
-                          className="w-full justify-start"
-                          data-testid="sync-google-sheets-analytics"
-                        >
-                          <Share2 className="w-4 h-4 mr-2" />
-                          {syncGoogleSheetsMutation.isPending ? "Sincronizando..." : "Copiar para Google Sheets"}
-                        </Button>
+                        {Object.entries({
+                          kpiCards: 'Tarjetas KPI del período',
+                          charts: 'Gráficos y análisis avanzados',
+                          projections: 'Proyecciones y estimaciones',
+                          alerts: 'Alertas y recomendaciones',
+                          dateRange: 'Información del período filtrado'
+                        }).map(([key, label]) => (
+                          <div key={key} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={key}
+                              checked={selectedExportItems[key as keyof typeof selectedExportItems]}
+                              onCheckedChange={(checked) => 
+                                setSelectedExportItems(prev => ({
+                                  ...prev,
+                                  [key]: checked
+                                }))
+                              }
+                              data-testid={`checkbox-export-${key}`}
+                            />
+                            <Label htmlFor={key} className="text-sm leading-none">
+                              {label}
+                            </Label>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                  </SheetContent>
-                </Sheet>
-              </div>
+                    
+                    <Separator />
+                    
+                    {/* Export Format Options */}
+                    <div className="space-y-3">
+                      <Label className="text-sm font-medium">Formatos disponibles</Label>
+                      
+                      <Button 
+                        onClick={() => exportCSVMutation.mutate()}
+                        disabled={exportCSVMutation.isPending}
+                        variant="success"
+                        className="w-full justify-start"
+                        data-testid="export-csv-analytics"
+                      >
+                        <FileText className="w-4 h-4 mr-2" />
+                        {exportCSVMutation.isPending ? "Exportando..." : "Exportar como CSV"}
+                      </Button>
+                      
+                      <Button 
+                        onClick={() => exportExcelMutation.mutate()}
+                        disabled={exportExcelMutation.isPending}
+                        variant="success"
+                        className="w-full justify-start"
+                        data-testid="export-excel-analytics"
+                      >
+                        <FileSpreadsheet className="w-4 h-4 mr-2" />
+                        {exportExcelMutation.isPending ? "Exportando..." : "Exportar como Excel"}
+                      </Button>
+                      
+                      <Button 
+                        onClick={() => syncGoogleSheetsMutation.mutate()}
+                        disabled={syncGoogleSheetsMutation.isPending}
+                        variant="success"
+                        className="w-full justify-start"
+                        data-testid="sync-google-sheets-analytics"
+                      >
+                        <Share2 className="w-4 h-4 mr-2" />
+                        {syncGoogleSheetsMutation.isPending ? "Sincronizando..." : "Copiar para Google Sheets"}
+                      </Button>
+                    </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Key Performance Summary - Mobile Responsive */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      {/* =============================================================== */}
+      {/* INICIO DE LA CORRECCIÓN: Grid responsivo para las tarjetas    */}
+      {/* =============================================================== */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-950/20 dark:to-blue-900/20 border-blue-200 dark:border-blue-800">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-xs sm:text-sm font-medium text-blue-800 dark:text-blue-200 min-w-0 text-clamp-1">
@@ -364,6 +361,9 @@ export default function Analytics() {
           </CardContent>
         </Card>
       </div>
+      {/* =============================================================== */}
+      {/* FIN DE LA CORRECCIÓN DE GRID                                  */}
+      {/* =============================================================== */}
 
       {/* Advanced Analytics Component - DATOS REALES */}
       <AdvancedCharts 
@@ -451,7 +451,6 @@ export default function Analytics() {
             </div>
           </CardContent>
         </Card>
-      </div>
       </div>
     </div>
   );

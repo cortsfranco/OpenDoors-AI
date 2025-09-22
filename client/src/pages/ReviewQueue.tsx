@@ -237,9 +237,6 @@ export default function ReviewQueue() {
   }
 
   return (
-    // ===============================================================
-    // CORRECCIÓN 1: Reducido el padding/espaciado general
-    // ===============================================================
     <div className="p-6 space-y-6" data-testid="review-queue-page">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -295,26 +292,29 @@ export default function ReviewQueue() {
           <CardContent className="p-0">
             <Table>
               {/* =============================================================== */}
-              {/* CORRECCIÓN 2: Color sutil en la cabecera de la tabla        */}
+              {/* INICIO DE LA CORRECCIÓN DE ESTILOS                          */}
               {/* =============================================================== */}
-              <TableHeader className="bg-gray-50 dark:bg-gray-800/50">
+              <TableHeader className="bg-blue-600/75">
                 <TableRow>
-                  <TableHead className="w-[200px]">Archivo</TableHead>
-                  <TableHead>N° Factura</TableHead>
-                  <TableHead>Fecha</TableHead>
-                  <TableHead>Cliente/Proveedor</TableHead>
-                  <TableHead>Tipo</TableHead>
-                  <TableHead>Total</TableHead>
-                  <TableHead>Estado</TableHead>
-                  <TableHead className="text-right">Acciones</TableHead>
+                  <TableHead className="w-[200px] text-white text-sm">Archivo</TableHead>
+                  <TableHead className="text-white text-sm">N° Factura</TableHead>
+                  <TableHead className="text-white text-sm">Fecha</TableHead>
+                  <TableHead className="text-white text-sm">Cliente/Proveedor</TableHead>
+                  <TableHead className="text-white text-sm">Tipo</TableHead>
+                  <TableHead className="text-white text-sm">Total</TableHead>
+                  <TableHead className="text-white text-sm">Estado</TableHead>
+                  <TableHead className="text-right text-white text-sm">Acciones</TableHead>
                 </TableRow>
               </TableHeader>
+              {/* =============================================================== */}
+              {/* FIN DE LA CORRECCIÓN DE ESTILOS                             */}
+              {/* =============================================================== */}
               <TableBody>
                 {pendingInvoices.map((invoice: PendingInvoice) => {
                   const missingFields = getMissingFieldsDisplay(invoice);
                   
                   return (
-                    <TableRow key={invoice.id} data-testid={`pending-invoice-${invoice.id}`} className="dark:border-gray-800">
+                    <TableRow key={invoice.id} data-testid={`pending-invoice-${invoice.id}`} className="hover:bg-green-50/50 dark:hover:bg-green-900/20 dark:border-gray-800">
                       <TableCell>
                         <div className="flex items-center gap-2">
                           <FileText className="w-4 h-4 text-amber-600 flex-shrink-0" />

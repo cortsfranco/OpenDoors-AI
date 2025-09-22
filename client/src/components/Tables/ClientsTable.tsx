@@ -57,7 +57,6 @@ export default function ClientsTable({ clients, onEdit, onAdd }: ClientsTablePro
   };
 
   const handleViewInvoices = (client: ClientProvider) => {
-    // Store the client filter in sessionStorage and navigate to invoices page
     sessionStorage.setItem('invoiceClientFilter', client.name);
     setLocation('/invoices');
     
@@ -232,7 +231,10 @@ export default function ClientsTable({ clients, onEdit, onAdd }: ClientsTablePro
         ) : (
           <div className="mobile-scroll-container">
             <table className="w-full">
-              <thead className="bg-muted/50">
+              {/* =============================================================== */}
+              {/* INICIO DE LA CORRECCIÓN DE ESTILOS                          */}
+              {/* =============================================================== */}
+              <thead className="bg-blue-600/75">
                 <tr>
                   <th className="px-4 py-3 text-left">
                     <Checkbox
@@ -241,34 +243,37 @@ export default function ClientsTable({ clients, onEdit, onAdd }: ClientsTablePro
                       data-testid="select-all-checkbox"
                     />
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                  <th className="px-6 py-3 text-left text-sm font-medium text-white uppercase">
                     Nombre
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                  <th className="px-6 py-3 text-left text-sm font-medium text-white uppercase">
                     CUIT
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                  <th className="px-6 py-3 text-left text-sm font-medium text-white uppercase">
                     Tipo
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                  <th className="px-6 py-3 text-left text-sm font-medium text-white uppercase">
                     Contacto
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                  <th className="px-6 py-3 text-left text-sm font-medium text-white uppercase">
                     Última Factura
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                  <th className="px-6 py-3 text-left text-sm font-medium text-white uppercase">
                     Total Operaciones
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
+                  <th className="px-6 py-3 text-left text-sm font-medium text-white uppercase">
                     Acciones
                   </th>
                 </tr>
               </thead>
+              {/* =============================================================== */}
+              {/* FIN DE LA CORRECCIÓN DE ESTILOS                             */}
+              {/* =============================================================== */}
               <tbody className="divide-y divide-border">
                 {clients.map((client) => (
                   <tr
                     key={client.id}
-                    className="table-row-hover"
+                    className="hover:bg-green-50/50 dark:hover:bg-green-900/20"
                     data-testid={`client-row-${client.id}`}
                   >
                     <td className="px-4 py-4">

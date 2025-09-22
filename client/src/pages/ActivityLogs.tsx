@@ -170,15 +170,21 @@ export default function ActivityLogs() {
           {/* Table */}
           <div className="border rounded-lg overflow-hidden">
             <Table>
-              <TableHeader>
+              {/* =============================================================== */}
+              {/* INICIO DE LA CORRECCIÓN DE ESTILOS DE LA CABECERA           */}
+              {/* =============================================================== */}
+              <TableHeader className="bg-blue-600/75">
                 <TableRow>
-                  <TableHead className="w-[180px]">Fecha y Hora</TableHead>
-                  <TableHead>Usuario</TableHead>
-                  <TableHead>Acción</TableHead>
-                  <TableHead>Descripción</TableHead>
-                  <TableHead className="w-[120px]">IP</TableHead>
+                  <TableHead className="w-[180px] text-white text-sm">Fecha y Hora</TableHead>
+                  <TableHead className="text-white text-sm">Usuario</TableHead>
+                  <TableHead className="text-white text-sm">Acción</TableHead>
+                  <TableHead className="text-white text-sm">Descripción</TableHead>
+                  <TableHead className="w-[120px] text-white text-sm">IP</TableHead>
                 </TableRow>
               </TableHeader>
+              {/* =============================================================== */}
+              {/* FIN DE LA CORRECCIÓN DE ESTILOS DE LA CABECERA              */}
+              {/* =============================================================== */}
               <TableBody>
                 {logs.length === 0 ? (
                   <TableRow>
@@ -188,7 +194,13 @@ export default function ActivityLogs() {
                   </TableRow>
                 ) : (
                   logs.map((log) => (
-                    <TableRow key={log.id} data-testid={`log-row-${log.id}`}>
+                    // ===============================================================
+                    // INICIO DE LA CORRECCIÓN DE ESTILO HOVER DE LA FILA
+                    // ===============================================================
+                    <TableRow key={log.id} data-testid={`log-row-${log.id}`} className="hover:bg-green-50/50 dark:hover:bg-green-900/20">
+                    {/* =============================================================== */}
+                    {/* FIN DE LA CORRECCIÓN DE ESTILO HOVER DE LA FILA
+                    {/* =============================================================== */}
                       <TableCell>
                         <div className="text-sm">
                           <div className="font-medium">
@@ -228,9 +240,9 @@ export default function ActivityLogs() {
           </div>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between pt-4">
             <div className="text-sm text-muted-foreground">
-              Mostrando {page * limit + 1} - {Math.min((page + 1) * limit, page * limit + logs.length)} registros
+              Mostrando {logs.length > 0 ? page * limit + 1 : 0} - {Math.min((page + 1) * limit, page * limit + logs.length)} registros
             </div>
             <div className="flex gap-2">
               <Button

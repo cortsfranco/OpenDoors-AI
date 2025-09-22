@@ -16,23 +16,13 @@ const Table = React.forwardRef<
 ))
 Table.displayName = "Table"
 
-// ===============================================================
-// INICIO CORRECCIÓN 1: Color de fondo para la cabecera
-// ===============================================================
 const TableHeader = React.forwardRef<
   HTMLTableSectionElement,
   React.HTMLAttributes<HTMLTableSectionElement>
 >(({ className, ...props }, ref) => (
-  <thead 
-    ref={ref} 
-    className={cn("[&_tr]:border-b bg-gray-50 dark:bg-gray-800/50", className)} 
-    {...props} 
-  />
+  <thead ref={ref} className={cn("[&_tr]:border-b", className)} {...props} />
 ))
 TableHeader.displayName = "TableHeader"
-// ===============================================================
-// FIN CORRECCIÓN 1
-// ===============================================================
 
 const TableBody = React.forwardRef<
   HTMLTableSectionElement,
@@ -61,9 +51,6 @@ const TableFooter = React.forwardRef<
 ))
 TableFooter.displayName = "TableFooter"
 
-// ===============================================================
-// INICIO CORRECCIÓN 2: Efecto hover de color verde sutil en las filas
-// ===============================================================
 const TableRow = React.forwardRef<
   HTMLTableRowElement,
   React.HTMLAttributes<HTMLTableRowElement>
@@ -71,16 +58,13 @@ const TableRow = React.forwardRef<
   <tr
     ref={ref}
     className={cn(
-      "border-b transition-colors hover:bg-green-50/50 data-[state=selected]:bg-muted dark:hover:bg-green-900/20",
+      "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
       className
     )}
     {...props}
   />
 ))
 TableRow.displayName = "TableRow"
-// ===============================================================
-// FIN CORRECCIÓN 2
-// ===============================================================
 
 const TableHead = React.forwardRef<
   HTMLTableCellElement,

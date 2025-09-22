@@ -238,31 +238,37 @@ export default function AdvancedCharts({ dateRange, timeframe = 'monthly' }: Adv
 
   // Function to render metric-specific content
   const renderMetricContent = () => {
+    const metricSelector = (
+      <Select value={selectedMetric} onValueChange={setSelectedMetric}>
+        <SelectTrigger className="w-full sm:w-48" data-testid="metric-selector">
+          <SelectValue placeholder="Seleccionar métrica" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="profitability">Rentabilidad</SelectItem>
+          <SelectItem value="growth">Crecimiento</SelectItem>
+          <SelectItem value="efficiency">Eficiencia</SelectItem>
+          <SelectItem value="cashflow">Flujo de Caja</SelectItem>
+        </SelectContent>
+      </Select>
+    );
+
     switch (selectedMetric) {
       case 'profitability':
         return (
           <Card>
-            <CardHeader>
-              <CardTitle>Análisis de Márgenes y Rentabilidad</CardTitle>
-              <CardDescription>Evolución de la rentabilidad y eficiencia operativa</CardDescription>
+            <CardHeader className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div>
+                <CardTitle>Análisis de Márgenes y Rentabilidad</CardTitle>
+                <CardDescription>Evolución de la rentabilidad y eficiencia operativa</CardDescription>
+              </div>
+              {metricSelector}
             </CardHeader>
             <CardContent>
-              <div className="h-64 sm:h-80 min-w-0">
+              <div className="h-80 sm:h-96 min-w-0">
                 {isLoading ? (
-                  <div className="h-full flex items-center justify-center">
-                    <div className="space-y-4 w-full">
-                      <Skeleton className="h-8 w-full" />
-                      <Skeleton className="h-8 w-full" />
-                      <Skeleton className="h-8 w-full" />
-                    </div>
-                  </div>
+                  <Skeleton className="h-full w-full" />
                 ) : hasError ? (
-                  <div className="h-full flex items-center justify-center text-red-500">
-                    <div className="text-center">
-                      <p className="text-lg font-medium">Error al cargar rentabilidad</p>
-                      <p className="text-sm">Intenta recargar la página</p>
-                    </div>
-                  </div>
+                  <div className="h-full flex items-center justify-center text-red-500"><p>Error al cargar datos.</p></div>
                 ) : profitabilityData && profitabilityData.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart data={profitabilityData}>
@@ -270,46 +276,15 @@ export default function AdvancedCharts({ dateRange, timeframe = 'monthly' }: Adv
                       <XAxis dataKey="month" tick={{ fontSize: 10 }} minTickGap={15} />
                       <YAxis yAxisId="left" orientation="left" tick={{ fontSize: 10 }} />
                       <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10 }} />
-                      <Tooltip 
-                        formatter={(value: any, name: string) => [
-                          name === 'margin' ? formatPercentage(value) : formatCurrency(value),
-                          name === 'revenue' ? 'Ingresos' :
-                          name === 'costs' ? 'Costos' :
-                          name === 'margin' ? 'Margen %' : name
-                        ]}
-                      />
-                      <Legend 
-                        content={(props) => (
-                          <div className="hidden sm:block">
-                            <div style={{ textAlign: 'center', marginTop: 8 }}>
-                              {props.payload?.map((entry: any, index: number) => (
-                                <span key={index} style={{ marginRight: 16, fontSize: 12 }}>
-                                  <span style={{ 
-                                    display: 'inline-block', 
-                                    width: 12, 
-                                    height: 12, 
-                                    backgroundColor: entry.color, 
-                                    marginRight: 4 
-                                  }} />
-                                  {entry.value}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      />
+                      <Tooltip formatter={(value: any, name: string) => [ name === 'margin' ? formatPercentage(value) : formatCurrency(value), name === 'revenue' ? 'Ingresos' : name === 'costs' ? 'Costos' : name === 'margin' ? 'Margen %' : name ]} />
+                      <Legend />
                       <Bar yAxisId="left" dataKey="revenue" fill={COLORS.income} name="Ingresos" />
                       <Bar yAxisId="left" dataKey="costs" fill={COLORS.expense} name="Costos" />
                       <Line yAxisId="right" type="monotone" dataKey="margin" stroke={COLORS.profit} strokeWidth={3} name="Margen %" />
                     </ComposedChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="h-full flex items-center justify-center text-muted-foreground">
-                    <div className="text-center">
-                      <p className="text-lg font-medium">No hay datos de rentabilidad</p>
-                      <p className="text-sm">Agrega facturas de ingresos y egresos</p>
-                    </div>
-                  </div>
+                  <div className="h-full flex items-center justify-center text-muted-foreground"><p>No hay datos de rentabilidad.</p></div>
                 )}
               </div>
             </CardContent>
@@ -319,27 +294,19 @@ export default function AdvancedCharts({ dateRange, timeframe = 'monthly' }: Adv
       case 'growth':
         return (
           <Card>
-            <CardHeader>
-              <CardTitle>Análisis de Crecimiento</CardTitle>
-              <CardDescription>Evolución porcentual mes a mes de ingresos y egresos</CardDescription>
+            <CardHeader className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div>
+                <CardTitle>Análisis de Crecimiento</CardTitle>
+                <CardDescription>Evolución porcentual mes a mes de ingresos y egresos</CardDescription>
+              </div>
+              {metricSelector}
             </CardHeader>
             <CardContent>
-              <div className="h-64 sm:h-80 min-w-0">
+              <div className="h-80 sm:h-96 min-w-0">
                 {isLoading ? (
-                  <div className="h-full flex items-center justify-center">
-                    <div className="space-y-4 w-full">
-                      <Skeleton className="h-8 w-full" />
-                      <Skeleton className="h-8 w-full" />
-                      <Skeleton className="h-8 w-full" />
-                    </div>
-                  </div>
+                  <Skeleton className="h-full w-full" />
                 ) : hasError ? (
-                  <div className="h-full flex items-center justify-center text-red-500">
-                    <div className="text-center">
-                      <p className="text-lg font-medium">Error al cargar crecimiento</p>
-                      <p className="text-sm">Intenta recargar la página</p>
-                    </div>
-                  </div>
+                  <div className="h-full flex items-center justify-center text-red-500"><p>Error al cargar datos.</p></div>
                 ) : growthData && growthData.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart data={growthData}>
@@ -347,36 +314,8 @@ export default function AdvancedCharts({ dateRange, timeframe = 'monthly' }: Adv
                       <XAxis dataKey="month" tick={{ fontSize: 10 }} minTickGap={15} />
                       <YAxis yAxisId="left" orientation="left" tick={{ fontSize: 10 }} />
                       <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10 }} />
-                      <Tooltip 
-                        formatter={(value: any, name: string) => [
-                          name.includes('Growth') || name.includes('netGrowth') ? formatPercentage(value) : formatCurrency(value),
-                          name === 'incomeGrowth' ? 'Crecimiento Ingresos' :
-                          name === 'expenseGrowth' ? 'Crecimiento Egresos' :
-                          name === 'netGrowth' ? 'Crecimiento Neto' :
-                          name === 'income' ? 'Ingresos' : 
-                          name === 'expense' ? 'Egresos' : name
-                        ]}
-                      />
-                      <Legend 
-                        content={(props) => (
-                          <div className="hidden sm:block">
-                            <div style={{ textAlign: 'center', marginTop: 8 }}>
-                              {props.payload?.map((entry: any, index: number) => (
-                                <span key={index} style={{ marginRight: 16, fontSize: 12 }}>
-                                  <span style={{ 
-                                    display: 'inline-block', 
-                                    width: 12, 
-                                    height: 12, 
-                                    backgroundColor: entry.color, 
-                                    marginRight: 4 
-                                  }} />
-                                  {entry.value}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      />
+                      <Tooltip formatter={(value: any, name: string) => [ name.includes('Growth') || name.includes('netGrowth') ? formatPercentage(value) : formatCurrency(value), name === 'incomeGrowth' ? 'Crecimiento Ingresos' : name === 'expenseGrowth' ? 'Crecimiento Egresos' : name === 'netGrowth' ? 'Crecimiento Neto' : name === 'income' ? 'Ingresos' : name === 'expense' ? 'Egresos' : name ]} />
+                      <Legend />
                       <Bar yAxisId="right" dataKey="income" fill={COLORS.income} name="Ingresos" opacity={0.6} />
                       <Bar yAxisId="right" dataKey="expense" fill={COLORS.expense} name="Egresos" opacity={0.6} />
                       <Line yAxisId="left" type="monotone" dataKey="incomeGrowth" stroke={COLORS.income} strokeWidth={3} name="Crecimiento Ingresos" />
@@ -385,12 +324,7 @@ export default function AdvancedCharts({ dateRange, timeframe = 'monthly' }: Adv
                     </ComposedChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="h-full flex items-center justify-center text-muted-foreground">
-                    <div className="text-center">
-                      <p className="text-lg font-medium">No hay datos de crecimiento</p>
-                      <p className="text-sm">Necesitas al menos 2 meses de datos</p>
-                    </div>
-                  </div>
+                  <div className="h-full flex items-center justify-center text-muted-foreground"><p>No hay datos de crecimiento.</p></div>
                 )}
               </div>
             </CardContent>
@@ -400,27 +334,19 @@ export default function AdvancedCharts({ dateRange, timeframe = 'monthly' }: Adv
       case 'efficiency':
         return (
           <Card>
-            <CardHeader>
-              <CardTitle>Análisis de Eficiencia</CardTitle>
-              <CardDescription>Métricas de productividad y rendimiento operativo</CardDescription>
+            <CardHeader className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div>
+                <CardTitle>Análisis de Eficiencia</CardTitle>
+                <CardDescription>Métricas de productividad y rendimiento operativo</CardDescription>
+              </div>
+              {metricSelector}
             </CardHeader>
             <CardContent>
-              <div className="h-64 sm:h-80 min-w-0">
+              <div className="h-80 sm:h-96 min-w-0">
                 {isLoading ? (
-                  <div className="h-full flex items-center justify-center">
-                    <div className="space-y-4 w-full">
-                      <Skeleton className="h-8 w-full" />
-                      <Skeleton className="h-8 w-full" />
-                      <Skeleton className="h-8 w-full" />
-                    </div>
-                  </div>
+                  <Skeleton className="h-full w-full" />
                 ) : hasError ? (
-                  <div className="h-full flex items-center justify-center text-red-500">
-                    <div className="text-center">
-                      <p className="text-lg font-medium">Error al cargar eficiencia</p>
-                      <p className="text-sm">Intenta recargar la página</p>
-                    </div>
-                  </div>
+                  <div className="h-full flex items-center justify-center text-red-500"><p>Error al cargar datos.</p></div>
                 ) : efficiencyData && efficiencyData.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart data={efficiencyData}>
@@ -428,37 +354,8 @@ export default function AdvancedCharts({ dateRange, timeframe = 'monthly' }: Adv
                       <XAxis dataKey="month" tick={{ fontSize: 10 }} minTickGap={15} />
                       <YAxis yAxisId="left" orientation="left" tick={{ fontSize: 10 }} />
                       <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10 }} />
-                      <Tooltip 
-                        formatter={(value: any, name: string) => [
-                          name === 'revenuePerInvoice' ? formatCurrency(value) :
-                          name === 'totalInvoices' ? value :
-                          formatPercentage(value),
-                          name === 'profitMargin' ? 'Margen de Ganancia' :
-                          name === 'costRatio' ? 'Ratio de Costos' :
-                          name === 'revenuePerInvoice' ? 'Ingresos por Factura' :
-                          name === 'totalInvoices' ? 'Total Facturas' : name
-                        ]}
-                      />
-                      <Legend 
-                        content={(props) => (
-                          <div className="hidden sm:block">
-                            <div style={{ textAlign: 'center', marginTop: 8 }}>
-                              {props.payload?.map((entry: any, index: number) => (
-                                <span key={index} style={{ marginRight: 16, fontSize: 12 }}>
-                                  <span style={{ 
-                                    display: 'inline-block', 
-                                    width: 12, 
-                                    height: 12, 
-                                    backgroundColor: entry.color, 
-                                    marginRight: 4 
-                                  }} />
-                                  {entry.value}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      />
+                      <Tooltip formatter={(value: any, name: string) => [ name === 'revenuePerInvoice' ? formatCurrency(value) : name === 'totalInvoices' ? value : formatPercentage(value), name === 'profitMargin' ? 'Margen de Ganancia' : name === 'costRatio' ? 'Ratio de Costos' : name === 'revenuePerInvoice' ? 'Ingresos por Factura' : name === 'totalInvoices' ? 'Total Facturas' : name ]} />
+                      <Legend />
                       <Area yAxisId="left" type="monotone" dataKey="profitMargin" fill={COLORS.income} fillOpacity={0.6} stroke={COLORS.income} name="Margen de Ganancia" />
                       <Area yAxisId="left" type="monotone" dataKey="costRatio" fill={COLORS.expense} fillOpacity={0.6} stroke={COLORS.expense} name="Ratio de Costos" />
                       <Line yAxisId="right" type="monotone" dataKey="revenuePerInvoice" stroke={COLORS.profit} strokeWidth={3} name="Ingresos por Factura" />
@@ -466,12 +363,7 @@ export default function AdvancedCharts({ dateRange, timeframe = 'monthly' }: Adv
                     </ComposedChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="h-full flex items-center justify-center text-muted-foreground">
-                    <div className="text-center">
-                      <p className="text-lg font-medium">No hay datos de eficiencia</p>
-                      <p className="text-sm">Procesa facturas para analizar eficiencia</p>
-                    </div>
-                  </div>
+                  <div className="h-full flex items-center justify-center text-muted-foreground"><p>No hay datos de eficiencia.</p></div>
                 )}
               </div>
             </CardContent>
@@ -481,27 +373,19 @@ export default function AdvancedCharts({ dateRange, timeframe = 'monthly' }: Adv
       case 'cashflow':
         return (
           <Card>
-            <CardHeader>
-              <CardTitle>Análisis de Flujo de Caja</CardTitle>
-              <CardDescription>Movimientos de efectivo mensuales y acumulados</CardDescription>
+            <CardHeader className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+              <div>
+                <CardTitle>Análisis de Flujo de Caja</CardTitle>
+                <CardDescription>Movimientos de efectivo mensuales y acumulados</CardDescription>
+              </div>
+              {metricSelector}
             </CardHeader>
             <CardContent>
-              <div className="h-64 sm:h-80 min-w-0">
+              <div className="h-80 sm:h-96 min-w-0">
                 {isLoading ? (
-                  <div className="h-full flex items-center justify-center">
-                    <div className="space-y-4 w-full">
-                      <Skeleton className="h-8 w-full" />
-                      <Skeleton className="h-8 w-full" />
-                      <Skeleton className="h-8 w-full" />
-                    </div>
-                  </div>
+                  <Skeleton className="h-full w-full" />
                 ) : hasError ? (
-                  <div className="h-full flex items-center justify-center text-red-500">
-                    <div className="text-center">
-                      <p className="text-lg font-medium">Error al cargar flujo de caja</p>
-                      <p className="text-sm">Intenta recargar la página</p>
-                    </div>
-                  </div>
+                  <div className="h-full flex items-center justify-center text-red-500"><p>Error al cargar datos.</p></div>
                 ) : cashFlowData && cashFlowData.length > 0 ? (
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart data={cashFlowData}>
@@ -509,36 +393,8 @@ export default function AdvancedCharts({ dateRange, timeframe = 'monthly' }: Adv
                       <XAxis dataKey="month" tick={{ fontSize: 10 }} minTickGap={15} />
                       <YAxis yAxisId="left" orientation="left" tick={{ fontSize: 10 }} />
                       <YAxis yAxisId="right" orientation="right" tick={{ fontSize: 10 }} />
-                      <Tooltip 
-                        formatter={(value: any, name: string) => [
-                          formatCurrency(value),
-                          name === 'monthlyFlow' ? 'Flujo Mensual' :
-                          name === 'cumulativeFlow' ? 'Flujo Acumulado' :
-                          name === 'income' ? 'Ingresos' :
-                          name === 'expense' ? 'Egresos' :
-                          name === 'ivaBalance' ? 'Balance IVA' : name
-                        ]}
-                      />
-                      <Legend 
-                        content={(props) => (
-                          <div className="hidden sm:block">
-                            <div style={{ textAlign: 'center', marginTop: 8 }}>
-                              {props.payload?.map((entry: any, index: number) => (
-                                <span key={index} style={{ marginRight: 16, fontSize: 12 }}>
-                                  <span style={{ 
-                                    display: 'inline-block', 
-                                    width: 12, 
-                                    height: 12, 
-                                    backgroundColor: entry.color, 
-                                    marginRight: 4 
-                                  }} />
-                                  {entry.value}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      />
+                      <Tooltip formatter={(value: any, name: string) => [ formatCurrency(value), name === 'monthlyFlow' ? 'Flujo Mensual' : name === 'cumulativeFlow' ? 'Flujo Acumulado' : name === 'income' ? 'Ingresos' : name === 'expense' ? 'Egresos' : name === 'ivaBalance' ? 'Balance IVA' : name ]} />
+                      <Legend />
                       <Bar yAxisId="left" dataKey="income" fill={COLORS.income} name="Ingresos" opacity={0.7} />
                       <Bar yAxisId="left" dataKey="expense" fill={COLORS.expense} name="Egresos" opacity={0.7} />
                       <Line yAxisId="left" type="monotone" dataKey="monthlyFlow" stroke={COLORS.profit} strokeWidth={3} name="Flujo Mensual" />
@@ -547,12 +403,7 @@ export default function AdvancedCharts({ dateRange, timeframe = 'monthly' }: Adv
                     </ComposedChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="h-full flex items-center justify-center text-muted-foreground">
-                    <div className="text-center">
-                      <p className="text-lg font-medium">No hay datos de flujo de caja</p>
-                      <p className="text-sm">Agrega transacciones para ver el flujo</p>
-                    </div>
-                  </div>
+                  <div className="h-full flex items-center justify-center text-muted-foreground"><p>No hay datos de flujo de caja.</p></div>
                 )}
               </div>
             </CardContent>
@@ -571,17 +422,6 @@ export default function AdvancedCharts({ dateRange, timeframe = 'monthly' }: Adv
           <h2 className="text-xl sm:text-2xl font-bold">Análisis Financiero Avanzado</h2>
           <p className="text-sm sm:text-base text-muted-foreground">Dashboard ejecutivo con métricas e insights detallados</p>
         </div>
-        <Select value={selectedMetric} onValueChange={setSelectedMetric}>
-          <SelectTrigger className="w-full sm:w-48">
-            <SelectValue placeholder="Seleccionar métrica" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="profitability">Rentabilidad</SelectItem>
-            <SelectItem value="growth">Crecimiento</SelectItem>
-            <SelectItem value="efficiency">Eficiencia</SelectItem>
-            <SelectItem value="cashflow">Flujo de Caja</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
 
       {/* KPIs Ejecutivos - DATOS REALES */}
@@ -683,7 +523,7 @@ export default function AdvancedCharts({ dateRange, timeframe = 'monthly' }: Adv
             <CardDescription>Clasificación AFIP por tipo de factura</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-64 sm:h-80 min-w-0">
+            <div className="h-80 sm:h-96 min-w-0">
               {breakdownLoading ? (
                 <div className="h-full flex items-center justify-center">
                   <Skeleton className="w-32 h-32 rounded-full" />

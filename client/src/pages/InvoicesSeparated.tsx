@@ -77,9 +77,6 @@ export default function InvoicesSeparated() {
     <div className="p-3 sm:p-6 space-y-4 sm:space-y-6" data-testid="invoices-separated-page">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-3 sm:space-y-0">
         <h1 className="text-xl sm:text-3xl font-bold">Facturas por Tipo</h1>
-        {/* =============================================================== */}
-        {/* INICIO DE LA CORRECCIÓN DE BOTONES                            */}
-        {/* =============================================================== */}
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-2">
           <Button 
             variant="outline" 
@@ -102,9 +99,6 @@ export default function InvoicesSeparated() {
             <span className="hidden sm:inline">Importar Excel</span>
           </Button>
         </div>
-        {/* =============================================================== */}
-        {/* FIN DE LA CORRECCIÓN DE BOTONES                               */}
-        {/* =============================================================== */}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -179,17 +173,19 @@ export default function InvoicesSeparated() {
         {activeTab === 'income' && (
           <div>
             {!incomeLoading && incomeData?.invoices && (
-              <Card>
-                <CardContent className="p-0 sm:p-4">
-                  <InvoicesTable 
-                    invoices={incomeData.invoices} 
-                    total={incomeData.total || incomeTotals.count}
-                    currentPage={incomePage}
-                    pageSize={pageSize}
-                    onPageChange={setIncomePage}
-                  />
-                </CardContent>
-              </Card>
+              // ===============================================================
+              // INICIO CORRECCIÓN 1: Eliminado Card y CardContent redundantes
+              // ===============================================================
+              <InvoicesTable 
+                invoices={incomeData.invoices} 
+                total={incomeData.total || incomeTotals.count}
+                currentPage={incomePage}
+                pageSize={pageSize}
+                onPageChange={setIncomePage}
+              />
+              // ===============================================================
+              // FIN CORRECCIÓN 1
+              // ===============================================================
             )}
           </div>
         )}
@@ -197,17 +193,19 @@ export default function InvoicesSeparated() {
         {activeTab === 'expense' && (
            <div>
             {!expenseLoading && expenseData?.invoices && (
-              <Card>
-                <CardContent className="p-0 sm:p-4">
-                  <InvoicesTable 
-                    invoices={expenseData.invoices} 
-                    total={expenseData.total || expenseTotals.count}
-                    currentPage={expensePage}
-                    pageSize={pageSize}
-                    onPageChange={setExpensePage}
-                  />
-                </CardContent>
-              </Card>
+              // ===============================================================
+              // INICIO CORRECCIÓN 2: Eliminado Card y CardContent redundantes
+              // ===============================================================
+              <InvoicesTable 
+                invoices={expenseData.invoices} 
+                total={expenseData.total || expenseTotals.count}
+                currentPage={expensePage}
+                pageSize={pageSize}
+                onPageChange={setExpensePage}
+              />
+              // ===============================================================
+              // FIN CORRECCIÓN 2
+              // ===============================================================
             )}
           </div>
         )}
@@ -215,17 +213,19 @@ export default function InvoicesSeparated() {
         {activeTab === 'neutral' && (
            <div>
             {!neutralLoading && neutralData?.invoices && (
-              <Card>
-                <CardContent className="p-0 sm:p-4">
-                  <InvoicesTable 
-                    invoices={neutralData.invoices} 
-                    total={neutralData.total || neutralTotals.count}
-                    currentPage={neutralPage}
-                    pageSize={pageSize}
-                    onPageChange={setNeutralPage}
-                  />
-                </CardContent>
-              </Card>
+              // ===============================================================
+              // INICIO CORRECCIÓN 3: Eliminado Card y CardContent redundantes
+              // ===============================================================
+              <InvoicesTable 
+                invoices={neutralData.invoices} 
+                total={neutralData.total || neutralTotals.count}
+                currentPage={neutralPage}
+                pageSize={pageSize}
+                onPageChange={setNeutralPage}
+              />
+              // ===============================================================
+              // FIN CORRECCIÓN 3
+              // ===============================================================
             )}
           </div>
         )}
