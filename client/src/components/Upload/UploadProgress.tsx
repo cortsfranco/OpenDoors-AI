@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, AlertCircle, Loader, Clock, XCircle, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react";
+import { CheckCircle, AlertCircle, Loader, Clock, XCircle, RefreshCw, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { useWebSocket } from "@/hooks/useWebSocket";
+import InvoicePreviewModal from "./InvoicePreviewModal";
+import { useToast } from "@/hooks/use-toast";
 
 interface UploadJob {
   id: string;
@@ -119,6 +121,13 @@ export default function UploadProgress({ showRecentJobs = true }: UploadProgress
   const [currentPage, setCurrentPage] = useState(1);
   const [jobs, setJobs] = useState<UploadJob[]>(() => loadJobsFromSession());
   const [showContent, setShowContent] = useState(true); // Nuevo estado para controlar la visibilidad
+  const [previewModal, setPreviewModal] = useState<{open: boolean, data: any, fileName: string}>({
+    open: false,
+    data: null,
+    fileName: ''
+  });
+  const [hiddenJobs, setHiddenJobs] = useState<Set<string>>(new Set());
+  const { toast } = useToast();
 
   // Nuevo useEffect para limpiar la lista después de 5 minutos
   useEffect(() => {
@@ -165,10 +174,112 @@ export default function UploadProgress({ showRecentJobs = true }: UploadProgress
     }
   };
 
+  // Función para cerrar una notificación individual
+  const closeJob = (jobId: string) => {
+    setHiddenJobs(prev => new Set(prev).add(jobId));
+    toast({
+      title: "Notificación cerrada",
+      description: "La notificación se ha ocultado",
+      variant: "default",
+    });
+  };
+
+  // Función para mostrar el preview de la factura
+  const showPreview = async (job: UploadJob) => {
+    if (job.status === 'success' && job.invoiceId) {
+      try {
+        // Obtener los datos de la factura desde la API
+        const response = await fetch(`/api/invoices/${job.invoiceId}`, {
+          credentials: 'include'
+        });
+        
+        if (response.ok) {
+          const invoice = await response.json();
+          
+          // Preparar los datos para el modal
+          const invoicePreviewData = {
+            type: invoice.type,
+            invoiceClass: invoice.invoiceClass,
+            date: invoice.date,
+            clientProviderName: invoice.clientProviderName,
+            clientProviderCuit: invoice.clientProviderId,
+            invoiceNumber: invoice.invoiceNumber,
+            description: invoice.description,
+            subtotal: invoice.subtotal,
+            ivaAmount: invoice.ivaAmount,
+            totalAmount: invoice.totalAmount,
+            uploadedByName: invoice.uploadedByName,
+            ownerName: invoice.ownerName
+          };
+
+          setPreviewModal({
+            open: true,
+            data: invoicePreviewData,
+            fileName: job.fileName
+          });
+        } else {
+          toast({
+            title: "Error",
+            description: "No se pudieron cargar los datos de la factura",
+            variant: "destructive",
+          });
+        }
+      } catch (error) {
+        toast({
+          title: "Error",
+          description: "Error al cargar los datos de la factura",
+          variant: "destructive",
+        });
+      }
+    } else {
+      toast({
+        title: "Información no disponible",
+        description: "Los datos de la factura solo están disponibles para facturas procesadas exitosamente",
+        variant: "default",
+      });
+    }
+  };
+
+  // Función para manejar el click en el nombre del archivo o barra de progreso
+  const handleJobClick = (job: UploadJob) => {
+    if (job.status === 'success') {
+      showPreview(job);
+    }
+  };
+
+  // Función para manejar el guardado de la factura
+  const handleSaveInvoice = async (data: any) => {
+    try {
+      // Aquí podrías hacer una llamada a la API para actualizar la factura
+      toast({
+        title: "Factura actualizada",
+        description: "Los datos se han guardado correctamente",
+        variant: "default",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "No se pudo guardar la factura",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleCancelPreview = () => {
+    setPreviewModal({ open: false, data: null, fileName: '' });
+  };
+
   // Listen for WebSocket updates
   useWebSocket();
 
   if (!showRecentJobs || !jobs || jobs.length === 0 || !showContent) {
+    return null;
+  }
+
+  // Filtrar jobs ocultos
+  const visibleJobs = jobs.filter(job => !hiddenJobs.has(job.id));
+
+  if (visibleJobs.length === 0) {
     return null;
   }
 
@@ -182,11 +293,30 @@ export default function UploadProgress({ showRecentJobs = true }: UploadProgress
           </span>
         )}
       </div>
-      {jobs.map((job) => (
-        <Card key={job.id} data-testid={`upload-progress-${job.id}`}>
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-foreground" data-testid="file-name">
+      {visibleJobs.map((job) => (
+        <Card key={job.id} data-testid={`upload-progress-${job.id}`} className="relative">
+          {/* Botón de cerrar en la esquina superior derecha */}
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={(e) => {
+              e.stopPropagation();
+              closeJob(job.id);
+            }}
+            className="absolute top-2 right-2 h-6 w-6 p-0 hover:bg-destructive hover:text-destructive-foreground z-10"
+          >
+            <X className="h-3 w-3" />
+          </Button>
+
+          <CardContent 
+            className={`p-4 ${job.status === 'success' ? 'cursor-pointer hover:bg-muted/50 transition-colors' : ''}`}
+            onClick={() => job.status === 'success' && handleJobClick(job)}
+          >
+            <div className="flex items-center justify-between mb-2 pr-6">
+              <span 
+                className={`text-sm font-medium text-foreground ${job.status === 'success' ? 'hover:text-primary' : ''}`} 
+                data-testid="file-name"
+              >
                 {job.fileName}
               </span>
               <span className="text-sm text-muted-foreground" data-testid="file-size">
@@ -194,13 +324,21 @@ export default function UploadProgress({ showRecentJobs = true }: UploadProgress
               </span>
             </div>
             
-            <div className="mb-2">
+            <div 
+              className={`mb-2 ${job.status === 'success' ? 'cursor-pointer' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                if (job.status === 'success') {
+                  handleJobClick(job);
+                }
+              }}
+            >
               {/* Barra de progreso mejorada con clases dinámicas */}
               <Progress 
                 value={getProgress(job.status)}
                 className={`h-3 progress-bar ${
                   job.status === 'success'
-                    ? 'progress-success [&>div]:bg-green-500' // Quitamos animate-pulse del éxito
+                    ? 'progress-success [&>div]:bg-green-500 hover:[&>div]:bg-green-600 transition-colors' // Quitamos animate-pulse del éxito
                     : job.status === 'duplicate'
                     ? 'progress-duplicate [&>div]:bg-yellow-500'
                     : job.status === 'error' || job.status === 'quarantined'
@@ -227,6 +365,11 @@ export default function UploadProgress({ showRecentJobs = true }: UploadProgress
             {job.error && (
               <div className="mt-2 text-xs text-expense-red" data-testid="error-message">
                 {job.error}
+              </div>
+            )}
+            {job.status === 'success' && (
+              <div className="mt-2 text-xs text-muted-foreground">
+                💡 Haz clic en el nombre del archivo o la barra de progreso para ver detalles
               </div>
             )}
           </CardContent>
@@ -265,6 +408,16 @@ export default function UploadProgress({ showRecentJobs = true }: UploadProgress
           </Button>
         </div>
       )}
+
+      {/* Modal de Preview */}
+      <InvoicePreviewModal
+        open={previewModal.open}
+        onOpenChange={(open) => setPreviewModal(prev => ({ ...prev, open }))}
+        invoiceData={previewModal.data}
+        fileName={previewModal.fileName}
+        onSave={handleSaveInvoice}
+        onCancel={handleCancelPreview}
+      />
     </div>
   );
 }

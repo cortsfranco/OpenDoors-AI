@@ -893,6 +893,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Endpoint para descargar archivos de facturas
+  app.get("/api/invoices/:id/download", async (req, res) => {
+    try {
+      const invoice = await storage.getInvoice(req.params.id);
+      
+      if (!invoice || !invoice.filePath) {
+        return res.status(404).json({ error: "Archivo no encontrado" });
+      }
+
+      const filePath = invoice.filePath;
+      
+      // Verificar que el archivo existe
+      if (!fs.existsSync(filePath)) {
+        return res.status(404).json({ error: "Archivo no encontrado en el servidor" });
+      }
+
+      // Determinar el tipo MIME basado en la extensión
+      const ext = path.extname(filePath).toLowerCase();
+      let mimeType = 'application/octet-stream';
+      
+      if (ext === '.pdf') {
+        mimeType = 'application/pdf';
+      } else if (ext === '.jpg' || ext === '.jpeg') {
+        mimeType = 'image/jpeg';
+      } else if (ext === '.png') {
+        mimeType = 'image/png';
+      }
+
+      // Configurar headers para descargar el archivo
+      res.set({
+        'Content-Type': mimeType,
+        'Content-Disposition': `attachment; filename="${invoice.fileName || 'factura' + ext}"`,
+        'Cache-Control': 'public, max-age=3600'
+      });
+
+      // Enviar el archivo
+      const fileStream = fs.createReadStream(filePath);
+      fileStream.pipe(res);
+      
+    } catch (error) {
+      console.error('Error downloading invoice file:', error);
+      res.status(500).json({ error: "Error al descargar el archivo" });
+    }
+  });
+
   app.post("/api/invoices", upload.single('file'), async (req, res) => {
     try {
       const { uploadedBy, uploadedByName, ownerName, manualEntry, invoiceData } = req.body;
@@ -1180,15 +1225,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Async upload endpoints for non-blocking file upload
   app.post("/api/uploads", requireAuth, upload.single('uploadFile'), async (req, res) => {
+    console.log('🔍 DEBUG /api/uploads - Endpoint called');
     try {
       const file = req.file;
       if (!file) {
+        console.log('🔍 DEBUG /api/uploads - No file provided');
         return res.status(400).json({ error: "No se proporcionó archivo" });
       }
+      
+      console.log('🔍 DEBUG /api/uploads - File received:', file.originalname);
 
       const userId = req.session.user!.id;
       const uploadedByName = req.session.user!.displayName;
       const ownerName = req.body.ownerName || uploadedByName;
+      
+      // DEBUG: Log the ownerName values
+      console.log('🔍 DEBUG Upload - userId:', userId);
+      console.log('🔍 DEBUG Upload - uploadedByName:', uploadedByName);
+      console.log('🔍 DEBUG Upload - req.body.ownerName:', req.body.ownerName);
+      console.log('🔍 DEBUG Upload - final ownerName:', ownerName);
       
       try {
         // Generate fingerprint for duplicate detection
@@ -1196,6 +1251,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         const fingerprint = UploadJobManager.generateFingerprint(fileBuffer);
 
         // Check for duplicates BEFORE creating the job
+        // Use original fingerprint for duplicate detection (same file = duplicate regardless of owner)
         const existingInvoice = await storage.findInvoiceByFingerprint(fingerprint);
         if (existingInvoice) {
           // Clean up uploaded file
@@ -1221,7 +1277,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
           userId,
           file.originalname,
           file.size,
-          fingerprint,
+          fingerprint, // Use original fingerprint without ownerName
           file.path,
           uploadedByName,
           ownerName

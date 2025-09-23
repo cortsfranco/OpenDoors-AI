@@ -78,7 +78,15 @@ export default function Upload() {
       for (const file of files) {
         const formData = new FormData();
         formData.append('uploadFile', file);
-        formData.append('ownerName', selectedOwner === 'Otro socio' && customOwner ? customOwner : selectedOwner);
+        
+        const finalOwnerName = selectedOwner === 'Otro socio' && customOwner ? customOwner : selectedOwner;
+        formData.append('ownerName', finalOwnerName);
+        
+        // DEBUG: Log the ownerName values
+        console.log('🔍 DEBUG Frontend - selectedOwner:', selectedOwner);
+        console.log('🔍 DEBUG Frontend - customOwner:', customOwner);
+        console.log('🔍 DEBUG Frontend - finalOwnerName:', finalOwnerName);
+        console.log('🔍 DEBUG Frontend - fileName:', file.name);
 
         // Send file to async processing endpoint
         const response = await fetch('/api/uploads', {
@@ -220,7 +228,7 @@ export default function Upload() {
               Cargar archivo de factura
             </h3>
             <div className="flex-grow">
-              <UploadZone />
+              <UploadZone ownerName={selectedOwner === 'Otro socio' && customOwner ? customOwner : selectedOwner} />
             </div>
           </div>
           

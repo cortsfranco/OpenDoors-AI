@@ -200,6 +200,24 @@ class WebSocketManager {
     this.broadcast(notification);
   }
 
+  // Notify about upload job status changes
+  notifyUploadJobStatus(jobId: string, status: string, userId: string, error?: string, invoiceData?: any) {
+    const notification = {
+      type: `upload:${status}`,
+      data: { 
+        jobId, 
+        status, 
+        error,
+        invoiceData 
+      },
+      message: `Upload ${status}`,
+      timestamp: new Date().toISOString(),
+    };
+
+    // Send only to the user who uploaded the file
+    this.sendToUser(userId, notification);
+  }
+
   cleanup() {
     if (this.heartbeatInterval) {
       clearInterval(this.heartbeatInterval);

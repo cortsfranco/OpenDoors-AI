@@ -71,6 +71,12 @@ export class UploadJobManager {
 
   async createJob(userId: string, fileName: string, fileSize: number, fingerprint: string, filePath: string, uploadedByName?: string, ownerName?: string): Promise<DBUploadJob> {
     try {
+      // DEBUG: Log the ownerName values
+      console.log('🔍 DEBUG createJob - userId:', userId);
+      console.log('🔍 DEBUG createJob - uploadedByName:', uploadedByName);
+      console.log('🔍 DEBUG createJob - ownerName:', ownerName);
+      console.log('🔍 DEBUG createJob - fileName:', fileName);
+      
       const job = await storage.createUploadJob({
         userId,
         fileName,
@@ -326,6 +332,11 @@ export class UploadJobManager {
         }
       }
 
+      // DEBUG: Log the ownerName values during invoice creation
+      console.log('🔍 DEBUG processJob - job.ownerName:', job.ownerName);
+      console.log('🔍 DEBUG processJob - job.uploadedByName:', job.uploadedByName);
+      console.log('🔍 DEBUG processJob - final ownerName:', job.ownerName || job.uploadedByName || 'Usuario');
+
       const invoice = await storage.createInvoice({
         type: extractedData.type || 'expense',
         invoiceClass: (extractedData as any).invoice_class || 'A',
@@ -370,6 +381,25 @@ export class UploadJobManager {
       });
 
       wsManager.notifyInvoiceChange('created', invoice, job.userId);
+
+      // Prepare invoice data for preview
+      const invoicePreviewData = {
+        type: invoice.type,
+        invoiceClass: invoice.invoiceClass,
+        date: invoice.date,
+        clientProviderName: invoice.clientProviderName,
+        clientProviderCuit: invoice.clientProviderId, // Use clientProviderId instead
+        invoiceNumber: invoice.invoiceNumber,
+        description: invoice.description,
+        subtotal: invoice.subtotal,
+        ivaAmount: invoice.ivaAmount,
+        totalAmount: invoice.totalAmount,
+        uploadedByName: invoice.uploadedByName,
+        ownerName: invoice.ownerName
+      };
+
+      // Notify upload job success with invoice data
+      wsManager.notifyUploadJobStatus(jobId, 'success', job.userId, undefined, invoicePreviewData);
 
       await this.updateJob(jobId, { 
         status: 'success', 
@@ -473,6 +503,9 @@ export class UploadJobManager {
         
         console.log(`🔄 Job ${jobId} requeued for retry ${currentRetries + 1}/${maxRetries}`);
         
+        // Notify retry
+        wsManager.notifyUploadJobStatus(jobId, 'error', job.userId, `${errorMessage} (Intento ${currentRetries + 1}/${maxRetries})`);
+        
         this.queue.push(jobId);
         this.processQueue();
         
@@ -483,6 +516,9 @@ export class UploadJobManager {
         });
         
         console.error(`🚫 Job ${jobId} quarantined after ${maxRetries} failed attempts`);
+        
+        // Notify quarantine
+        wsManager.notifyUploadJobStatus(jobId, 'error', job.userId, `${errorMessage} (Excedido límite de reintentos: ${maxRetries})`);
       }
     } catch (error) {
       console.error(`❌ Error handling job failure for ${jobId}:`, error);
@@ -496,8 +532,10 @@ export class UploadJobManager {
   private async watchdog(): Promise<void> {
     try {
       const cutoff = new Date(Date.now() - 5 * 60 * 1000);
-      const processingJobs = await storage.getUploadJobsByStatus('processing');
+      const quarantineCutoff = new Date(Date.now() - 24 * 60 * 60 * 1000); // 24 horas
       
+      // Handle stuck processing jobs
+      const processingJobs = await storage.getUploadJobsByStatus('processing');
       const stuckJobs = processingJobs.filter(job => 
         job.updatedAt < cutoff
       );
@@ -509,6 +547,21 @@ export class UploadJobManager {
 
       if (stuckJobs.length > 0) {
         console.log(`🔧 Watchdog recovered ${stuckJobs.length} stuck jobs`);
+      }
+
+      // Clean up old quarantined jobs
+      const quarantinedJobs = await storage.getUploadJobsByStatus('quarantined');
+      const oldQuarantinedJobs = quarantinedJobs.filter(job => 
+        job.updatedAt < quarantineCutoff
+      );
+
+      for (const oldJob of oldQuarantinedJobs) {
+        console.log(`🗑️ Cleaning up old quarantined job ${oldJob.id} (${oldJob.fileName})`);
+        await storage.deleteUploadJob(oldJob.id);
+      }
+
+      if (oldQuarantinedJobs.length > 0) {
+        console.log(`🧹 Watchdog cleaned up ${oldQuarantinedJobs.length} old quarantined jobs`);
       }
     } catch (error) {
       console.error('❌ Watchdog error:', error);

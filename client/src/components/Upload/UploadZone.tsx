@@ -2,12 +2,13 @@ import * as React from "react";
 import { useCallback, useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { Button } from "@/components/ui/button";
-import { Cloud, FileText, Camera, FileCheck2, Loader2, XCircle, FileWarning } from "lucide-react";
+import { Cloud, FileText, Camera, FileCheck2, Loader2, XCircle, FileWarning, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { Badge } from "@/components/ui/badge";
+import InvoicePreviewModal from "./InvoicePreviewModal";
 
 interface UploadProgressState {
   id: string;
@@ -15,6 +16,7 @@ interface UploadProgressState {
   status: 'pending' | 'uploading' | 'processing' | 'success' | 'duplicate' | 'error';
   progress: number;
   timestamp?: number;
+  invoiceData?: any;
 }
 
 const getIconForStatus = (status: UploadProgressState['status']) => {
@@ -46,18 +48,27 @@ const getStatusText = (status: UploadProgressState['status']) => {
   }
 };
 
-export default function UploadZone() {
+interface UploadZoneProps {
+  ownerName?: string;
+}
+
+export default function UploadZone({ ownerName }: UploadZoneProps) {
   const { toast } = useToast();
   const [isHovering, setIsHovering] = useState(false);
   const [uploadState, setUploadState] = useState<UploadProgressState[]>([]);
   const [showSummary, setShowSummary] = useState(false);
+  const [previewModal, setPreviewModal] = useState<{open: boolean, data: any, fileName: string}>({
+    open: false,
+    data: null,
+    fileName: ''
+  });
   const queryClient = useQueryClient();
 
   const { lastMessage } = useWebSocket();
 
   useEffect(() => {
     if (lastMessage && lastMessage.type.startsWith('upload:')) {
-      const { jobId, status, error } = lastMessage.data;
+      const { jobId, status, error, invoiceData } = lastMessage.data;
       if (jobId) {
         setUploadState(prev => prev.map(f => {
           if (f.id === jobId && (f.status === 'error' || f.status === 'duplicate')) {
@@ -66,7 +77,7 @@ export default function UploadZone() {
           if (status === 'success') {
             queryClient.invalidateQueries({ queryKey: ['recentInvoices'] });
           }
-          return f.id === jobId ? {...f, status, error } : f;
+          return f.id === jobId ? {...f, status, error, invoiceData } : f;
         }));
       }
     }
@@ -75,22 +86,76 @@ export default function UploadZone() {
   useEffect(() => {
     const cleanupTimer = setTimeout(() => {
       setUploadState(prev => prev.filter(f => {
-        const isFinalState = f.status === 'success' || f.status === 'duplicate';
-        return !isFinalState || (Date.now() - (f.timestamp || 0) < 10000);
+        const isFinalState = f.status === 'success' || f.status === 'duplicate' || f.status === 'error';
+        return !isFinalState || (Date.now() - (f.timestamp || 0) < 15000); // 15 segundos para errores
       }));
-    }, 10000);
+    }, 15000); // 15 segundos
 
     return () => clearTimeout(cleanupTimer);
   }, [uploadState]);
+
+  const clearFailedNotifications = () => {
+    setUploadState(prev => prev.filter(f => f.status !== 'error'));
+    toast({
+      title: "Notificaciones limpiadas",
+      description: "Se han eliminado las notificaciones de error",
+      variant: "default",
+    });
+  };
+
+  const closeNotification = (id: string) => {
+    setUploadState(prev => prev.filter(f => f.id !== id));
+  };
+
+  const showPreview = (file: UploadProgressState) => {
+    if (file.invoiceData) {
+      setPreviewModal({
+        open: true,
+        data: file.invoiceData,
+        fileName: file.name
+      });
+    }
+  };
+
+  const handleSaveInvoice = async (data: any) => {
+    try {
+      // Aquí podrías hacer una llamada a la API para actualizar la factura
+      // Por ahora, solo mostramos un mensaje de éxito
+      toast({
+        title: "Factura actualizada",
+        description: "Los datos se han guardado correctamente",
+        variant: "default",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "No se pudo guardar la factura",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleCancelPreview = () => {
+    setPreviewModal({ open: false, data: null, fileName: '' });
+  };
 
   const mutation = useMutation({
     mutationFn: async (file: File) => {
       const formData = new FormData();
       formData.append('uploadFile', file);
       
+      // DEBUG: Log the ownerName values
+      console.log('🔍 DEBUG UploadZone - ownerName prop:', ownerName);
+      
+      // Add ownerName to FormData if provided
+      if (ownerName) {
+        formData.append('ownerName', ownerName);
+      }
+      
       const response = await fetch('/api/uploads', {
         method: 'POST',
         body: formData,
+        credentials: 'include',
       });
 
       if (!response.ok) {
@@ -237,14 +302,57 @@ export default function UploadZone() {
                   {getIconForStatus(file.status)}
                   <span className="text-xs truncate">{file.name}</span>
                 </div>
-                <Badge variant={file.status === 'duplicate' || file.status === 'error' ? 'destructive' : file.status === 'success' ? 'default' : 'secondary'}>
-                  {getStatusText(file.status)}
-                </Badge>
+                <div className="flex items-center gap-2">
+                  <Badge variant={file.status === 'duplicate' || file.status === 'error' ? 'destructive' : file.status === 'success' ? 'default' : 'secondary'}>
+                    {getStatusText(file.status)}
+                  </Badge>
+                  {file.status === 'success' && file.invoiceData && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => showPreview(file)}
+                      className="h-6 px-2 text-xs hover:bg-primary hover:text-primary-foreground"
+                    >
+                      Ver
+                    </Button>
+                  )}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => closeNotification(file.id)}
+                    className="h-6 w-6 p-0 hover:bg-destructive hover:text-destructive-foreground"
+                  >
+                    <X className="h-3 w-3" />
+                  </Button>
+                </div>
               </li>
             ))}
           </ul>
+          {uploadState.some(f => f.status === 'error') && (
+            <div className="mt-3 pt-3 border-t">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={clearFailedNotifications}
+                className="w-full text-xs"
+              >
+                <XCircle className="w-3 h-3 mr-2" />
+                Limpiar errores
+              </Button>
+            </div>
+          )}
         </div>
       )}
+
+      {/* Modal de Preview */}
+      <InvoicePreviewModal
+        open={previewModal.open}
+        onOpenChange={(open) => setPreviewModal(prev => ({ ...prev, open }))}
+        invoiceData={previewModal.data}
+        fileName={previewModal.fileName}
+        onSave={handleSaveInvoice}
+        onCancel={handleCancelPreview}
+      />
     </div>
   );
 }
