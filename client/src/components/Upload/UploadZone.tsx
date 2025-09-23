@@ -184,7 +184,7 @@ export default function UploadZone() {
       <div
         {...getRootProps()}
         className={cn(
-          "bg-card rounded-lg border-2 border-dashed border-border p-6 text-center drag-zone transition-all duration-300 hover:border-primary cursor-pointer",
+          "bg-card rounded-lg border-2 border-dashed border-border p-4 sm:p-6 text-center drag-zone transition-all duration-300 hover:border-primary cursor-pointer",
           (isDragActive || isHovering) && "border-primary/50 bg-gray-50 dark:bg-gray-800"
         )}
         onDragEnter={() => setIsHovering(true)}
@@ -193,46 +193,49 @@ export default function UploadZone() {
       >
         <input {...getInputProps()} data-testid="file-input" />
         <div className="max-w-md mx-auto">
-          <Cloud className="w-12 h-12 mx-auto text-muted-foreground mb-3" />
-          <h3 className="text-lg font-semibold text-foreground mb-2">
+          <Cloud className="w-10 h-10 sm:w-12 sm:h-12 mx-auto text-muted-foreground mb-3" />
+          <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2 leading-tight">
             {isDragActive ? 'Suelta los archivos aquí' : 'Arrastra archivos aquí'}
           </h3>
-          <p className="text-muted-foreground mb-4">
+          <p className="text-sm sm:text-base text-muted-foreground mb-4 px-2">
             Formatos soportados: PDF, JPG, PNG (máx. 10MB por archivo) - Puedes seleccionar múltiples archivos
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button
+          <div className="flex flex-col gap-3 justify-center">            <Button
               type="button"
               data-testid="select-files-button"
+              className="w-full sm:w-auto text-sm sm:text-base"
             >
               <FileText className="w-4 h-4 mr-2" />
-              Seleccionar Archivos
+              <span className="hidden sm:inline">Seleccionar Archivos</span>
+              <span className="sm:hidden">Seleccionar</span>
             </Button>
             <Button
               type="button"
               variant="secondary"
               onClick={handleCameraClick}
               data-testid="camera-button"
+              className="w-full sm:w-auto text-sm sm:text-base"
             >
               <Camera className="w-4 h-4 mr-2" />
-              Usar Cámara
+              <span className="hidden sm:inline">Usar Cámara</span>
+              <span className="sm:hidden">Cámara</span>
             </Button>
           </div>
         </div>
       </div>
 
       {showSummary && uploadState.length > 0 && (
-        <div className="flex flex-col gap-2 p-4 bg-card rounded-lg border">
-          <div className="flex items-center gap-2 text-sm text-foreground">
+        <div className="flex flex-col gap-2 p-3 sm:p-4 bg-card rounded-lg border">
+          <div className="flex items-center gap-2 text-xs sm:text-sm text-foreground">
             <FileText className="w-4 h-4" />
             <span>{getSummaryMessage()}</span>
           </div>
-          <ul className="space-y-1 text-sm text-muted-foreground">
+          <ul className="space-y-1 text-xs sm:text-sm text-muted-foreground">
             {uploadState.map(file => (
               <li key={file.id} className="flex items-center gap-2 justify-between">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 min-w-0 flex-1">
                   {getIconForStatus(file.status)}
-                  <span className="text-xs">{file.name}</span>
+                  <span className="text-xs truncate">{file.name}</span>
                 </div>
                 <Badge variant={file.status === 'duplicate' || file.status === 'error' ? 'destructive' : file.status === 'success' ? 'default' : 'secondary'}>
                   {getStatusText(file.status)}

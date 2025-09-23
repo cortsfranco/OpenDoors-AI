@@ -42,10 +42,10 @@ export default function FiltersPanel({
 
   return (
     <Card data-testid="filters-panel">
-      <CardContent className="p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+      <CardContent className="p-4 sm:p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
           <div>
-            <Label className="text-sm font-medium text-foreground mb-2 block">
+            <Label className="text-xs sm:text-sm font-medium text-foreground mb-2 block">
               Buscar Cliente/Proveedor
             </Label>
             <Input
@@ -59,7 +59,7 @@ export default function FiltersPanel({
           </div>
           
           <div>
-            <Label className="text-sm font-medium text-foreground mb-2 block">
+            <Label className="text-xs sm:text-sm font-medium text-foreground mb-2 block">
               Mes
             </Label>
             <Select
@@ -81,7 +81,7 @@ export default function FiltersPanel({
           </div>
           
           <div>
-            <Label className="text-sm font-medium text-foreground mb-2 block">
+            <Label className="text-xs sm:text-sm font-medium text-foreground mb-2 block">
               Año
             </Label>
             <Select
@@ -103,7 +103,7 @@ export default function FiltersPanel({
           </div>
           
           <div>
-            <Label className="text-sm font-medium text-foreground mb-2 block">
+            <Label className="text-xs sm:text-sm font-medium text-foreground mb-2 block">
               Propietario
             </Label>
             <Select
@@ -124,7 +124,7 @@ export default function FiltersPanel({
           </div>
 
           <div>
-            <Label className="text-sm font-medium text-foreground mb-2 block">
+            <Label className="text-xs sm:text-sm font-medium text-foreground mb-2 block">
               Tipo
             </Label>
             <Select
@@ -143,11 +143,11 @@ export default function FiltersPanel({
           </div>
         </div>
         
-        <div className="flex items-center gap-3 mt-4">
-          <Button onClick={onApplyFilters} data-testid="apply-filters">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mt-4">
+          <Button onClick={onApplyFilters} data-testid="apply-filters" className="w-full sm:w-auto">
             Aplicar Filtros
           </Button>
-          <Button variant="secondary" onClick={onClearFilters} data-testid="clear-filters">
+          <Button variant="secondary" onClick={onClearFilters} data-testid="clear-filters" className="w-full sm:w-auto">
             Limpiar
           </Button>
         </div>

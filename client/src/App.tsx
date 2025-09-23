@@ -58,10 +58,10 @@ function AuthenticatedApp() {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-background">
+      <div className="flex h-screen items-center justify-center bg-background px-4">
         <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p className="text-muted-foreground">Cargando...</p>
+          <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 animate-spin mx-auto mb-3 sm:mb-4" />
+          <p className="text-sm sm:text-base text-muted-foreground">Cargando...</p>
         </div>
       </div>
     );
@@ -87,14 +87,14 @@ function AuthenticatedApp() {
       )}
       
       {/* Sidebar */}
-      <div className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 fixed md:relative z-50 h-screen left-0 top-0`}>
+      <div className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} md:translate-x-0 transition-transform duration-300 ease-in-out fixed md:relative z-50 h-screen left-0 top-0`}>
         <Sidebar />
       </div>
       
       {/* Main Content */}
-      <main className="flex-1 flex flex-col overflow-hidden">
+      <main className="flex-1 flex flex-col overflow-hidden min-w-0">
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto bg-gray-50/30 dark:bg-gray-900/30">
           <Router />
         </div>
       </main>

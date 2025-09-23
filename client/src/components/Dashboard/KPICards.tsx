@@ -2,16 +2,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { TrendingUp, TrendingDown, DollarSign, Calculator, BarChart } from "lucide-react";
 import { useKPIs } from "@/hooks/useKPIs";
 import { Skeleton } from "@/components/ui/skeleton";
+import { formatCurrencyWithConfig, parseDecimalWithConfig } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function KPICards() {
   const { data: kpis, isLoading } = useKPIs();
+  const { user } = useAuth();
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {Array.from({ length: 4 }).map((_, i) => (
-          <Card key={i} className="p-6">
-            <Skeleton className="h-20" />
+          <Card key={i} className="p-4 sm:p-6">
+            <Skeleton className="h-16 sm:h-20" />
           </Card>
         ))}
       </div>
@@ -25,7 +28,7 @@ export default function KPICards() {
       title: "Total Ingresos",
       value: kpis.totalIncome,
       change: kpis.incomeChange.includes('%') 
-        ? `${kpis.incomeChange}% vs mes anterior` 
+        ? `${kpis.incomeChange} vs mes anterior` 
         : kpis.incomeChange,
       isPositive: kpis.incomeChange.includes('+') || kpis.incomeChange === 'Nuevo',
       icon: DollarSign,
@@ -36,7 +39,7 @@ export default function KPICards() {
       title: "Total Egresos",
       value: kpis.totalExpenses,
       change: kpis.expensesChange.includes('%') 
-        ? `${kpis.expensesChange}% vs mes anterior` 
+        ? `${kpis.expensesChange} vs mes anterior` 
         : kpis.expensesChange,
       isPositive: kpis.expensesChange.includes('-') || kpis.expensesChange === 'Sin movimientos',
       icon: DollarSign,
@@ -47,16 +50,16 @@ export default function KPICards() {
       title: "Balance IVA",
       value: kpis.ivaBalance,
       change: (() => {
-        const balanceValue = parseFloat(kpis.ivaBalance.replace(/[^\d.-]/g, ''));
+        const balanceValue = parseFloat(parseDecimalWithConfig(kpis.ivaBalance, user));
         if (balanceValue > 0) {
-          return "A pagar al estado";
+          return "A pagar al Estado (débito fiscal)";
         } else if (balanceValue < 0) {
-          return "A pagar al estado";
+          return "A favor (crédito fiscal)";
         } else {
           return "Neutro";
         }
       })(),
-      isPositive: parseFloat(kpis.ivaBalance.replace(/[^\d.-]/g, '')) >= 0,
+      isPositive: parseFloat(kpis.ivaBalance.replace(/[^\d.-]/g, '')) < 0,
       icon: Calculator,
       color: "text-chart-3 bg-chart-3/10",
       cardBg: "bg-gradient-to-br from-yellow-50 to-yellow-100 hover:from-yellow-100 hover:to-yellow-200",
@@ -65,7 +68,7 @@ export default function KPICards() {
       title: "Balance General",
       value: kpis.generalBalance,
       change: (() => {
-        const balanceValue = parseFloat(kpis.generalBalance.replace(/[^\d.-]/g, ''));
+        const balanceValue = parseFloat(parseDecimalWithConfig(kpis.generalBalance, user));
         if (balanceValue > 0) {
           return "Positivo";
         } else if (balanceValue < 0) {
@@ -90,20 +93,20 @@ export default function KPICards() {
           data-testid={`kpi-card-${index}`}
         >
           <CardContent className="p-4 sm:p-6">
-            <div className="flex items-start justify-between gap-3">
+            <div className="flex items-start justify-between gap-2 sm:gap-3">
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-muted-foreground text-clamp-1">
+                <p className="text-xs sm:text-sm font-medium text-muted-foreground text-clamp-1">
                   {card.title}
                 </p>
                 <p
-                  className="text-xl sm:text-2xl font-bold text-foreground leading-tight mt-1 text-clamp-1"
+                  className="text-lg sm:text-xl lg:text-2xl font-bold text-foreground leading-tight mt-1 text-clamp-1"
                   data-testid={`kpi-value-${index}`}
                   title={card.value}
                 >
                   {card.value}
                 </p>
-                <p
-                  className={`text-xs flex items-center gap-1 mt-2 text-clamp-2 ${
+                <div
+                  className={`text-xs flex items-center gap-1 mt-1 sm:mt-2 text-clamp-2 ${
                     card.isPositive ? "text-income-green" : "text-expense-red"
                   }`}
                 >
@@ -112,11 +115,11 @@ export default function KPICards() {
                   ) : (
                     <TrendingDown className="w-3 h-3 flex-shrink-0" />
                   )}
-                  <span className="min-w-0">{card.change}</span>
-                </p>
+                  <span className="min-w-0 text-xs">{card.change}</span>
+                </div>
               </div>
-              <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${card.color}`}>
-                <card.icon className="w-5 h-5 sm:w-6 sm:h-6" />
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${card.color}`}>
+                <card.icon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
               </div>
             </div>
           </CardContent>
