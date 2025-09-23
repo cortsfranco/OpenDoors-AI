@@ -29,11 +29,11 @@ const saveOwnerToSession = (owner: string) => {
 
 const loadOwnerFromSession = () => {
   try {
-    return sessionStorage.getItem(SESSION_STORAGE_KEYS.UPLOAD_OWNER) || 'Joni';
+    return sessionStorage.getItem(SESSION_STORAGE_KEYS.UPLOAD_OWNER) || 'Joni Tagua';
   } catch (error) {
     console.warn('Error loading owner from session:', error);
   }
-  return 'Joni';
+  return 'Joni Tagua';
 };
 
 export default function Upload() {
@@ -74,24 +74,25 @@ export default function Upload() {
     if (files.length === 0) return;
     
     try {
-      const formData = new FormData();
-      files.forEach(file => {
-        formData.append('files', file);
-      });
-      formData.append('ownerName', selectedOwner === 'Otro' && customOwner ? customOwner : selectedOwner);
+      // Process each file individually to ensure proper ownerName assignment
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append('uploadFile', file);
+        formData.append('ownerName', selectedOwner === 'Otro socio' && customOwner ? customOwner : selectedOwner);
 
-      // Send files to async processing endpoint
-      const response = await fetch('/api/uploads', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-      });
+        // Send file to async processing endpoint
+        const response = await fetch('/api/uploads', {
+          method: 'POST',
+          body: formData,
+          credentials: 'include',
+        });
 
-      if (!response.ok) {
-        throw new Error(`Error ${response.status}: ${response.statusText}`);
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
+        }
+
+        await response.json();
       }
-
-      const result = await response.json();
 
       toast({
         title: "Archivos enviados",
@@ -128,32 +129,85 @@ export default function Upload() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           {/* Bloque 1: Owner Selection Section */}
           <div className="p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-xl border border-purple-200 dark:border-purple-800 h-full flex flex-col">
-            <h3 className="text-lg font-semibold text-purple-700 dark:text-purple-400 mb-4">
+            <h3 className="text-lg font-semibold text-purple-700 dark:text-purple-400 mb-4 h-7 flex items-center">
               Propietario de la factura
             </h3>
-            <div className="space-y-4">
+            <div className="space-y-4 flex-grow">
               <div>
-                <Label htmlFor="owner">Socio de OpenDoors</Label>
-                <Select value={selectedOwner} onValueChange={setSelectedOwner}>
-                  <SelectTrigger id="owner" className="w-full">
-                    <SelectValue placeholder="Seleccionar propietario" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Joni">Joni</SelectItem>
-                    <SelectItem value="Hernán">Hernán</SelectItem>
-                    <SelectItem value="Otro">Otro (especificar)</SelectItem>
-                  </SelectContent>
-                </Select>
+                <Label className="text-sm font-medium text-purple-700 dark:text-purple-400 mb-3 block">
+                  Socio de OpenDoors
+                </Label>
+                <div className="space-y-2">
+                  {/* Hernán Pagani */}
+                  <Button
+                    type="button"
+                    variant={selectedOwner === 'Hernán Pagani' ? 'default' : 'outline'}
+                    className={`w-full justify-start text-left h-12 ${
+                      selectedOwner === 'Hernán Pagani' 
+                        ? 'bg-purple-600 hover:bg-purple-700 text-white border-purple-600' 
+                        : 'bg-white hover:bg-purple-50 text-purple-700 border-purple-300 hover:border-purple-400'
+                    }`}
+                    onClick={() => setSelectedOwner('Hernán Pagani')}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-3 h-3 rounded-full ${
+                        selectedOwner === 'Hernán Pagani' ? 'bg-white' : 'bg-purple-400'
+                      }`} />
+                      <span className="font-medium">Hernán Pagani</span>
+                    </div>
+                  </Button>
+
+                  {/* Joni Tagua */}
+                  <Button
+                    type="button"
+                    variant={selectedOwner === 'Joni Tagua' ? 'default' : 'outline'}
+                    className={`w-full justify-start text-left h-12 ${
+                      selectedOwner === 'Joni Tagua' 
+                        ? 'bg-purple-600 hover:bg-purple-700 text-white border-purple-600' 
+                        : 'bg-white hover:bg-purple-50 text-purple-700 border-purple-300 hover:border-purple-400'
+                    }`}
+                    onClick={() => setSelectedOwner('Joni Tagua')}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-3 h-3 rounded-full ${
+                        selectedOwner === 'Joni Tagua' ? 'bg-white' : 'bg-purple-400'
+                      }`} />
+                      <span className="font-medium">Joni Tagua</span>
+                    </div>
+                  </Button>
+
+                  {/* Otro socio */}
+                  <Button
+                    type="button"
+                    variant={selectedOwner === 'Otro socio' ? 'default' : 'outline'}
+                    className={`w-full justify-start text-left h-12 ${
+                      selectedOwner === 'Otro socio' 
+                        ? 'bg-purple-600 hover:bg-purple-700 text-white border-purple-600' 
+                        : 'bg-white hover:bg-purple-50 text-purple-700 border-purple-300 hover:border-purple-400'
+                    }`}
+                    onClick={() => setSelectedOwner('Otro socio')}
+                  >
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-3 h-3 rounded-full ${
+                        selectedOwner === 'Otro socio' ? 'bg-white' : 'bg-purple-400'
+                      }`} />
+                      <span className="font-medium">Otro socio (especificar nombre)</span>
+                    </div>
+                  </Button>
+                </div>
               </div>
-              {selectedOwner === 'Otro' && (
+              {selectedOwner === 'Otro socio' && (
                 <div>
-                  <Label htmlFor="customOwner">Nombre del propietario</Label>
+                  <Label htmlFor="customOwner" className="text-sm font-medium text-purple-700 dark:text-purple-400">
+                    Nombre del propietario
+                  </Label>
                   <Input
                     id="customOwner"
                     type="text"
                     value={customOwner}
                     onChange={(e) => setCustomOwner(e.target.value)}
                     placeholder="Ingrese el nombre del propietario"
+                    className="mt-2 border-purple-300 focus:border-purple-500"
                   />
                 </div>
               )}
@@ -162,7 +216,7 @@ export default function Upload() {
 
           {/* Bloque 2: Upload Zone Section */}
           <div className="p-6 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 rounded-xl border border-emerald-200 dark:border-emerald-800 h-full flex flex-col">
-            <h3 className="text-lg font-semibold text-emerald-700 dark:text-emerald-400 mb-4">
+            <h3 className="text-lg font-semibold text-emerald-700 dark:text-emerald-400 mb-4 h-7 flex items-center">
               Cargar archivo de factura
             </h3>
             <div className="flex-grow">
@@ -171,19 +225,21 @@ export default function Upload() {
           </div>
           
           {/* Bloque 3: Manual Entry Button convertido en Card */}
-          <div className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border border-blue-200 dark:border-blue-800 h-full flex flex-col justify-center items-center">
-             <h3 className="text-lg font-semibold text-blue-700 dark:text-blue-400 mb-4 text-center">
+          <div className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border border-blue-200 dark:border-blue-800 h-full flex flex-col">
+            <h3 className="text-lg font-semibold text-blue-700 dark:text-blue-400 mb-4 h-7 flex items-center">
               ¿No tienes el archivo?
             </h3>
-            <Button
-              onClick={() => setShowManualForm(true)}
-              variant="outline"
-              className="w-full bg-white/50"
-              data-testid="manual-entry-button"
-            >
-              <Edit className="w-4 h-4 mr-2" />
-              Ingresar Datos Manualmente
-            </Button>
+            <div className="flex-grow flex items-center justify-center">
+              <Button
+                onClick={() => setShowManualForm(true)}
+                variant="outline"
+                className="w-full bg-white/50"
+                data-testid="manual-entry-button"
+              >
+                <Edit className="w-4 h-4 mr-2" />
+                Ingresar Datos Manualmente
+              </Button>
+            </div>
           </div>
         </div>
         {/* =============================================================== */}

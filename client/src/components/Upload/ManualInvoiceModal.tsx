@@ -68,7 +68,7 @@ export default function ManualInvoiceModal({ open, onOpenChange, uploadedByName,
         totalAmount: formData.totalAmount,
         uploadedBy: user?.id || '',
         uploadedByName: user?.displayName || 'Unknown User',
-        ownerName: selectedOwner === 'Otro' && customOwner ? customOwner : selectedOwner,
+        ownerName: selectedOwner === 'Otro socio' && customOwner ? customOwner : selectedOwner,
         filePath: null,
         processed: true,
       };
@@ -79,7 +79,7 @@ export default function ManualInvoiceModal({ open, onOpenChange, uploadedByName,
       formDataApi.append('invoiceData', JSON.stringify(invoiceData));
       formDataApi.append('uploadedBy', user?.id || '');
       formDataApi.append('uploadedByName', user?.displayName || 'Unknown User');
-      formDataApi.append('ownerName', selectedOwner === 'Otro' && customOwner ? customOwner : selectedOwner);
+      formDataApi.append('ownerName', selectedOwner === 'Otro socio' && customOwner ? customOwner : selectedOwner);
 
       await createInvoiceMutation.mutateAsync(formDataApi);
 
@@ -158,16 +158,16 @@ export default function ManualInvoiceModal({ open, onOpenChange, uploadedByName,
                   <SelectValue placeholder="Seleccionar propietario" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Joni">Joni</SelectItem>
-                  <SelectItem value="Hernán">Hernán</SelectItem>
-                  <SelectItem value="Otro">Otro (especificar)</SelectItem>
+                  <SelectItem value="Hernán Pagani">Hernán Pagani</SelectItem>
+                  <SelectItem value="Joni Tagua">Joni Tagua</SelectItem>
+                  <SelectItem value="Otro socio">Otro socio (especificar)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
           {/* Custom Owner */}
-          {selectedOwner === 'Otro' && (
+          {selectedOwner === 'Otro socio' && (
             <div>
               <Label htmlFor="customOwner" className="text-sm font-medium">Nombre del propietario</Label>
               <Input

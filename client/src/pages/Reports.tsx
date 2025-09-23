@@ -143,25 +143,37 @@ export default function Reports() {
             {/* Report Mode Selector - Mobile-first responsive */}
             <div className="flex flex-col sm:flex-row gap-2 mb-4">
               <Button
-                variant={reportMode === 'monthly' ? 'default' : 'outline'}
+                variant="outline"
                 onClick={() => setReportMode('monthly')}
-                className="flex-1 text-xs sm:text-sm h-10 sm:h-auto whitespace-nowrap"
+                className={`flex-1 text-xs sm:text-sm h-10 sm:h-auto whitespace-nowrap transition-colors ${
+                  reportMode === 'monthly' 
+                    ? 'bg-blue-100 hover:bg-blue-200 text-blue-700 border-blue-300 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 dark:text-blue-300 dark:border-blue-700' 
+                    : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 dark:border-gray-600'
+                }`}
                 data-testid="monthly-mode"
               >
                 <span className="hidden sm:inline">Reporte </span>Mensual
               </Button>
               <Button
-                variant={reportMode === 'annual' ? 'default' : 'outline'}
+                variant="outline"
                 onClick={() => setReportMode('annual')}
-                className="flex-1 text-xs sm:text-sm h-10 sm:h-auto whitespace-nowrap"
+                className={`flex-1 text-xs sm:text-sm h-10 sm:h-auto whitespace-nowrap transition-colors ${
+                  reportMode === 'annual' 
+                    ? 'bg-blue-100 hover:bg-blue-200 text-blue-700 border-blue-300 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 dark:text-blue-300 dark:border-blue-700' 
+                    : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 dark:border-gray-600'
+                }`}
                 data-testid="annual-mode"
               >
                 <span className="hidden sm:inline">Reporte </span>Anual
               </Button>
               <Button
-                variant={reportMode === 'fiscal' ? 'default' : 'outline'}
+                variant="outline"
                 onClick={() => setReportMode('fiscal')}
-                className="flex-1 text-xs sm:text-sm h-10 sm:h-auto whitespace-nowrap"
+                className={`flex-1 text-xs sm:text-sm h-10 sm:h-auto whitespace-nowrap transition-colors ${
+                  reportMode === 'fiscal' 
+                    ? 'bg-blue-100 hover:bg-blue-200 text-blue-700 border-blue-300 dark:bg-blue-900/30 dark:hover:bg-blue-900/50 dark:text-blue-300 dark:border-blue-700' 
+                    : 'bg-white hover:bg-gray-50 text-gray-700 border-gray-300 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 dark:border-gray-600'
+                }`}
                 data-testid="fiscal-mode"
               >
                 <span className="hidden sm:inline">Período </span>Fiscal

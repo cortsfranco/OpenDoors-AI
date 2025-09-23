@@ -745,6 +745,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Temporary endpoint to fix existing invoices with incorrect ownerName
+  app.post("/api/admin/fix-owner-names", requireAuth, async (req, res) => {
+    try {
+      console.log('🔧 Starting ownerName fix for existing invoices...');
+      
+      // Get all invoices where ownerName is the same as uploadedByName
+      const invoices = await storage.getAllInvoices({ limit: 1000 });
+      
+      let fixedCount = 0;
+      const results = [];
+      
+      for (const invoice of invoices.invoices) {
+        if (invoice.ownerName === invoice.uploadedByName) {
+          // Set default owner to "Joni Tagua" for existing invoices
+          const updatedInvoice = await storage.updateInvoice(invoice.id, {
+            ownerName: 'Joni Tagua'
+          });
+          
+          if (updatedInvoice) {
+            fixedCount++;
+            results.push({
+              id: invoice.id,
+              invoiceNumber: invoice.invoiceNumber,
+              oldOwner: invoice.ownerName,
+              newOwner: 'Joni Tagua'
+            });
+          }
+        }
+      }
+      
+      console.log(`✅ Fixed ${fixedCount} invoices`);
+      
+      res.json({
+        success: true,
+        fixedCount,
+        message: `Se actualizaron ${fixedCount} facturas`,
+        results
+      });
+    } catch (error) {
+      console.error('❌ Error fixing owner names:', error);
+      res.status(500).json({ error: "Error al actualizar los propietarios" });
+    }
+  });
+
   // Invoices CRUD
   app.get("/api/invoices", async (req, res) => {
     try {
@@ -752,10 +796,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
         search: req.query.search as string,
         month: req.query.month ? parseInt(req.query.month as string) : undefined,
         year: req.query.year ? parseInt(req.query.year as string) : undefined,
+        startMonth: req.query.startMonth ? parseInt(req.query.startMonth as string) : undefined,
+        startYear: req.query.startYear ? parseInt(req.query.startYear as string) : undefined,
+        endMonth: req.query.endMonth ? parseInt(req.query.endMonth as string) : undefined,
+        endYear: req.query.endYear ? parseInt(req.query.endYear as string) : undefined,
         user: req.query.user as string,
         type: req.query.type as 'income' | 'expense',
+        invoiceClass: req.query.invoiceClass as 'A' | 'B' | 'C',
+        paymentStatus: req.query.paymentStatus as 'pending' | 'paid' | 'overdue' | 'cancelled',
+        ownerName: req.query.ownerName as string,
+        startDate: req.query.startDate as string,
+        endDate: req.query.endDate as string,
+        amountMin: req.query.amountMin ? parseFloat(req.query.amountMin as string) : undefined,
+        amountMax: req.query.amountMax ? parseFloat(req.query.amountMax as string) : undefined,
+        clientProvider: req.query.clientProvider as string,
         limit: req.query.limit ? parseInt(req.query.limit as string) : undefined,
         offset: req.query.offset ? parseInt(req.query.offset as string) : undefined,
+        sortBy: req.query.sortBy as 'date' | 'amount' | 'client' | 'createdAt',
+        sortOrder: req.query.sortOrder as 'asc' | 'desc',
       };
 
       const result = await storage.getAllInvoices(filters);

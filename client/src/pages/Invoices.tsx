@@ -6,6 +6,7 @@ import { InvoiceFilters, FilterCriteria } from "@/components/Tables/InvoiceFilte
 import InvoicesTable from "@/components/Tables/InvoicesTable";
 import { useInvoices, useExportCSV } from "@/hooks/useInvoices";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/use-toast";
 import type { InvoiceFilters as InvoiceFiltersType } from "@/lib/types";
 
 export default function Invoices() {
@@ -33,6 +34,7 @@ export default function Invoices() {
     return window.innerWidth < 768 ? 10 : 20;
   });
   const [isLargeDataset, setIsLargeDataset] = useState(false);
+  const [isFixingOwners, setIsFixingOwners] = useState(false);
 
   const { data, isLoading } = useInvoices({
     ...appliedFilters,
@@ -63,6 +65,7 @@ export default function Invoices() {
   }), [appliedFilters, pageSize, currentPage]);
 
   const exportCSVMutation = useExportCSV();
+  const { toast } = useToast();
 
   const handleApplyFilters = (filters: FilterCriteria) => {
     const newFilters: InvoiceFiltersType = {};
@@ -105,6 +108,42 @@ export default function Invoices() {
     });
   };
 
+  const handleFixOwnerNames = async () => {
+    setIsFixingOwners(true);
+    try {
+      const response = await fetch('/api/admin/fix-owner-names', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al corregir propietarios');
+      }
+
+      const result = await response.json();
+      
+      toast({
+        title: "✅ Propietarios corregidos",
+        description: result.message,
+        variant: "default",
+      });
+
+      // Refresh the invoices list
+      window.location.reload();
+    } catch (error) {
+      toast({
+        title: "❌ Error",
+        description: "No se pudieron corregir los propietarios",
+        variant: "destructive",
+      });
+    } finally {
+      setIsFixingOwners(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="p-6 space-y-6" data-testid="invoices-page">
@@ -140,6 +179,15 @@ export default function Invoices() {
           >
             <Download className="w-4 h-4 mr-2" />
             {exportCSVMutation.isPending ? "Exportando..." : "Exportar CSV"}
+          </Button>
+          <Button
+            onClick={handleFixOwnerNames}
+            disabled={isFixingOwners}
+            variant="outline"
+            className="text-orange-600 border-orange-300 hover:bg-orange-50"
+            data-testid="fix-owners"
+          >
+            {isFixingOwners ? "Corrigiendo..." : "Corregir Propietarios"}
           </Button>
         </div>
       </div>

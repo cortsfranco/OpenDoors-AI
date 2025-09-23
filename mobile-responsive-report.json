@@ -1,0 +1,1902 @@
+{
+  "timestamp": "2025-09-23T02:01:45.067Z",
+  "summary": {
+    "total": 189,
+    "high": 21,
+    "medium": 168
+  },
+  "issues": [
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Analytics\\AdvancedCharts.tsx",
+      "line": 267,
+      "content": "<div className=\"h-80 sm:h-96 min-w-0\">",
+      "issue": "Altura de botón muy pequeña",
+      "severity": "medium",
+      "matches": [
+        "h-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Analytics\\AdvancedCharts.tsx",
+      "line": 305,
+      "content": "<div className=\"h-80 sm:h-96 min-w-0\">",
+      "issue": "Altura de botón muy pequeña",
+      "severity": "medium",
+      "matches": [
+        "h-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Analytics\\AdvancedCharts.tsx",
+      "line": 345,
+      "content": "<div className=\"h-80 sm:h-96 min-w-0\">",
+      "issue": "Altura de botón muy pequeña",
+      "severity": "medium",
+      "matches": [
+        "h-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Analytics\\AdvancedCharts.tsx",
+      "line": 384,
+      "content": "<div className=\"h-80 sm:h-96 min-w-0\">",
+      "issue": "Altura de botón muy pequeña",
+      "severity": "medium",
+      "matches": [
+        "h-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Analytics\\AdvancedCharts.tsx",
+      "line": 518,
+      "content": "<div className=\"grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Analytics\\AdvancedCharts.tsx",
+      "line": 518,
+      "content": "<div className=\"grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Analytics\\AdvancedCharts.tsx",
+      "line": 526,
+      "content": "<div className=\"h-80 sm:h-96 min-w-0\">",
+      "issue": "Altura de botón muy pequeña",
+      "severity": "medium",
+      "matches": [
+        "h-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Analytics\\AdvancedCharts.tsx",
+      "line": 595,
+      "content": "<div className=\"text-center text-red-500 py-8\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "py-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Analytics\\AdvancedCharts.tsx",
+      "line": 614,
+      "content": "<Badge variant={client.trend > 0 ? \"default\" : \"secondary\"} className=\"text-xs\">",
+      "issue": "Texto muy pequeño en móvil",
+      "severity": "high",
+      "matches": [
+        "text-xs"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Analytics\\AdvancedCharts.tsx",
+      "line": 623,
+      "content": "<div className=\"text-center text-muted-foreground py-8\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "py-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\KPICards.tsx",
+      "line": 11,
+      "content": "<div className=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\KPICards.tsx",
+      "line": 11,
+      "content": "<div className=\"grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\KPICards.tsx",
+      "line": 13,
+      "content": "<Card key={i} className=\"p-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\KPICards.tsx",
+      "line": 85,
+      "content": "<div className=\"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\KPICards.tsx",
+      "line": 85,
+      "content": "<div className=\"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\KPICards.tsx",
+      "line": 92,
+      "content": "<CardContent className=\"p-4 sm:p-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\MainChart.tsx",
+      "line": 22,
+      "content": "<CardContent className=\"p-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\MainChart.tsx",
+      "line": 23,
+      "content": "<Skeleton className=\"h-80\" />",
+      "issue": "Altura de botón muy pequeña",
+      "severity": "medium",
+      "matches": [
+        "h-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\MainChart.tsx",
+      "line": 209,
+      "content": "<CardHeader className=\"p-4 md:p-6 pb-2 md:pb-4\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\MainChart.tsx",
+      "line": 278,
+      "content": "<CardContent className=\"p-4 md:p-6 pt-2\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\MainChart.tsx",
+      "line": 279,
+      "content": "<div className=\"h-64 md:h-80 w-full\">",
+      "issue": "Altura de botón muy pequeña",
+      "severity": "medium",
+      "matches": [
+        "h-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\QuickStats.tsx",
+      "line": 11,
+      "content": "<CardContent className=\"p-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\QuickStats.tsx",
+      "line": 12,
+      "content": "<Skeleton className=\"h-80\" />",
+      "issue": "Altura de botón muy pequeña",
+      "severity": "medium",
+      "matches": [
+        "h-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 17,
+      "content": "<CardContent className=\"p-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 18,
+      "content": "<Skeleton className=\"h-80\" />",
+      "issue": "Altura de botón muy pequeña",
+      "severity": "medium",
+      "matches": [
+        "h-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 27,
+      "content": "<CardHeader className=\"p-6 border-b border-border\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 39,
+      "content": "<CardContent className=\"p-6 text-center text-muted-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 48,
+      "content": "<CardHeader className=\"p-6 border-b border-border\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 69,
+      "content": "<th className=\"px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 72,
+      "content": "<th className=\"px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 75,
+      "content": "<th className=\"px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 78,
+      "content": "<th className=\"px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 81,
+      "content": "<th className=\"px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 84,
+      "content": "<th className=\"px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 96,
+      "content": "<td className=\"px-6 py-4\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 108,
+      "content": "<td className=\"px-6 py-4 text-sm text-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 111,
+      "content": "<td className=\"px-6 py-4 text-sm text-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 114,
+      "content": "<td className=\"px-6 py-4 text-sm font-medium text-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 117,
+      "content": "<td className=\"px-6 py-4 text-sm text-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "line": 120,
+      "content": "<td className=\"px-6 py-4 text-sm text-muted-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ExcelImportExport.tsx",
+      "line": 308,
+      "content": "<div className=\"mt-2 p-2 bg-muted rounded text-xs\">",
+      "issue": "Texto muy pequeño en móvil",
+      "severity": "high",
+      "matches": [
+        "text-xs"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Filters\\AdvancedDateRangePicker.tsx",
+      "line": 246,
+      "content": "<div className=\"flex flex-col sm:flex-row\">",
+      "issue": "Flex row puede causar overflow",
+      "severity": "medium",
+      "matches": [
+        "flex-row"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Filters\\AdvancedDateRangePicker.tsx",
+      "line": 362,
+      "content": "<Badge variant=\"default\" className=\"text-xs\">",
+      "issue": "Texto muy pequeño en móvil",
+      "severity": "high",
+      "matches": [
+        "text-xs"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ImportWizard.tsx",
+      "line": 196,
+      "content": "border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-colors",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ImportWizard.tsx",
+      "line": 243,
+      "content": "<div className=\"text-center py-8\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "py-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ImportWizard.tsx",
+      "line": 478,
+      "content": "<div className=\"text-center py-8\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "py-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ImportWizard.tsx",
+      "line": 589,
+      "content": "<div className=\"max-w-4xl mx-auto p-6 space-y-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Layout\\Header.tsx",
+      "line": 50,
+      "content": "<Avatar className=\"w-8 h-8\">",
+      "issue": "Altura de botón muy pequeña",
+      "severity": "medium",
+      "matches": [
+        "h-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Layout\\Header.tsx",
+      "line": 93,
+      "content": "<header className=\"bg-card border-b border-border px-4 md:px-6 py-4\" data-testid=\"header\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Layout\\Sidebar.tsx",
+      "line": 131,
+      "content": "<div className=\"p-6 flex-1 overflow-y-auto\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Layout\\Sidebar.tsx",
+      "line": 241,
+      "content": "className=\"text-xs h-8\"",
+      "issue": "Altura de botón muy pequeña",
+      "severity": "medium",
+      "matches": [
+        "h-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Modals\\EditInvoiceModal.tsx",
+      "line": 113,
+      "content": "<DialogHeader className=\"px-6 py-4 border-b bg-muted/30\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Modals\\EditInvoiceModal.tsx",
+      "line": 120,
+      "content": "<form onSubmit={handleSubmit} className=\"px-4 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6",
+        "py-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 179,
+      "content": "<div className=\"p-6 border-b border-border\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 228,
+      "content": "<CardContent className=\"p-6 text-center text-muted-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 246,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium text-white uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 249,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium text-white uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 252,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium text-white uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 255,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium text-white uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 258,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium text-white uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 261,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium text-white uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 264,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium text-white uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 286,
+      "content": "<td className=\"px-6 py-4\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 291,
+      "content": "<td className=\"px-6 py-4 text-sm text-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 294,
+      "content": "<td className=\"px-6 py-4\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 299,
+      "content": "<td className=\"px-6 py-4\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 310,
+      "content": "<td className=\"px-6 py-4 text-sm text-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 313,
+      "content": "<td className=\"px-6 py-4 text-sm font-medium text-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\ClientsTable.tsx",
+      "line": 316,
+      "content": "<td className=\"px-6 py-4\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\FiltersPanel.tsx",
+      "line": 45,
+      "content": "<CardContent className=\"p-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 349,
+      "content": "<CardContent className=\"p-6 text-center text-muted-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 362,
+      "content": "<div className=\"flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 362,
+      "content": "<div className=\"flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 608,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 614,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 624,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 634,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 644,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 647,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 650,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 660,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 663,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 666,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 669,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 672,
+      "content": "<th className=\"px-6 py-3 text-left text-sm font-medium uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 694,
+      "content": "<td className=\"px-6 py-4\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 717,
+      "content": "<td className=\"px-6 py-4 text-sm text-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 720,
+      "content": "<td className=\"px-6 py-4 text-sm text-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 723,
+      "content": "<td className=\"px-6 py-4\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 735,
+      "content": "<td className=\"px-6 py-4 text-sm text-muted-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 738,
+      "content": "<td className=\"px-6 py-4 text-sm text-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 741,
+      "content": "<td className=\"px-6 py-4 text-sm font-medium text-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 744,
+      "content": "<td className=\"px-6 py-4 text-sm text-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 752,
+      "content": "<td className=\"px-6 py-4\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 760,
+      "content": "<td className=\"px-6 py-4 text-sm text-muted-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 763,
+      "content": "<td className=\"px-6 py-4 text-sm text-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 766,
+      "content": "<td className=\"px-6 py-4\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 833,
+      "content": "<div className=\"px-6 py-4 border-t border-border\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "line": 863,
+      "content": "className=\"min-w-[32px] px-2 sm:px-3\"",
+      "issue": "Ancho fijo en píxeles",
+      "severity": "high",
+      "matches": [
+        "w-[32px]"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Templates\\InvoiceTemplates.tsx",
+      "line": 328,
+      "content": "<div className=\"space-y-2 text-xs\">",
+      "issue": "Texto muy pequeño en móvil",
+      "severity": "high",
+      "matches": [
+        "text-xs"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\alert-dialog.tsx",
+      "line": 37,
+      "content": "\"fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-border bg-white dark:bg-gray-900 p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg\",",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\button.tsx",
+      "line": 27,
+      "content": "lg: \"h-11 rounded-md px-8\",",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\card.tsx",
+      "line": 26,
+      "content": "className={cn(\"flex flex-col space-y-1.5 p-6\", className)}",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\card.tsx",
+      "line": 63,
+      "content": "<div ref={ref} className={cn(\"p-6 pt-0\", className)} {...props} />",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\card.tsx",
+      "line": 73,
+      "content": "className={cn(\"flex items-center p-6 pt-0\", className)}",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\command.tsx",
+      "line": 74,
+      "content": "className=\"py-6 text-center text-sm\"",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "py-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\dialog.tsx",
+      "line": 41,
+      "content": "\"fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-border bg-white dark:bg-gray-900 p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg\",",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\drawer.tsx",
+      "line": 51,
+      "content": "<div className=\"mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted\" />",
+      "issue": "Ancho fijo en píxeles",
+      "severity": "high",
+      "matches": [
+        "w-[100px]"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\separator.tsx",
+      "line": 20,
+      "content": "orientation === \"horizontal\" ? \"h-[1px] w-full\" : \"h-full w-[1px]\",",
+      "issue": "Ancho fijo en píxeles",
+      "severity": "high",
+      "matches": [
+        "w-[1px]"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\sheet.tsx",
+      "line": 34,
+      "content": "\"fixed z-50 gap-4 bg-white dark:bg-gray-900 p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500\",",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\sidebar.tsx",
+      "line": 311,
+      "content": "\"absolute inset-y-0 z-20 hidden w-4 -translate-x-1/2 transition-all ease-linear after:absolute after:inset-y-0 after:left-1/2 after:w-[2px] hover:after:bg-sidebar-border group-data-[side=left]:-right-4 group-data-[side=right]:left-0 sm:flex\",",
+      "issue": "Ancho fijo en píxeles",
+      "severity": "high",
+      "matches": [
+        "w-[2px]"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\sidebar.tsx",
+      "line": 533,
+      "content": "sm: \"h-7 text-xs\",",
+      "issue": "Texto muy pequeño en móvil",
+      "severity": "high",
+      "matches": [
+        "text-xs"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\sidebar.tsx",
+      "line": 735,
+      "content": "size === \"sm\" && \"text-xs\",",
+      "issue": "Texto muy pequeño en móvil",
+      "severity": "high",
+      "matches": [
+        "text-xs"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\toast.tsx",
+      "line": 17,
+      "content": "\"fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]\",",
+      "issue": "Ancho fijo en píxeles",
+      "severity": "high",
+      "matches": [
+        "w-[420px]"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Upload\\UploadZone.tsx",
+      "line": 187,
+      "content": "\"bg-card rounded-lg border-2 border-dashed border-border p-6 text-center drag-zone transition-all duration-300 hover:border-primary cursor-pointer\",",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Upload\\UploadZone.tsx",
+      "line": 235,
+      "content": "<span className=\"text-xs\">{file.name}</span>",
+      "issue": "Texto muy pequeño en móvil",
+      "severity": "high",
+      "matches": [
+        "text-xs"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Upload\\UserSelector.tsx",
+      "line": 21,
+      "content": "<CardContent className=\"p-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\UserStatistics.tsx",
+      "line": 51,
+      "content": "<CardContent className=\"py-8\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "py-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\UserStatistics.tsx",
+      "line": 211,
+      "content": "<div className=\"grid grid-cols-1 md:grid-cols-2 gap-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\UserStatistics.tsx",
+      "line": 211,
+      "content": "<div className=\"grid grid-cols-1 md:grid-cols-2 gap-6\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ActivityLogs.tsx",
+      "line": 97,
+      "content": "<div className=\"p-4 md:p-6 space-y-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ActivityLogs.tsx",
+      "line": 112,
+      "content": "<div className=\"p-4 md:p-6 space-y-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ActivityLogs.tsx",
+      "line": 131,
+      "content": "<SelectTrigger className=\"w-[180px]\" data-testid=\"filter-action\">",
+      "issue": "Ancho fijo en píxeles",
+      "severity": "high",
+      "matches": [
+        "w-[180px]"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ActivityLogs.tsx",
+      "line": 146,
+      "content": "<SelectTrigger className=\"w-[180px]\" data-testid=\"filter-entity\">",
+      "issue": "Ancho fijo en píxeles",
+      "severity": "high",
+      "matches": [
+        "w-[180px]"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ActivityLogs.tsx",
+      "line": 159,
+      "content": "<SelectTrigger className=\"w-[180px]\" data-testid=\"filter-user\">",
+      "issue": "Ancho fijo en píxeles",
+      "severity": "high",
+      "matches": [
+        "w-[180px]"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ActivityLogs.tsx",
+      "line": 178,
+      "content": "<TableHead className=\"w-[180px] text-white text-sm\">Fecha y Hora</TableHead>",
+      "issue": "Ancho fijo en píxeles",
+      "severity": "high",
+      "matches": [
+        "w-[180px]"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ActivityLogs.tsx",
+      "line": 182,
+      "content": "<TableHead className=\"w-[120px] text-white text-sm\">IP</TableHead>",
+      "issue": "Ancho fijo en píxeles",
+      "severity": "high",
+      "matches": [
+        "w-[120px]"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ActivityLogs.tsx",
+      "line": 191,
+      "content": "<TableCell colSpan={5} className=\"text-center py-8 text-muted-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "py-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ActivityLogs.tsx",
+      "line": 226,
+      "content": "<div className=\"max-w-[400px] truncate\" title={log.description}>",
+      "issue": "Ancho fijo en píxeles",
+      "severity": "high",
+      "matches": [
+        "w-[400px]"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\AdminPanel.tsx",
+      "line": 224,
+      "content": "<div className=\"container mx-auto p-6 space-y-6\" data-testid=\"admin-panel\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\AdminPanel.tsx",
+      "line": 266,
+      "content": "<div className=\"grid grid-cols-1 md:grid-cols-3 gap-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\AdminPanel.tsx",
+      "line": 266,
+      "content": "<div className=\"grid grid-cols-1 md:grid-cols-3 gap-6\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\AdminPanel.tsx",
+      "line": 317,
+      "content": "<div className=\"grid grid-cols-1 md:grid-cols-2 gap-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\AdminPanel.tsx",
+      "line": 317,
+      "content": "<div className=\"grid grid-cols-1 md:grid-cols-2 gap-6\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\AdminPanel.tsx",
+      "line": 389,
+      "content": "<div className=\"grid grid-cols-1 lg:grid-cols-2 gap-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\AdminPanel.tsx",
+      "line": 389,
+      "content": "<div className=\"grid grid-cols-1 lg:grid-cols-2 gap-6\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\AdminPanel.tsx",
+      "line": 545,
+      "content": "<div className=\"grid grid-cols-1 md:grid-cols-2 gap-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\AdminPanel.tsx",
+      "line": 545,
+      "content": "<div className=\"grid grid-cols-1 md:grid-cols-2 gap-6\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Analytics.tsx",
+      "line": 158,
+      "content": "<div className=\"p-4 sm:p-6 lg:p-8 space-y-6\" data-testid=\"analytics-page\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6",
+        "p-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Analytics.tsx",
+      "line": 375,
+      "content": "<div className=\"grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:mt-8\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Analytics.tsx",
+      "line": 375,
+      "content": "<div className=\"grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mt-6 sm:mt-8\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Clients.tsx",
+      "line": 119,
+      "content": "<div className=\"p-6 space-y-6\" data-testid=\"clients-page\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Clients.tsx",
+      "line": 134,
+      "content": "<div className=\"p-6 space-y-6\" data-testid=\"clients-page\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Dashboard.tsx",
+      "line": 9,
+      "content": "<div className=\"p-6 space-y-6\" data-testid=\"dashboard-page\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Dashboard.tsx",
+      "line": 21,
+      "content": "<div className=\"grid grid-cols-1 lg:grid-cols-3 gap-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Dashboard.tsx",
+      "line": 21,
+      "content": "<div className=\"grid grid-cols-1 lg:grid-cols-3 gap-6\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Files.tsx",
+      "line": 163,
+      "content": "<CardContent className=\"p-8 text-center\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Files.tsx",
+      "line": 206,
+      "content": "<div className=\"grid grid-cols-2 gap-3 text-xs\">",
+      "issue": "Texto muy pequeño en móvil",
+      "severity": "high",
+      "matches": [
+        "text-xs"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ImportPage.tsx",
+      "line": 8,
+      "content": "<div className=\"container mx-auto p-4 sm:p-6 max-w-7xl\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ImportPage.tsx",
+      "line": 20,
+      "content": "<div className=\"grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ImportPage.tsx",
+      "line": 20,
+      "content": "<div className=\"grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Invoices.tsx",
+      "line": 149,
+      "content": "<div className=\"p-6 space-y-6\" data-testid=\"invoices-page\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Invoices.tsx",
+      "line": 164,
+      "content": "<div className=\"p-6 space-y-6\" data-testid=\"invoices-page\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\InvoicesSeparated.tsx",
+      "line": 77,
+      "content": "<div className=\"p-3 sm:p-6 space-y-4 sm:space-y-6\" data-testid=\"invoices-separated-page\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ProfileSettings.tsx",
+      "line": 444,
+      "content": "<div className=\"p-8\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ProfileSettings.tsx",
+      "line": 456,
+      "content": "<div className=\"p-8 space-y-8\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ProfileSettings.tsx",
+      "line": 741,
+      "content": "<div className=\"grid grid-cols-1 md:grid-cols-2 gap-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ProfileSettings.tsx",
+      "line": 741,
+      "content": "<div className=\"grid grid-cols-1 md:grid-cols-2 gap-6\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ProfileSettings.tsx",
+      "line": 968,
+      "content": "<div className=\"text-center py-8\">Cargando usuarios...</div>",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "py-8"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Reports.tsx",
+      "line": 117,
+      "content": "<div className=\"p-6 space-y-6\" data-testid=\"reports-page\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Reports.tsx",
+      "line": 306,
+      "content": "<TabsList className=\"grid w-full grid-cols-2 sm:grid-cols-2 lg:grid-cols-4\">",
+      "issue": "Grid no responsivo",
+      "severity": "high",
+      "matches": [
+        "grid-cols-4"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Reports.tsx",
+      "line": 324,
+      "content": "<div className=\"grid grid-cols-1 md:grid-cols-3 gap-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Reports.tsx",
+      "line": 324,
+      "content": "<div className=\"grid grid-cols-1 md:grid-cols-3 gap-6\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ReviewQueue.tsx",
+      "line": 227,
+      "content": "<div className=\"p-6 space-y-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ReviewQueue.tsx",
+      "line": 240,
+      "content": "<div className=\"p-6 space-y-6\" data-testid=\"review-queue-page\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ReviewQueue.tsx",
+      "line": 251,
+      "content": "<div className=\"bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-lg p-4 sm:p-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ReviewQueue.tsx",
+      "line": 299,
+      "content": "<TableHead className=\"w-[200px] text-white text-sm\">Archivo</TableHead>",
+      "issue": "Ancho fijo en píxeles",
+      "severity": "high",
+      "matches": [
+        "w-[200px]"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 50,
+      "content": "<div className=\"p-6 space-y-6\" data-testid=\"trash-page\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 65,
+      "content": "<div className=\"p-6 space-y-6\" data-testid=\"trash-page\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 88,
+      "content": "<CardContent className=\"p-6 text-center text-muted-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 96,
+      "content": "<th className=\"px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 99,
+      "content": "<th className=\"px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 102,
+      "content": "<th className=\"px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 105,
+      "content": "<th className=\"px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 108,
+      "content": "<th className=\"px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 111,
+      "content": "<th className=\"px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 123,
+      "content": "<td className=\"px-6 py-4 text-sm text-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 126,
+      "content": "<td className=\"px-6 py-4\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 138,
+      "content": "<td className=\"px-6 py-4 text-sm text-muted-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 141,
+      "content": "<td className=\"px-6 py-4 text-sm text-muted-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 144,
+      "content": "<td className=\"px-6 py-4 text-sm text-muted-foreground\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Trash.tsx",
+      "line": 147,
+      "content": "<td className=\"px-6 py-4\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "px-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Upload.tsx",
+      "line": 115,
+      "content": "<div className=\"p-6 space-y-6\" data-testid=\"upload-page\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Upload.tsx",
+      "line": 129,
+      "content": "<div className=\"grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Upload.tsx",
+      "line": 129,
+      "content": "<div className=\"grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6\">",
+      "issue": "Gap excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "gap-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Upload.tsx",
+      "line": 131,
+      "content": "<div className=\"p-6 bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-950/20 dark:to-pink-950/20 rounded-xl border border-purple-200 dark:border-purple-800 h-full flex flex-col\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Upload.tsx",
+      "line": 218,
+      "content": "<div className=\"p-6 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/20 dark:to-teal-950/20 rounded-xl border border-emerald-200 dark:border-emerald-800 h-full flex flex-col\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Upload.tsx",
+      "line": 228,
+      "content": "<div className=\"p-6 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20 rounded-xl border border-blue-200 dark:border-blue-800 h-full flex flex-col\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Upload.tsx",
+      "line": 253,
+      "content": "<CardContent className=\"p-6\">",
+      "issue": "Padding excesivo en móvil",
+      "severity": "medium",
+      "matches": [
+        "p-6"
+      ]
+    }
+  ]
+}
