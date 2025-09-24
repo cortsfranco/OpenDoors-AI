@@ -832,6 +832,60 @@ export class AzureInvoiceProcessor {
     return cleanCuit;
   }
 
+  private isRelevantDescription(text: string): boolean {
+    if (!text || typeof text !== 'string') return false;
+    
+    const lowerText = text.toLowerCase().trim();
+    
+    // Skip if too short
+    if (lowerText.length < 5) return false;
+    
+    // Skip addresses (patterns like "la posta 629", "calle 123", etc.)
+    const addressPatterns = [
+      /^(la|el|los|las|calle|avenida|av\.?|pasaje|plaza|barrio)\s+\w+/i,
+      /^\d+\s+(calle|avenida|av\.?|pasaje|plaza)/i,
+      /^\w+\s+\d+(\s+\w+)*$/i, // Pattern like "posta 629" or "calle 123"
+      /^\d+\s*\w*\s*\d*$/i, // Just numbers and few words
+      /^(c\.p\.?|cp\.?|codigo postal)/i,
+      /^(telefono|tel\.?|cel\.?|whatsapp)/i,
+      /^(email|mail|correo)/i,
+      /^(www\.|http|https)/i,
+      /^@\w+/i, // Email-like
+    ];
+    
+    for (const pattern of addressPatterns) {
+      if (pattern.test(lowerText)) {
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`🚫 Skipping address-like content: ${text}`);
+        }
+        return false;
+      }
+    }
+    
+    // Skip if it's mostly numbers and symbols
+    const numberSymbolRatio = (text.match(/[\d\s\-\.\,\:\;]/g) || []).length / text.length;
+    if (numberSymbolRatio > 0.7) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`🚫 Skipping number-heavy content: ${text}`);
+      }
+      return false;
+    }
+    
+    // Skip if it contains too many common non-descriptive words
+    const nonDescriptiveWords = ['factura', 'invoice', 'bill', 'total', 'subtotal', 'iva', 'tax', 'amount', 'date', 'fecha', 'numero', 'number'];
+    const words = lowerText.split(/\s+/);
+    const nonDescriptiveCount = words.filter(word => nonDescriptiveWords.includes(word)).length;
+    
+    if (nonDescriptiveCount > words.length * 0.6) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`🚫 Skipping non-descriptive content: ${text}`);
+      }
+      return false;
+    }
+    
+    return true;
+  }
+
   private extractDescriptionField(fields: any): string | null {
     // Try single value fields first - expanded list
     const singleFields = [
@@ -843,7 +897,7 @@ export class AzureInvoiceProcessor {
     
     for (const fieldName of singleFields) {
       const value = this.extractField(fields[fieldName]);
-      if (value && value.trim()) {
+      if (value && value.trim() && this.isRelevantDescription(value)) {
         if (process.env.NODE_ENV === 'development') {
           console.log(`📝 Description found in field ${fieldName}: ${value.slice(0, 50)}...`);
         }
@@ -895,9 +949,9 @@ export class AzureInvoiceProcessor {
               itemDesc = this.extractField(itemField);
             }
             
-            if (itemDesc && itemDesc.trim() && itemDesc.length > 2) {
-              descriptions.push(itemDesc.trim());
-            }
+                 if (itemDesc && itemDesc.trim() && itemDesc.length > 2 && this.isRelevantDescription(itemDesc)) {
+                   descriptions.push(itemDesc.trim());
+                 }
           }
         }
         
@@ -925,18 +979,18 @@ export class AzureInvoiceProcessor {
     
     // Try to extract from any field that might contain description-like content
     for (const [fieldName, fieldValue] of Object.entries(fields)) {
-      if (fieldValue && typeof fieldValue === 'object' && 'content' in fieldValue) {
-        const content = this.extractField(fieldValue);
-        if (content && content.length > 10 && content.length < 200) {
-          // Check if it looks like a description (not a number, date, or short text)
-          if (!/^\d+$/.test(content) && !/^\d{2}\/\d{2}\/\d{4}$/.test(content) && content.includes(' ')) {
-            if (process.env.NODE_ENV === 'development') {
-              console.log(`📝 Description found in generic field ${fieldName}: ${content.slice(0, 50)}...`);
-            }
-            return content.trim();
-          }
-        }
-      }
+           if (fieldValue && typeof fieldValue === 'object' && 'content' in fieldValue) {
+             const content = this.extractField(fieldValue);
+             if (content && content.length > 10 && content.length < 200 && this.isRelevantDescription(content)) {
+               // Check if it looks like a description (not a number, date, or short text)
+               if (!/^\d+$/.test(content) && !/^\d{2}\/\d{2}\/\d{4}$/.test(content) && content.includes(' ')) {
+                 if (process.env.NODE_ENV === 'development') {
+                   console.log(`📝 Description found in generic field ${fieldName}: ${content.slice(0, 50)}...`);
+                 }
+                 return content.trim();
+               }
+             }
+           }
     }
     
     if (process.env.NODE_ENV === 'development') {

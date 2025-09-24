@@ -53,9 +53,20 @@ export default function Files() {
     return matchesSearch && matchesType;
   });
 
-  const handleViewFile = (invoiceId: string) => {
+  const handleViewFile = (invoiceId: string, fileName?: string) => {
+    // Try to view the file directly in browser
     const fileUrl = `/api/invoices/${invoiceId}/file`;
-    window.open(fileUrl, '_blank');
+    
+    // For PDFs, try to open in browser
+    if (fileName?.toLowerCase().endsWith('.pdf')) {
+      window.open(fileUrl, '_blank');
+    } else {
+      // For images, try to display inline
+      const link = document.createElement('a');
+      link.href = fileUrl;
+      link.target = '_blank';
+      link.click();
+    }
   };
 
   const handleDownloadFile = (invoiceId: string, fileName?: string) => {
@@ -90,7 +101,7 @@ export default function Files() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 space-y-6" data-testid="files-page">
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Archivos de Facturas</h1>
@@ -232,7 +243,7 @@ export default function Files() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleViewFile(invoice.id)}
+                    onClick={() => handleViewFile(invoice.id, invoice.fileName || undefined)}
                     className="flex-1"
                     data-testid={`view-file-${invoice.id}`}
                   >

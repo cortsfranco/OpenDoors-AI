@@ -849,7 +849,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Endpoint para servir archivos de facturas
-  app.get("/api/invoices/:id/file", async (req, res) => {
+  app.get("/api/invoices/:id/file", requireAuth, async (req, res) => {
     try {
       const invoice = await storage.getInvoice(req.params.id);
       
@@ -894,7 +894,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Endpoint para descargar archivos de facturas
-  app.get("/api/invoices/:id/download", async (req, res) => {
+  app.get("/api/invoices/:id/download", requireAuth, async (req, res) => {
     try {
       const invoice = await storage.getInvoice(req.params.id);
       

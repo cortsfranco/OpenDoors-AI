@@ -39,6 +39,35 @@ interface InvoicesTableProps {
   onRefetch?: () => void;
 }
 
+// Helper function to detect data that needs definition
+const needsDefinition = (value: string | null | undefined): boolean => {
+  if (!value) return true;
+  const lowerValue = value.toLowerCase().trim();
+  
+  // Common placeholder texts that indicate missing data
+  const placeholderTexts = [
+    'cliente por definir',
+    'proveedor por definir', 
+    'cliente extraído por ia',
+    'proveedor extraído por ia',
+    'descripción no disponible',
+    'sin descripción',
+    'detalle no disponible',
+    'sin detalle',
+    'n/a',
+    'no disponible',
+    'por definir',
+    'tbd',
+    'pending',
+    'undefined',
+    'null',
+    '-',
+    ''
+  ];
+  
+  return placeholderTexts.includes(lowerValue) || lowerValue.length < 3;
+};
+
 export default function InvoicesTable({ 
   invoices, 
   total, 
@@ -490,7 +519,11 @@ export default function InvoicesTable({
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
-                            <span className="font-semibold text-clamp-1">
+                            <span className={`font-semibold text-clamp-1 ${
+                              needsDefinition(invoice.clientProviderName) 
+                                ? 'text-red-600' 
+                                : ''
+                            }`}>
                               {invoice.clientProviderName}
                             </span>
                             <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
@@ -585,7 +618,11 @@ export default function InvoicesTable({
                                 title="Haz clic para ver el detalle completo"
                               >
                                 <FileText className="w-3 h-3 mr-1 text-blue-500" />
-                                <span className="text-clamp-1 max-w-[150px]">
+                                <span className={`text-clamp-1 max-w-[150px] ${
+                                  needsDefinition((invoice as any).description) 
+                                    ? 'text-red-600' 
+                                    : ''
+                                }`}>
                                   {(invoice as any).description}
                                 </span>
                               </Button>
@@ -739,7 +776,11 @@ export default function InvoicesTable({
                   </td>
                   <td className="px-6 py-4">
                     <div>
-                      <div className="text-sm font-medium text-foreground">
+                      <div className={`text-sm font-medium ${
+                        needsDefinition(invoice.clientProviderName) 
+                          ? 'text-red-600' 
+                          : 'text-foreground'
+                      }`}>
                         {invoice.clientProviderName}
                       </div>
                       {invoice.clientProvider?.cuit && (
@@ -766,7 +807,11 @@ export default function InvoicesTable({
                         title="Haz clic para ver el detalle completo"
                       >
                         <FileText className="w-3 h-3 mr-1 text-blue-500" />
-                        <span className="truncate max-w-[200px]">
+                        <span className={`truncate max-w-[200px] ${
+                          needsDefinition((invoice as any).description) 
+                            ? 'text-red-600' 
+                            : ''
+                        }`}>
                           {(invoice as any).description}
                         </span>
                       </Button>
