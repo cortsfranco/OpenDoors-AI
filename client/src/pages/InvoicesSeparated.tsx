@@ -21,7 +21,9 @@ export default function InvoicesSeparated() {
         limit: String(pageSize), 
         offset: String((incomePage - 1) * pageSize) 
       });
-      const response = await fetch(`/api/invoices?${params}`);
+      const response = await fetch(`/api/invoices?${params}`, {
+        credentials: 'include'
+      });
       if (!response.ok) throw new Error("Failed to fetch income invoices");
       return response.json();
     },
@@ -35,7 +37,9 @@ export default function InvoicesSeparated() {
         limit: String(pageSize), 
         offset: String((expensePage - 1) * pageSize) 
       });
-      const response = await fetch(`/api/invoices?${params}`);
+      const response = await fetch(`/api/invoices?${params}`, {
+        credentials: 'include'
+      });
       if (!response.ok) throw new Error("Failed to fetch expense invoices");
       return response.json();
     },
@@ -49,7 +53,9 @@ export default function InvoicesSeparated() {
         limit: String(pageSize), 
         offset: String((neutralPage - 1) * pageSize) 
       });
-      const response = await fetch(`/api/invoices?${params}`);
+      const response = await fetch(`/api/invoices?${params}`, {
+        credentials: 'include'
+      });
       if (!response.ok) throw new Error("Failed to fetch neutral invoices");
       return response.json();
     },

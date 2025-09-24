@@ -282,6 +282,12 @@ export class UploadJobManager {
       const totalAmount = parseFloat(extractedData.total?.toString() || '0');
       const subtotalAmount = parseFloat((extractedData as any).subtotal?.toString() || (totalAmount * 0.79).toString());
       const ivaAmount = parseFloat(extractedData.vat_amount?.toString() || (totalAmount * 0.21).toString());
+      const supplierCuit = (extractedData as any).supplier_cuit;
+      
+      // DEBUG: Log CUIT extraction
+      console.log('🔍 DEBUG CUIT extraction:');
+      console.log('🔍 DEBUG - supplier_cuit:', supplierCuit);
+      console.log('🔍 DEBUG - clientName:', clientName);
 
       const hasCriticalDataMissing = (
         !extractedData.date || 
@@ -312,7 +318,7 @@ export class UploadJobManager {
           clientProvider = await storage.createClientProvider({
             name: clientName,
             type: extractedData.type === 'income' ? 'client' : 'provider',
-            cuit: (extractedData as any).cuit || null,
+            cuit: (extractedData as any).supplier_cuit || null,
           });
         }
         

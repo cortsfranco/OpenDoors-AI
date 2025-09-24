@@ -1,0 +1,285 @@
+{
+  "timestamp": "2025-09-23T16:26:36.821Z",
+  "summary": {
+    "totalFiles": 24,
+    "totalChanges": 48
+  },
+  "results": [
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Analytics\\AdvancedCharts.tsx",
+      "changesCount": 7,
+      "changes": [
+        {
+          "description": "Texto muy pequeño - agregar breakpoint responsivo",
+          "count": 1
+        },
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        },
+        {
+          "description": "Altura de botón muy pequeña - hacer responsivo",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\KPICards.tsx",
+      "changesCount": 5,
+      "changes": [
+        {
+          "description": "Texto muy pequeño - agregar breakpoint responsivo",
+          "count": 1
+        },
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\MainChart.tsx",
+      "changesCount": 3,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        },
+        {
+          "description": "Altura de botón muy pequeña - hacer responsivo",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\QuickStats.tsx",
+      "changesCount": 2,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        },
+        {
+          "description": "Altura de botón muy pequeña - hacer responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Dashboard\\RecentActivity.tsx",
+      "changesCount": 2,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        },
+        {
+          "description": "Altura de botón muy pequeña - hacer responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ExcelImportExport.tsx",
+      "changesCount": 1,
+      "changes": [
+        {
+          "description": "Texto muy pequeño - agregar breakpoint responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Filters\\AdvancedDateRangePicker.tsx",
+      "changesCount": 2,
+      "changes": [
+        {
+          "description": "Texto muy pequeño - agregar breakpoint responsivo",
+          "count": 1
+        },
+        {
+          "description": "Flex row puede causar overflow - hacer responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Layout\\Header.tsx",
+      "changesCount": 1,
+      "changes": [
+        {
+          "description": "Altura de botón muy pequeña - hacer responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\FiltersPanel.tsx",
+      "changesCount": 2,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Tables\\InvoicesTable.tsx",
+      "changesCount": 1,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Templates\\InvoiceTemplates.tsx",
+      "changesCount": 1,
+      "changes": [
+        {
+          "description": "Texto muy pequeño - agregar breakpoint responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\card.tsx",
+      "changesCount": 1,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\ui\\sidebar.tsx",
+      "changesCount": 2,
+      "changes": [
+        {
+          "description": "Texto muy pequeño - agregar breakpoint responsivo",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\Upload\\UserSelector.tsx",
+      "changesCount": 1,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\components\\UserStatistics.tsx",
+      "changesCount": 1,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ActivityLogs.tsx",
+      "changesCount": 3,
+      "changes": [
+        {
+          "description": "Ancho fijo problemático - hacer responsivo",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\AdminPanel.tsx",
+      "changesCount": 4,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Dashboard.tsx",
+      "changesCount": 1,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Files.tsx",
+      "changesCount": 1,
+      "changes": [
+        {
+          "description": "Texto muy pequeño - agregar breakpoint responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ImportPage.tsx",
+      "changesCount": 1,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ProfileSettings.tsx",
+      "changesCount": 2,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        },
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Reports.tsx",
+      "changesCount": 2,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        },
+        {
+          "description": "Grid no responsivo - agregar breakpoints",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\ReviewQueue.tsx",
+      "changesCount": 1,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "file": "C:\\Users\\FRANCO\\Desktop\\OpenDoorsAI\\client\\src\\pages\\Upload.tsx",
+      "changesCount": 1,
+      "changes": [
+        {
+          "description": "Padding excesivo - hacer responsivo",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

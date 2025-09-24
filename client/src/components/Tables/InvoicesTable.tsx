@@ -571,7 +571,24 @@ export default function InvoicesTable({
                           {(invoice as any).description && (
                             <div className="flex justify-between items-center">
                               <span className="text-muted-foreground">Detalle:</span>
-                              <span className="text-clamp-1">{(invoice as any).description}</span>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-auto p-1 text-left justify-start font-normal hover:bg-muted/50"
+                                onClick={() => {
+                                  toast({
+                                    title: "Detalle de la factura",
+                                    description: (invoice as any).description,
+                                    duration: 10000,
+                                  });
+                                }}
+                                title="Haz clic para ver el detalle completo"
+                              >
+                                <FileText className="w-3 h-3 mr-1 text-blue-500" />
+                                <span className="text-clamp-1 max-w-[150px]">
+                                  {(invoice as any).description}
+                                </span>
+                              </Button>
                             </div>
                           )}
                           <div className="flex justify-between items-center">
@@ -733,7 +750,29 @@ export default function InvoicesTable({
                     </div>
                   </td>
                   <td className="px-6 py-4 text-sm text-muted-foreground">
-                    {(invoice as any).description || '-'}
+                    {(invoice as any).description ? (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-auto p-1 text-left justify-start font-normal hover:bg-muted/50"
+                        onClick={() => {
+                          // Show description in a toast or modal
+                          toast({
+                            title: "Detalle de la factura",
+                            description: (invoice as any).description,
+                            duration: 10000,
+                          });
+                        }}
+                        title="Haz clic para ver el detalle completo"
+                      >
+                        <FileText className="w-3 h-3 mr-1 text-blue-500" />
+                        <span className="truncate max-w-[200px]">
+                          {(invoice as any).description}
+                        </span>
+                      </Button>
+                    ) : (
+                      <span className="text-muted-foreground">-</span>
+                    )}
                   </td>
                   <td className="px-6 py-4 text-sm text-foreground">
                     {invoice.invoiceNumber || '-'}

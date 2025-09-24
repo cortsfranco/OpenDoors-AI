@@ -2,6 +2,7 @@ import KPICards from "@/components/Dashboard/KPICards";
 import MainChart from "@/components/Dashboard/MainChart";
 import QuickStats from "@/components/Dashboard/QuickStats";
 import RecentActivity from "@/components/Dashboard/RecentActivity";
+import InvoicesSeparated from "./InvoicesSeparated";
 import { useAuth } from "@/hooks/useAuth";
 
 export default function Dashboard() {
@@ -17,6 +18,9 @@ export default function Dashboard() {
       </div>
       
       <KPICards />
+      
+      {/* Sección de Facturas por Tipo */}
+      <InvoicesSeparated />
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         <MainChart />

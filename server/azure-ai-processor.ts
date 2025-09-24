@@ -250,7 +250,7 @@ export class AzureInvoiceProcessor {
             
             for (const field of alternativeFields) {
               if (field && typeof field === 'string') {
-                const addressMatch = field.match(/([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑ\s\.\&\-]{3,})/);
+                const addressMatch = (field as string).match(/([A-ZÁÉÍÓÚÑ][A-Za-zÁÉÍÓÚÑ\s\.\&\-]{3,})/);
                 if (addressMatch && addressMatch[1]) {
                   const candidate = addressMatch[1].trim();
                   if (!openDoorsVariations.some(v => candidate.toLowerCase().includes(v.toLowerCase())) &&
@@ -448,7 +448,7 @@ export class AzureInvoiceProcessor {
         total: this.extractNumberField(fields.InvoiceTotal || fields.TotalAmount || fields.Total || fields.AmountDue),
         client_name: rawClientName,
         supplier_name: this.extractField(fields.VendorName || fields.Vendor),
-        supplier_cuit: this.extractField(fields.VendorTaxId || fields.TaxId || fields.VendorAddressRecipient),
+        supplier_cuit: this.extractCuitField(fields) || undefined,
         vat_amount: this.extractNumberField(fields.TotalTax || fields.Tax || fields.IVA || fields.VAT),
         type: type,
         needs_review: needsReview,
@@ -729,11 +729,116 @@ export class AzureInvoiceProcessor {
     return Number.isFinite(num) ? num : undefined;
   }
 
+  private extractCuitField(fields: any): string | null {
+    // Try specific CUIT fields first
+    const cuitFields = [
+      'VendorTaxId', 'TaxId', 'VendorAddressRecipient', 'TaxIdentificationNumber',
+      'CUIT', 'Cuit', 'cuit', 'CUIL', 'Cuil', 'cuil', 'DNI', 'Dni', 'dni',
+      'TaxID', 'TaxNumber', 'IdentificationNumber', 'IDNumber', 'FiscalID',
+      'RUT', 'Rut', 'rut', 'NIT', 'Nit', 'nit'
+    ];
+    
+    for (const fieldName of cuitFields) {
+      const value = this.extractField(fields[fieldName]);
+      if (value && this.isValidCuit(value)) {
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`🏢 CUIT found in field ${fieldName}: ${value}`);
+        }
+        return this.formatCuit(value);
+      }
+    }
+    
+    // Try to extract CUIT from text content using regex patterns
+    for (const [fieldName, fieldValue] of Object.entries(fields)) {
+      if (fieldValue && typeof fieldValue === 'object' && 'content' in fieldValue) {
+        const content = this.extractField(fieldValue);
+        if (content && typeof content === 'string') {
+          // Look for CUIT patterns in the content
+          const cuitPatterns = [
+            /(\d{2}[-\.\s]?\d{8}[-\.\s]?\d{1})/g,  // XX-XXXXXXXX-X or XX.XXXXXXXX.X
+            /(\d{11})/g,                           // 11 digits
+            /(cuit[:\s]*(\d{2}[-\.\s]?\d{8}[-\.\s]?\d{1}))/gi,  // CUIT: XX-XXXXXXXX-X
+            /(cuil[:\s]*(\d{2}[-\.\s]?\d{8}[-\.\s]?\d{1}))/gi,  // CUIL: XX-XXXXXXXX-X
+            /(dni[:\s]*(\d{7,8}))/gi,              // DNI: XXXXXXXX
+            /(rut[:\s]*(\d{1,2}[-\.\s]?\d{3}[-\.\s]?\d{3}[-\.\s]?\d{1}))/gi,  // RUT: XX.XXX.XXX-X
+          ];
+          
+          for (const pattern of cuitPatterns) {
+            const matches = content.match(pattern);
+            if (matches) {
+              for (const match of matches) {
+                const cleanedMatch = match.replace(/[^\d]/g, '');
+                if (this.isValidCuit(cleanedMatch)) {
+                  if (process.env.NODE_ENV === 'development') {
+                    console.log(`🏢 CUIT found in field ${fieldName} content: ${match} -> ${this.formatCuit(cleanedMatch)}`);
+                  }
+                  return this.formatCuit(cleanedMatch);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    
+    if (process.env.NODE_ENV === 'development') {
+      console.log('🏢 No CUIT found in any field');
+    }
+    return null;
+  }
+
+  private isValidCuit(cuit: string): boolean {
+    if (!cuit || typeof cuit !== 'string') return false;
+    
+    // Remove all non-digit characters
+    const cleanCuit = cuit.replace(/\D/g, '');
+    
+    // Check if it's 11 digits (CUIT/CUIL) or 7-8 digits (DNI)
+    if (cleanCuit.length === 11) {
+      // CUIT/CUIL validation with check digit
+      const digits = cleanCuit.split('').map(Number);
+      const multipliers = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+      
+      let sum = 0;
+      for (let i = 0; i < 10; i++) {
+        sum += digits[i] * multipliers[i];
+      }
+      
+      const remainder = sum % 11;
+      const checkDigit = remainder < 2 ? remainder : 11 - remainder;
+      
+      return digits[10] === checkDigit;
+    } else if (cleanCuit.length >= 7 && cleanCuit.length <= 8) {
+      // DNI validation (basic length check)
+      return /^\d{7,8}$/.test(cleanCuit);
+    }
+    
+    return false;
+  }
+
+  private formatCuit(cuit: string): string {
+    if (!cuit) return '';
+    
+    const cleanCuit = cuit.replace(/\D/g, '');
+    
+    if (cleanCuit.length === 11) {
+      // Format as XX-XXXXXXXX-X
+      return `${cleanCuit.slice(0, 2)}-${cleanCuit.slice(2, 10)}-${cleanCuit.slice(10)}`;
+    } else if (cleanCuit.length >= 7 && cleanCuit.length <= 8) {
+      // Format as DNI (no dashes)
+      return cleanCuit;
+    }
+    
+    return cleanCuit;
+  }
+
   private extractDescriptionField(fields: any): string | null {
-    // Try single value fields first
+    // Try single value fields first - expanded list
     const singleFields = [
       'Description', 'ItemDescription', 'ProductDescription', 'ServiceDescription',
-      'Details', 'Item', 'Product', 'Service', 'Notes', 'Concept', 'Concepto'
+      'Details', 'Item', 'Product', 'Service', 'Notes', 'Concept', 'Concepto',
+      'Detalle', 'Descripción', 'Producto', 'Servicio', 'Observaciones',
+      'DescriptionText', 'ItemDetails', 'ProductDetails', 'ServiceDetails'
     ];
     
     for (const fieldName of singleFields) {
@@ -748,7 +853,8 @@ export class AzureInvoiceProcessor {
     
     // Handle array fields (Items, LineItems, etc.) - Azure uses valueArray
     const arrayFields = [
-      'Items', 'LineItems', 'LineItem', 'Products', 'Services'
+      'Items', 'LineItems', 'LineItem', 'Products', 'Services',
+      'Productos', 'Servicios', 'Conceptos', 'Detalles'
     ];
     
     for (const fieldName of arrayFields) {
@@ -775,7 +881,12 @@ export class AzureInvoiceProcessor {
                 this.extractField(itemField.valueObject.Item) ||
                 this.extractField(itemField.valueObject.Product) ||
                 this.extractField(itemField.valueObject.Service) ||
-                this.extractField(itemField.valueObject.Name)
+                this.extractField(itemField.valueObject.Name) ||
+                this.extractField(itemField.valueObject.Detalle) ||
+                this.extractField(itemField.valueObject.Descripción) ||
+                this.extractField(itemField.valueObject.Producto) ||
+                this.extractField(itemField.valueObject.Servicio) ||
+                this.extractField(itemField.valueObject.Concepto)
               );
             }
             
@@ -808,6 +919,22 @@ export class AzureInvoiceProcessor {
             console.log(`📝 Description extracted from ${fieldName} array: ${descriptions.length} items`);
           }
           return result;
+        }
+      }
+    }
+    
+    // Try to extract from any field that might contain description-like content
+    for (const [fieldName, fieldValue] of Object.entries(fields)) {
+      if (fieldValue && typeof fieldValue === 'object' && 'content' in fieldValue) {
+        const content = this.extractField(fieldValue);
+        if (content && content.length > 10 && content.length < 200) {
+          // Check if it looks like a description (not a number, date, or short text)
+          if (!/^\d+$/.test(content) && !/^\d{2}\/\d{2}\/\d{4}$/.test(content) && content.includes(' ')) {
+            if (process.env.NODE_ENV === 'development') {
+              console.log(`📝 Description found in generic field ${fieldName}: ${content.slice(0, 50)}...`);
+            }
+            return content.trim();
+          }
         }
       }
     }

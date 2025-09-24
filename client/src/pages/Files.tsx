@@ -29,7 +29,11 @@ export default function Files() {
 
   // Fetch all invoices that have files
   const { data: invoices = [], isLoading } = useQuery({
-    queryKey: ['/api/invoices', { hasFiles: true }],
+    queryKey: ['/api/invoices', { limit: 1000 }],
+    queryFn: () => 
+      fetch('/api/invoices?limit=1000', {
+        credentials: 'include'
+      }).then(res => res.json()),
     select: (data: any) => {
       if (!data?.invoices) return [];
       // Filter only invoices that have files
