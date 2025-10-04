@@ -25,6 +25,8 @@ import { Pool } from "pg";
 import * as XLSX from "xlsx";
 import { wsManager } from "./websocket";
 import { uploadJobManager, UploadJobManager } from "./uploadJobManager";
+import invoiceRoutes from "./billing/presentation/invoice.routes";
+import authRoutes from "./auth/presentation/auth.routes";
 
 // Configure multer for file uploads
 const uploadDir = path.join(process.cwd(), 'uploads');
@@ -938,6 +940,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  /* COMMENTED OUT - Replaced by Clean Architecture billing module
   app.post("/api/invoices", upload.single('file'), async (req, res) => {
     try {
       const { uploadedBy, uploadedByName, ownerName, manualEntry, invoiceData } = req.body;
@@ -1222,6 +1225,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Error al crear la factura" });
     }
   });
+  */
 
   // Async upload endpoints for non-blocking file upload
   app.post("/api/uploads", requireAuth, upload.single('uploadFile'), async (req, res) => {
@@ -2988,6 +2992,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Error al crear exportación personalizada" });
     }
   });
+
+  // Register Clean Architecture billing routes
+  app.use('/api/invoices', invoiceRoutes);
+  app.use('/api/auth', authRoutes);
 
   const httpServer = createServer(app);
 
