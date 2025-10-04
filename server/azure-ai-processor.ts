@@ -1071,31 +1071,386 @@ export class AzureInvoiceProcessor {
   }
 
   async processChatQuery(message: string, userName?: string): Promise<string> {
+    console.log('🤖 Processing chat query:', message);
+    
     // If no OpenAI client, provide a helpful response based on database data
     if (!this.openaiClient) {
+      console.log('🤖 Using fallback mode (no OpenAI client)');
       // Provide a simulated response that still queries the database
       try {
         const lowerMessage = message.toLowerCase();
+        console.log('🤖 Lower message:', lowerMessage);
         
-        // Get database data for context-aware responses
-        const kpiData = await storage.getKPIData();
-        const quickStats = await storage.getQuickStats();
-        
-        // Handle greetings
+        // Handle greetings first (simple response)
         if (lowerMessage.includes('hola') || lowerMessage.includes('hello') || 
             lowerMessage.includes('hi') || lowerMessage.includes('buenos')) {
-          return `¡Hola${userName ? ' ' + userName : ''}! Soy tu asistente financiero avanzado. Puedo ayudarte con:\n\n` +
-                 `📊 Análisis por períodos (mensual, trimestral, fiscal)\n` +
-                 `💰 Análisis de clientes y proveedores específicos\n` +
-                 `📈 Tendencias de pagos y morosidad\n` +
-                 `🔄 Comparación entre períodos\n` +
-                 `📋 Estado de IVA por tipo de factura (A/B/C)\n\n` +
-                 `Estado actual del sistema:\n` +
-                 `• Total Ingresos: ${kpiData.totalIncome}\n` +
-                 `• Total Egresos: ${kpiData.totalExpenses}\n` +
-                 `• Balance General: ${kpiData.generalBalance}\n` +
-                 `• Rentabilidad: ${kpiData.profitability}\n\n` +
-                 `¿En qué puedo ayudarte hoy?`;
+          console.log('🤖 Processing greeting...');
+          return `¡Hola${userName ? ' ' + userName : ''}! Soy tu asistente financiero de Open Doors. 
+
+Puedo ayudarte con:
+
+📊 **Consultas Generales:**
+• Cuántas facturas hay en total
+• Estado financiero de la empresa
+• Balance general y flujo de caja
+
+👤 **Por Propietario/Usuario:**
+• Facturas subidas por Joni, Hernán, Franco, etc.
+• Montos y balance por propietario
+• Resumen de todos los propietarios
+
+💰 **Análisis Financiero:**
+• Ingresos anuales (2024, 2025) con desglose mensual
+• IVA por mes o año
+• Qué debemos pagar y qué tenemos a favor
+
+📋 **Por Tipo de Factura:**
+• Cantidad y montos de facturas Tipo A, B, C
+• IVA por tipo de factura
+
+💳 **Estado de Pagos:**
+• Facturas pendientes y vencidas
+• Próximos vencimientos
+• Montos por cobrar y por pagar
+
+¿En qué puedo ayudarte hoy?`;
+        }
+        
+        // Handle simple invoice count queries
+        if (lowerMessage.includes('factura') && (lowerMessage.includes('total') || lowerMessage.includes('cuantas') || lowerMessage.includes('cantidad'))) {
+          console.log('🤖 Processing invoice count query...');
+          try {
+            const allInvoices = await storage.getAllInvoices({ limit: 1000 });
+            console.log('🤖 Total invoices fetched:', allInvoices.total);
+            return `📊 Total de facturas en el sistema: **${allInvoices.total}**\n\n` +
+                   `• Ingresos: ${allInvoices.invoices.filter(inv => inv.type === 'income').length}\n` +
+                   `• Egresos: ${allInvoices.invoices.filter(inv => inv.type === 'expense').length}\n` +
+                   `• Neutras: ${allInvoices.invoices.filter(inv => inv.type === 'neutral').length}`;
+          } catch (dbError) {
+            console.error('❌ Database error in invoice count:', dbError);
+            return "Disculpa, no pude acceder a los datos de facturas en este momento. Por favor intenta más tarde.";
+          }
+        }
+
+        // Handle owner-specific queries (propietario/usuario)
+        if (lowerMessage.includes('propietario') || lowerMessage.includes('usuario') || lowerMessage.includes('subio')) {
+          console.log('🤖 Processing owner-specific query...');
+          try {
+            const allInvoices = await storage.getAllInvoices({ limit: 1000 });
+            
+            // Extract owner name from message
+            const owners = ['joni', 'hernán', 'hernan', 'pagani', 'tagua', 'franco', 'nicolás', 'nicolas', 'corts'];
+            const mentionedOwner = owners.find(owner => lowerMessage.includes(owner));
+            
+            if (mentionedOwner) {
+              const ownerInvoices = allInvoices.invoices.filter(inv => 
+                inv.ownerName && inv.ownerName.toLowerCase().includes(mentionedOwner)
+              );
+              
+              const totalAmount = ownerInvoices.reduce((sum, inv) => sum + parseFloat(inv.totalAmount || '0'), 0);
+              const incomeAmount = ownerInvoices.filter(inv => inv.type === 'income')
+                .reduce((sum, inv) => sum + parseFloat(inv.totalAmount || '0'), 0);
+              const expenseAmount = ownerInvoices.filter(inv => inv.type === 'expense')
+                .reduce((sum, inv) => sum + parseFloat(inv.totalAmount || '0'), 0);
+              
+              return `👤 Facturas de ${mentionedOwner.charAt(0).toUpperCase() + mentionedOwner.slice(1)}:\n\n` +
+                     `📋 Total facturas: ${ownerInvoices.length}\n` +
+                     `💰 Monto total: $ ${totalAmount.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n` +
+                     `💚 Ingresos: $ ${incomeAmount.toLocaleString('es-AR', { minimumFractionDigits: 2 })} (${ownerInvoices.filter(inv => inv.type === 'income').length} facturas)\n` +
+                     `🔴 Egresos: $ ${expenseAmount.toLocaleString('es-AR', { minimumFractionDigits: 2 })} (${ownerInvoices.filter(inv => inv.type === 'expense').length} facturas)\n` +
+                     `📊 Balance: $ ${(incomeAmount - expenseAmount).toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
+            } else {
+            // Show all owners
+            const ownerStats: Record<string, { count: number; total: number; income: number; expense: number }> = {};
+            allInvoices.invoices.forEach(inv => {
+              const owner = inv.ownerName || 'Sin propietario';
+              if (!ownerStats[owner]) {
+                ownerStats[owner] = { count: 0, total: 0, income: 0, expense: 0 };
+              }
+              ownerStats[owner].count++;
+              ownerStats[owner].total += parseFloat(inv.totalAmount || '0');
+              if (inv.type === 'income') ownerStats[owner].income += parseFloat(inv.totalAmount || '0');
+              if (inv.type === 'expense') ownerStats[owner].expense += parseFloat(inv.totalAmount || '0');
+            });
+            
+            let response = `👥 Resumen por Propietarios:\n\n`;
+            Object.entries(ownerStats).forEach(([owner, stats]) => {
+              response += `**${owner}:**\n` +
+                         `• Facturas: ${stats.count}\n` +
+                         `• Total: $ ${stats.total.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n` +
+                         `• Balance: $ ${(stats.income - stats.expense).toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n\n`;
+            });
+              return response;
+            }
+          } catch (dbError) {
+            console.error('❌ Database error in owner query:', dbError);
+            return "Disculpa, no pude acceder a los datos por propietario. Por favor intenta más tarde.";
+          }
+        }
+
+        // Handle IVA queries by month/year
+        if (lowerMessage.includes('iva') && (lowerMessage.includes('mes') || lowerMessage.includes('año') || lowerMessage.includes('anual'))) {
+          console.log('🤖 Processing IVA by period query...');
+          try {
+            const allInvoices = await storage.getAllInvoices({ limit: 1000 });
+            
+            // Extract period from message
+            let targetMonth = null;
+            let targetYear = null;
+            
+            if (lowerMessage.includes('enero')) targetMonth = 1;
+            else if (lowerMessage.includes('febrero')) targetMonth = 2;
+            else if (lowerMessage.includes('marzo')) targetMonth = 3;
+            else if (lowerMessage.includes('abril')) targetMonth = 4;
+            else if (lowerMessage.includes('mayo')) targetMonth = 5;
+            else if (lowerMessage.includes('junio')) targetMonth = 6;
+            else if (lowerMessage.includes('julio')) targetMonth = 7;
+            else if (lowerMessage.includes('agosto')) targetMonth = 8;
+            else if (lowerMessage.includes('septiembre')) targetMonth = 9;
+            else if (lowerMessage.includes('octubre')) targetMonth = 10;
+            else if (lowerMessage.includes('noviembre')) targetMonth = 11;
+            else if (lowerMessage.includes('diciembre')) targetMonth = 12;
+            
+            const currentYear = new Date().getFullYear();
+            if (lowerMessage.includes('2024')) targetYear = 2024;
+            else if (lowerMessage.includes('2025')) targetYear = 2025;
+            else targetYear = currentYear;
+            
+            let filteredInvoices = allInvoices.invoices;
+            let periodText = '';
+            
+            if (targetMonth && targetYear) {
+              filteredInvoices = allInvoices.invoices.filter(inv => {
+                if (!inv.date) return false;
+                const invDate = new Date(inv.date);
+                return invDate.getMonth() + 1 === targetMonth && invDate.getFullYear() === targetYear;
+              });
+              const monthNames = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 
+                                'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+              periodText = `${monthNames[targetMonth - 1]} ${targetYear}`;
+            } else if (targetYear) {
+              filteredInvoices = allInvoices.invoices.filter(inv => {
+                if (!inv.date) return false;
+                const invDate = new Date(inv.date);
+                return invDate.getFullYear() === targetYear;
+              });
+              periodText = `año ${targetYear}`;
+            } else {
+              // Current month
+              const currentMonth = new Date().getMonth() + 1;
+              filteredInvoices = allInvoices.invoices.filter(inv => {
+                if (!inv.date) return false;
+                const invDate = new Date(inv.date);
+                return invDate.getMonth() + 1 === currentMonth && invDate.getFullYear() === currentYear;
+              });
+              periodText = 'este mes';
+            }
+            
+            const ivaByClass = {
+              A: filteredInvoices.filter(inv => inv.invoiceClass === 'A')
+                .reduce((sum, inv) => sum + parseFloat(inv.ivaAmount || '0'), 0),
+              B: filteredInvoices.filter(inv => inv.invoiceClass === 'B')
+                .reduce((sum, inv) => sum + parseFloat(inv.ivaAmount || '0'), 0),
+              C: filteredInvoices.filter(inv => inv.invoiceClass === 'C')
+                .reduce((sum, inv) => sum + parseFloat(inv.ivaAmount || '0'), 0)
+            };
+            
+            const totalIVA = ivaByClass.A + ivaByClass.B + ivaByClass.C;
+            
+            return `📊 IVA del ${periodText}:\n\n` +
+                   `💰 Total IVA: $ ${totalIVA.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n\n` +
+                   `Por tipo de factura:\n` +
+                   `• Tipo A (Compensable): $ ${ivaByClass.A.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n` +
+                   `• Tipo B (Consumidor Final): $ ${ivaByClass.B.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n` +
+                   `• Tipo C (Monotributo): $ ${ivaByClass.C.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n\n` +
+                   `📋 Facturas procesadas: ${filteredInvoices.length}`;
+          } catch (dbError) {
+            console.error('❌ Database error in IVA query:', dbError);
+            return "Disculpa, no pude acceder a los datos de IVA. Por favor intenta más tarde.";
+          }
+        }
+
+        // Handle annual income queries
+        if (lowerMessage.includes('ingreso') && (lowerMessage.includes('anual') || lowerMessage.includes('año') || lowerMessage.includes('2024') || lowerMessage.includes('2025'))) {
+          console.log('🤖 Processing annual income query...');
+          try {
+            const allInvoices = await storage.getAllInvoices({ limit: 1000 });
+            
+            let targetYear = new Date().getFullYear();
+            if (lowerMessage.includes('2024')) targetYear = 2024;
+            else if (lowerMessage.includes('2025')) targetYear = 2025;
+            
+            const yearInvoices = allInvoices.invoices.filter(inv => {
+              if (!inv.date) return false;
+              const invDate = new Date(inv.date);
+              return invDate.getFullYear() === targetYear && inv.type === 'income';
+            });
+            
+            const totalIncome = yearInvoices.reduce((sum, inv) => sum + parseFloat(inv.totalAmount || '0'), 0);
+            const monthlyBreakdown: Record<string, number> = {};
+            
+            yearInvoices.forEach(inv => {
+              if (!inv.date) return;
+              const month = new Date(inv.date).getMonth() + 1;
+              const monthNames = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 
+                                'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+              const monthName = monthNames[month - 1];
+              if (!monthlyBreakdown[monthName]) monthlyBreakdown[monthName] = 0;
+              monthlyBreakdown[monthName] += parseFloat(inv.totalAmount || '0');
+            });
+            
+            let response = `💰 Ingresos Anuales ${targetYear}:\n\n` +
+                          `📊 Total: $ ${totalIncome.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n` +
+                          `📋 Facturas: ${yearInvoices.length}\n\n` +
+                          `Desglose mensual:\n`;
+            
+            Object.entries(monthlyBreakdown).forEach(([month, amount]) => {
+              response += `• ${month}: $ ${amount.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n`;
+            });
+            
+            return response;
+          } catch (dbError) {
+            console.error('❌ Database error in annual income query:', dbError);
+            return "Disculpa, no pude acceder a los datos de ingresos anuales. Por favor intenta más tarde.";
+          }
+        }
+
+        // Handle payment status queries (what we owe, what's due)
+        if (lowerMessage.includes('debemos') || lowerMessage.includes('pagar') || lowerMessage.includes('vence') || lowerMessage.includes('vencimiento')) {
+          console.log('🤖 Processing payment status query...');
+          try {
+            const allInvoices = await storage.getAllInvoices({ limit: 1000 });
+            
+            const pendingExpenses = allInvoices.invoices.filter(inv => 
+              inv.type === 'expense' && inv.paymentStatus === 'pending'
+            );
+            const overdueExpenses = allInvoices.invoices.filter(inv => 
+              inv.type === 'expense' && inv.paymentStatus === 'overdue'
+            );
+            
+            const totalPending = pendingExpenses.reduce((sum, inv) => sum + parseFloat(inv.totalAmount || '0'), 0);
+            const totalOverdue = overdueExpenses.reduce((sum, inv) => sum + parseFloat(inv.totalAmount || '0'), 0);
+            
+            let response = `💳 Estado de Pagos:\n\n` +
+                          `⏳ Facturas pendientes: ${pendingExpenses.length}\n` +
+                          `💰 Monto pendiente: $ ${totalPending.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n\n`;
+            
+            if (overdueExpenses.length > 0) {
+              response += `🔴 Facturas vencidas: ${overdueExpenses.length}\n` +
+                         `💰 Monto vencido: $ ${totalOverdue.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n\n`;
+              
+              response += `Próximos vencimientos:\n`;
+              overdueExpenses.slice(0, 5).forEach(inv => {
+                const dueDate = inv.dueDate ? new Date(inv.dueDate).toLocaleDateString('es-AR') : 'Sin fecha';
+                response += `• ${inv.clientProviderName}: $ ${parseFloat(inv.totalAmount || '0').toLocaleString('es-AR', { minimumFractionDigits: 2 })} - Vence: ${dueDate}\n`;
+              });
+            }
+            
+            return response;
+          } catch (dbError) {
+            console.error('❌ Database error in payment query:', dbError);
+            return "Disculpa, no pude acceder a los datos de pagos. Por favor intenta más tarde.";
+          }
+        }
+
+        // Handle company balance/favor queries
+        if (lowerMessage.includes('favor') || lowerMessage.includes('balance') || lowerMessage.includes('empresa')) {
+          console.log('🤖 Processing company balance query...');
+          try {
+            const allInvoices = await storage.getAllInvoices({ limit: 1000 });
+            
+            const totalIncome = allInvoices.invoices.filter(inv => inv.type === 'income')
+              .reduce((sum, inv) => sum + parseFloat(inv.totalAmount || '0'), 0);
+            const totalExpenses = allInvoices.invoices.filter(inv => inv.type === 'expense')
+              .reduce((sum, inv) => sum + parseFloat(inv.totalAmount || '0'), 0);
+            
+            const pendingIncome = allInvoices.invoices.filter(inv => 
+              inv.type === 'income' && inv.paymentStatus === 'pending'
+            ).reduce((sum, inv) => sum + parseFloat(inv.totalAmount || '0'), 0);
+            
+            const pendingExpenses = allInvoices.invoices.filter(inv => 
+              inv.type === 'expense' && inv.paymentStatus === 'pending'
+            ).reduce((sum, inv) => sum + parseFloat(inv.totalAmount || '0'), 0);
+            
+            const netBalance = totalIncome - totalExpenses;
+            const cashFlow = pendingIncome - pendingExpenses;
+            
+            return `🏢 Estado Financiero de la Empresa:\n\n` +
+                   `💰 Balance General: $ ${netBalance.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n` +
+                   `📊 Flujo de Caja (pendiente): $ ${cashFlow.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n\n` +
+                   `Desglose:\n` +
+                   `• Ingresos totales: $ ${totalIncome.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n` +
+                   `• Egresos totales: $ ${totalExpenses.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n` +
+                   `• Por cobrar: $ ${pendingIncome.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n` +
+                   `• Por pagar: $ ${pendingExpenses.toLocaleString('es-AR', { minimumFractionDigits: 2 })}`;
+          } catch (dbError) {
+            console.error('❌ Database error in balance query:', dbError);
+            return "Disculpa, no pude acceder al balance de la empresa. Por favor intenta más tarde.";
+          }
+        }
+
+        // Handle invoice type queries (A, B, C)
+        if (lowerMessage.includes('tipo') && (lowerMessage.includes('factura') || lowerMessage.includes('clase'))) {
+          console.log('🤖 Processing invoice type query...');
+          try {
+            const allInvoices = await storage.getAllInvoices({ limit: 1000 });
+            
+            const typeStats = {
+              A: { count: 0, total: 0, iva: 0 },
+              B: { count: 0, total: 0, iva: 0 },
+              C: { count: 0, total: 0, iva: 0 }
+            };
+            
+            allInvoices.invoices.forEach(inv => {
+              const type = inv.invoiceClass || 'A';
+              if (typeStats[type]) {
+                typeStats[type].count++;
+                typeStats[type].total += parseFloat(inv.totalAmount || '0');
+                typeStats[type].iva += parseFloat(inv.ivaAmount || '0');
+              }
+            });
+            
+            let response = `📋 Facturas por Tipo:\n\n`;
+            Object.entries(typeStats).forEach(([type, stats]) => {
+              response += `**Tipo ${type}:**\n` +
+                         `• Cantidad: ${stats.count} facturas\n` +
+                         `• Total: $ ${stats.total.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n` +
+                         `• IVA: $ ${stats.iva.toLocaleString('es-AR', { minimumFractionDigits: 2 })}\n\n`;
+            });
+            
+            return response;
+          } catch (dbError) {
+            console.error('❌ Database error in type query:', dbError);
+            return "Disculpa, no pude acceder a los datos por tipo de factura. Por favor intenta más tarde.";
+          }
+        }
+        
+        // Get database data for context-aware responses
+        console.log('🤖 Fetching KPI data...');
+        let kpiData;
+        try {
+          kpiData = await storage.getKPIData();
+          console.log('🤖 KPI data fetched:', { totalIncome: kpiData.totalIncome, totalExpenses: kpiData.totalExpenses });
+        } catch (kpiError) {
+          console.error('❌ KPI data error:', kpiError);
+          return "Disculpa, no pude acceder a los datos financieros en este momento. Por favor intenta más tarde.";
+        }
+        
+        console.log('🤖 Fetching quick stats...');
+        let quickStats;
+        try {
+          quickStats = await storage.getQuickStats();
+          console.log('🤖 Quick stats fetched:', quickStats);
+        } catch (statsError) {
+          console.error('❌ Quick stats error:', statsError);
+          // Continue without quick stats
+          quickStats = {
+            invoicesThisMonth: "0",
+            averageInvoice: "$ 0,00",
+            ivaRecovered: "$ 0,00",
+            pending: "0",
+            profitability: "0%"
+          };
         }
         
         // Handle specific period queries (month, quarter, fiscal)
@@ -1201,7 +1556,10 @@ export class AzureInvoiceProcessor {
             lowerMessage.includes('ingreso') || lowerMessage.includes('egreso') ||
             lowerMessage.includes('balance') || lowerMessage.includes('total')) {
           
+          console.log('🤖 Processing invoice/financial query...');
           const recentInvoices = await storage.getRecentInvoices(5);
+          console.log('🤖 Recent invoices fetched:', recentInvoices.length);
+          
           const invoiceInfo = recentInvoices.length > 0 ? 
             `\n\nÚltimas ${recentInvoices.length} facturas procesadas:\n` +
             recentInvoices.map(inv => 
@@ -1209,7 +1567,7 @@ export class AzureInvoiceProcessor {
             ).join('\n') : 
             '\n\nNo hay facturas registradas aún.';
           
-          return `📊 Resumen Financiero Actual:\n\n` +
+          const response = `📊 Resumen Financiero Actual:\n\n` +
                  `💚 Ingresos Totales: ${kpiData.totalIncome}\n` +
                  `🔴 Egresos Totales: ${kpiData.totalExpenses}\n` +
                  `💰 Balance General: ${kpiData.generalBalance}\n` +
@@ -1219,6 +1577,9 @@ export class AzureInvoiceProcessor {
                  `• Facturas este mes: ${quickStats.invoicesThisMonth}\n` +
                  `• Promedio por factura: ${quickStats.averageInvoice}` +
                  invoiceInfo;
+          
+          console.log('🤖 Returning invoice/financial response');
+          return response;
         }
         
         // Handle report requests
@@ -1253,7 +1614,12 @@ export class AzureInvoiceProcessor {
                `Para obtener respuestas más detalladas, configura tu API key de OpenAI en las variables de entorno.`;
         
       } catch (error) {
-        console.error('Error in fallback chat processing:', error);
+        console.error('❌ Error in fallback chat processing:', error);
+        console.error('❌ Error details:', {
+          message: (error as Error).message,
+          stack: (error as Error).stack,
+          name: (error as Error).name
+        });
         return "Disculpa, ocurrió un error al procesar tu consulta. Por favor intenta nuevamente.";
       }
     }

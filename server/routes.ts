@@ -1765,7 +1765,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
     } catch (error) {
-      console.error('Error processing chat message:', error);
+      console.error('❌ Error processing chat message:', error);
+      console.error('❌ Chat error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
       res.status(500).json({ error: "Error al procesar el mensaje" });
     }
   });
